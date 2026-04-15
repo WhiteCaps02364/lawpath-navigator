@@ -33,8 +33,8 @@ export default function Index() {
             </p>
 
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
-              Find Out If You're Ready<br />
-              <span className="text-secondary">for Law School.</span>
+              Your Law School Plan,<br />
+              <span className="text-secondary">Built Around You.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
