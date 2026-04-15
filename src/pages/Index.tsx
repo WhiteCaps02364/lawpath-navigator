@@ -38,7 +38,7 @@ export default function Index() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Answer a few questions and get a personalized readiness score, school list analysis, and testing strategy built around your profile.
+              Answer a few questions and get a personalized readiness score, law school application strategy, and school assessment — tailored to your story and powered by the latest ABA data.
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
@@ -46,7 +46,7 @@ export default function Index() {
                 Start My Assessment <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                Takes about 10 minutes. Free for all students.
+                Takes about 10 minutes. Free for all law school applicants.
               </p>
             </div>
           </motion.div>
