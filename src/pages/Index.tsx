@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Users, BarChart3, Shield } from 'lucide-react';
+import { ArrowRight, Users, BarChart3, Shield } from 'lucide-react';
 import IntakeWizard from '@/components/intake/IntakeWizard';
 
 export default function Index() {
@@ -13,6 +13,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <span className="text-xl font-bold text-primary">JD-Next</span>
+      </div>
+
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-gold/5" />
@@ -23,25 +28,26 @@ export default function Index() {
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
-              <BookOpen className="w-4 h-4" />
-              Pre-Law Advisory Engine
-            </div>
+            <p className="text-sm text-muted-foreground">
+              Provided free by JD-Next in partnership with your pre-law advisor.
+            </p>
 
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
-              Advise With Purpose.<br />
-              <span className="text-secondary">Support With Impact.</span>
+              Find Out If You're Ready<br />
+              <span className="text-secondary">for Law School.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              A decision engine for pre-law students and advisors. Complete the intake in under 10 minutes
-              and receive a personalized strategy — from school selection to test planning.
+              Answer a few questions and get a personalized readiness score, school list analysis, and testing strategy built around your profile.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+            <div className="flex flex-col items-center gap-2 pt-4">
               <Button size="lg" onClick={() => setStarted(true)} className="gap-2 text-base px-8">
-                Start Your Assessment <ArrowRight className="w-5 h-5" />
+                Start My Assessment <ArrowRight className="w-5 h-5" />
               </Button>
+              <p className="text-sm text-muted-foreground">
+                Takes about 10 minutes. Free for all students.
+              </p>
             </div>
           </motion.div>
         </div>
@@ -54,17 +60,17 @@ export default function Index() {
             {
               icon: BarChart3,
               title: 'Readiness Scoring',
-              description: 'GPA-anchored analysis with upgrade/downgrade logic based on test scores, experience, and motivation clarity.',
+              description: 'See where you stand academically and get a clear picture of whether now is the right time to apply — or what you need to do first.',
             },
             {
               icon: Shield,
               title: 'School List Reality Check',
-              description: 'Every school classified as Reach, Target, or Safety against ABA 509 data. Geographic alignment flagged automatically.',
+              description: 'Find out whether the schools you\'re considering are realistic targets based on your GPA, and whether they place graduates where you want to work.',
             },
             {
               icon: Users,
               title: 'Advisor-Ready Reports',
-              description: 'Structured outputs with meeting agendas, risk flags, and recommender assessments your advisor can act on immediately.',
+              description: 'Your advisor receives a summary of your profile before you meet, so your conversation starts with strategy — not background questions.',
             },
           ].map((feature, i) => (
             <motion.div
