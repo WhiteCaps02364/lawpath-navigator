@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Users, BarChart3, Shield } from 'lucide-react';
+import { ArrowRight, Users, BarChart3, Shield } from 'lucide-react';
 import IntakeWizard from '@/components/intake/IntakeWizard';
 
 export default function Index() {
