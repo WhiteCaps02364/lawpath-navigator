@@ -55,7 +55,7 @@ function IntakeWizardInner() {
         const currentYear = new Date().getFullYear();
         const isCurrentOrFuture = data.graduationYear >= currentYear;
         const schoolEmailOk = isCurrentOrFuture ? !!data.schoolEmail : true;
-        return data.firstName && data.lastName && schoolEmailOk && data.personalEmail && data.undergraduateInstitution;
+        return data.firstName && data.lastName && schoolEmailOk && data.personalEmail && data.undergraduateInstitution && data.applicationTimingIntent;
       }
       case 1: return data.cumulativeGPA > 0 && data.majors;
       case 2: {

@@ -69,6 +69,35 @@ export function StepPersonalInfo() {
         </div>
       )}
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label>Intended Law School Start Year *</Label>
+          <Select
+            value={data.intendedStartYear !== null ? String(data.intendedStartYear) : 'Not sure'}
+            onValueChange={v => updateData({ intendedStartYear: v === 'Not sure' ? null : Number(v) })}
+          >
+            <SelectTrigger><SelectValue placeholder="Select year" /></SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: 6 }, (_, i) => currentYear + i).map(y => (
+                <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+              ))}
+              <SelectItem value="Not sure">Not sure</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label>Application Timing Intent *</Label>
+          <Select value={data.applicationTimingIntent} onValueChange={v => updateData({ applicationTimingIntent: v as any })}>
+            <SelectTrigger><SelectValue placeholder="Select timing" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="This cycle">I plan to apply this cycle</SelectItem>
+              <SelectItem value="Next cycle">I plan to apply next cycle</SelectItem>
+              <SelectItem value="Not sure">I'm not sure yet</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <div className="border rounded-lg p-4 space-y-3 bg-muted/30">
         <p className="text-sm font-medium text-foreground">Outreach Preferences</p>
         <p className="text-xs text-muted-foreground">By checking these boxes, you agree to be contacted about opportunities that may match your profile. Your information will not be shared without your explicit consent.</p>

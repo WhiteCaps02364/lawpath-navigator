@@ -15,7 +15,7 @@ const defaultStudent: StudentData = {
   whyLawSchool: '', practiceAreaInterest: [], geographicPreference: 'No preference',
   geographicStrength: 'Open to anywhere',
   firstChoiceState: 'No preference', secondChoiceState: '', thirdChoiceState: '',
-  intendedStartYear: new Date().getFullYear() + 2,
+  intendedStartYear: null,
   applicationTimingIntent: 'Not sure',
   recommenders: [{ ...defaultRecommender }, { ...defaultRecommender }, { ...defaultRecommender }],
   relevantExperiences: '', personalStatementThemes: '', riskFlags: [],
