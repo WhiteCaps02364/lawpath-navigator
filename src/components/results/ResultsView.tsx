@@ -650,6 +650,11 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         </div>
       </motion.div>
 
+      {/* Strengthen Your Application — only for Needs Preparation */}
+      {results.readinessLevel === 'Needs Preparation' && (
+        <StrengthenApplicationSection studentData={studentData} />
+      )}
+
       {/* Test Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.25 }} className="border rounded-xl p-6 bg-card space-y-3">
         <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Test Strategy</h3>
