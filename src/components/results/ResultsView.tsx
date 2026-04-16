@@ -199,7 +199,31 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   }, [studentData.intendedStartYear]);
 
   // Personalized readiness sentence
-  const readinessPersonalized = `With a ${studentData.cumulativeGPA.toFixed(2)} GPA and a target start date of ${studentData.intendedStartYear ?? 'an undecided year'}, your academic profile is competitive for several of your selected schools.`;
+  const readinessPersonalized = useMemo(() => {
+    const gpa = studentData.cumulativeGPA;
+    const gpaStr = gpa.toFixed(2);
+    const yearStr = studentData.intendedStartYear ?? 'an undecided year';
+    const schools = results.schoolAssessments.map(a => a.school);
+    const total = schools.length;
+    const aboveP75 = schools.filter(s => gpa > s.gpa75).length;
+    const inRange = schools.filter(s => gpa >= s.gpa25 && gpa <= s.gpa75).length;
+    const belowP25 = schools.filter(s => gpa < s.gpa25).length;
+    const mostBelow = total > 0 && belowP25 > total / 2;
+
+    if (results.readinessLevel === 'Needs Preparation' && mostBelow) {
+      return `Your current GPA of ${gpaStr} falls below the typical range for most of your selected schools. This is your starting point — not your ceiling — but your school list and preparation timeline will need careful planning.`;
+    }
+    if (aboveP75 >= 3) {
+      return `With a ${gpaStr} GPA and a target start date of ${yearStr}, your academic profile is competitive for most of your selected schools.`;
+    }
+    if (inRange >= 3) {
+      return `With a ${gpaStr} GPA and a target start date of ${yearStr}, your academic profile is within range for some of your selected schools, though several may be a stretch at your current GPA.`;
+    }
+    if (mostBelow) {
+      return `With a ${gpaStr} GPA and a target start date of ${yearStr}, your current academic profile falls below the typical admitted range for most of your selected schools. Your school list may need rebalancing — your advisor can help.`;
+    }
+    return `With a ${gpaStr} GPA and a target start date of ${yearStr}, your academic profile is within range for some of your selected schools, though several may be a stretch at your current GPA.`;
+  }, [studentData.cumulativeGPA, studentData.intendedStartYear, results.schoolAssessments, results.readinessLevel]);
 
   // Strategy explanation — replace generic refs with actual JD-Next school names
   const strategyExplanation = useMemo(() => {
