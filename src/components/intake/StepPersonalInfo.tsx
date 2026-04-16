@@ -34,6 +34,7 @@ export function StepPersonalInfo() {
         <div className="space-y-2">
           <Label htmlFor="personalEmail">Personal Email *</Label>
           <Input id="personalEmail" type="email" value={data.personalEmail} onChange={e => updateData({ personalEmail: e.target.value })} placeholder="you@gmail.com" />
+          <p className="text-xs text-muted-foreground">We'll use this to stay in touch after you graduate.</p>
         </div>
       </div>
 
@@ -68,10 +69,10 @@ export function StepPersonalInfo() {
         <p className="text-xs text-muted-foreground">By checking these boxes, you agree to be contacted about opportunities that may match your profile. Your information will not be shared without your explicit consent.</p>
         <div className="space-y-2">
           {[
-            { key: 'optInLawSchools' as const, label: 'Receive information from law schools' },
-            { key: 'optInBigLaw' as const, label: 'Receive information from BigLaw firms' },
-            { key: 'optInParalegal' as const, label: 'Receive information from paralegal programs' },
-            { key: 'optInPublicInterest' as const, label: 'Receive information from public interest organizations' },
+            { key: 'optInLawSchools' as const, label: "I'd like to hear from law schools that may be a strong fit for my profile" },
+            { key: 'optInBigLaw' as const, label: "I'd like to hear from BigLaw firms about early-career and paralegal programs" },
+            { key: 'optInParalegal' as const, label: "I'd like to hear about paralegal and legal training program opportunities" },
+            { key: 'optInPublicInterest' as const, label: "I'd like to hear about public interest and government legal opportunities" },
           ].map(opt => (
             <div key={opt.key} className="flex items-center gap-2">
               <Checkbox

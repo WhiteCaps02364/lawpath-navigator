@@ -12,6 +12,7 @@ import { calculateScores } from '@/lib/scoringEngine';
 import { ScoringResult } from '@/types/intake';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import jdnLogo from '@/assets/jdn-logo.png';
 
 const stepLabels = [
   'Personal Information',
@@ -72,16 +73,11 @@ function IntakeWizardInner() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4">
+      <header className="bg-[#1A365D] sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">JD</span>
-            </div>
-            <div>
-              <h1 className="text-sm font-heading text-foreground">Pre-Law Advisory Engine</h1>
-              <p className="text-xs text-muted-foreground">by JD-Next</p>
-            </div>
+            <img src={jdnLogo} alt="JD-Next" className="h-14" />
+            <span className="text-sm text-gray-300">Pre-Law Advisory Engine</span>
           </div>
         </div>
       </header>
@@ -105,7 +101,7 @@ function IntakeWizardInner() {
           <Button
             onClick={handleNext}
             disabled={!canProceed()}
-            className="gap-2"
+            className="gap-2 bg-[#1A365D] text-white hover:bg-[#1A365D]/90"
           >
             {currentStep === totalSteps - 1 ? 'Get My Results' : 'Continue'}
             <ArrowRight className="w-4 h-4" />
