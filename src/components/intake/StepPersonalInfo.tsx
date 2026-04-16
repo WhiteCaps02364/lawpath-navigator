@@ -7,35 +7,14 @@ import { sampleInstitutions } from '@/data/lawSchools';
 
 export function StepPersonalInfo() {
   const { data, updateData } = useIntake();
+  const currentYear = new Date().getFullYear();
+  const isCurrentOrFuture = data.graduationYear >= currentYear;
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Let's get started</h2>
         <p className="text-muted-foreground">The entire process takes about 10 minutes. Let's start with the basics.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">First Name *</Label>
-          <Input id="firstName" value={data.firstName} onChange={e => updateData({ firstName: e.target.value })} placeholder="Your first name" />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name *</Label>
-          <Input id="lastName" value={data.lastName} onChange={e => updateData({ lastName: e.target.value })} placeholder="Your last name" />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="schoolEmail">School Email *</Label>
-          <Input id="schoolEmail" type="email" value={data.schoolEmail} onChange={e => updateData({ schoolEmail: e.target.value })} placeholder="you@university.edu" />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="personalEmail">Personal Email *</Label>
-          <Input id="personalEmail" type="email" value={data.personalEmail} onChange={e => updateData({ personalEmail: e.target.value })} placeholder="you@gmail.com" />
-          <p className="text-xs text-muted-foreground">We'll use this to stay in touch after you graduate.</p>
-        </div>
       </div>
 
       <div className="space-y-2">
@@ -56,13 +35,39 @@ export function StepPersonalInfo() {
           <Select value={String(data.graduationYear)} onValueChange={v => updateData({ graduationYear: Number(v) })}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
-              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i).map(y => (
+              {Array.from({ length: 10 }, (_, i) => currentYear - 5 + i).map(y => (
                 <SelectItem key={y} value={String(y)}>{y}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="firstName">First Name *</Label>
+          <Input id="firstName" value={data.firstName} onChange={e => updateData({ firstName: e.target.value })} placeholder="Your first name" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="lastName">Last Name *</Label>
+          <Input id="lastName" value={data.lastName} onChange={e => updateData({ lastName: e.target.value })} placeholder="Your last name" />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="personalEmail">Personal Email *</Label>
+        <Input id="personalEmail" type="email" value={data.personalEmail} onChange={e => updateData({ personalEmail: e.target.value })} placeholder="you@gmail.com" />
+        {isCurrentOrFuture && (
+          <p className="text-xs text-muted-foreground">We'll use this to stay in touch after you graduate.</p>
+        )}
+      </div>
+
+      {isCurrentOrFuture && (
+        <div className="space-y-2">
+          <Label htmlFor="schoolEmail">School Email *</Label>
+          <Input id="schoolEmail" type="email" value={data.schoolEmail} onChange={e => updateData({ schoolEmail: e.target.value })} placeholder="you@university.edu" />
+        </div>
+      )}
 
       <div className="border rounded-lg p-4 space-y-3 bg-muted/30">
         <p className="text-sm font-medium text-foreground">Outreach Preferences</p>

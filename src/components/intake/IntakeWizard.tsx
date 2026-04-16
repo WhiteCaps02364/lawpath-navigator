@@ -51,7 +51,12 @@ function IntakeWizardInner() {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 0: return data.firstName && data.lastName && data.schoolEmail && data.personalEmail && data.undergraduateInstitution;
+      case 0: {
+        const currentYear = new Date().getFullYear();
+        const isCurrentOrFuture = data.graduationYear >= currentYear;
+        const schoolEmailOk = isCurrentOrFuture ? !!data.schoolEmail : true;
+        return data.firstName && data.lastName && schoolEmailOk && data.personalEmail && data.undergraduateInstitution;
+      }
       case 1: return data.cumulativeGPA > 0 && data.majors;
       case 2: return true;
       case 3: return data.whyLawSchool && data.practiceAreaInterest.length > 0;
