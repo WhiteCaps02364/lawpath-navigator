@@ -347,7 +347,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* Readiness */}
       <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="border rounded-xl p-6 bg-card space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <h3 className="text-xl font-heading text-foreground">Readiness Level</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Readiness Level</h3>
           <ReadinessIndicator level={results.readinessLevel} />
         </div>
         <p className="text-muted-foreground">{results.readinessExplanation}</p>
@@ -359,7 +359,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <div className="border rounded-xl p-5 bg-card space-y-2">
           <div className="flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
-            <h3 className="font-heading text-lg text-foreground">Strategy</h3>
+            <h3 className="font-heading text-lg font-bold" style={{ color: NAVY }}>Strategy</h3>
           </div>
           <p className="font-semibold text-sm text-foreground">{results.strategyRecommendation}</p>
           <p className="text-sm text-muted-foreground">{strategyExplanation}</p>
@@ -368,7 +368,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <div className="border rounded-xl p-5 bg-card space-y-2">
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
-            <h3 className="font-heading text-lg text-foreground">Timeline</h3>
+            <h3 className="font-heading text-lg font-bold" style={{ color: NAVY }}>Timeline</h3>
           </div>
           <p className="font-semibold text-sm text-foreground">{results.timelineRecommendation}</p>
           <p className="text-sm text-muted-foreground">{results.timelineRationale}</p>
@@ -378,7 +378,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
 
       {/* Test Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.25 }} className="border rounded-xl p-6 bg-card space-y-3">
-        <h3 className="text-xl font-heading text-foreground">Test Strategy</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Test Strategy</h3>
         <p className="text-muted-foreground">{results.testRecommendation}</p>
         {results.jdNextSchools.length > 0 && (
           <div className="mt-2">
@@ -396,7 +396,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* School List */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-heading text-foreground">School Assessment</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>School Assessment</h3>
           <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
             results.listComposition === 'Healthy' ? 'bg-success/10 text-success' :
             results.listComposition === 'Overreaching' ? 'bg-destructive/10 text-destructive' :
@@ -416,7 +416,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
 
       {/* Recommender Guidance */}
       <motion.div {...fadeIn} transition={{ delay: 0.4 }} className="border rounded-xl p-6 bg-card space-y-3">
-        <h3 className="text-xl font-heading text-foreground">Recommender Strategy</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Recommender Strategy</h3>
         <div className="prose prose-sm max-w-none text-muted-foreground space-y-3">
           {personalizedGuidance.split('\n').filter(Boolean).map((p, i) => (
             <p key={i} className={p.includes('⚠️') ? 'text-destructive font-medium' : ''}>
@@ -430,28 +430,28 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* Career Path (conditional) */}
       {results.careerPathNote && (
         <motion.div {...fadeIn} transition={{ delay: 0.45 }} className="border rounded-xl p-6 bg-gold-muted space-y-2">
-          <h3 className="text-xl font-heading text-foreground">Career Pathway</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Career Pathway</h3>
           <p className="text-sm text-muted-foreground">{results.careerPathNote}</p>
         </motion.div>
       )}
 
       {/* Action Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.5 }} className="border rounded-xl p-6 bg-card space-y-4">
-        <h3 className="text-xl font-heading text-foreground">Your Action Plan</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Your Action Plan</h3>
         <ol className="space-y-3">
           {finalActionPlan.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: NAVY }}>
                 {i + 1}
               </span>
               <div className="text-sm text-foreground pt-0.5 space-y-1">
                 <p>{step.text}</p>
                 {step.links && (
                   <div className="flex flex-col gap-0.5">
-                    <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="text-[#1A365D] underline text-xs font-medium hover:opacity-80">
+                    <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
                       Register for JD-Next →
                     </a>
-                    <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="text-[#1A365D] underline text-xs font-medium hover:opacity-80">
+                    <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
                       Register for the LSAT →
                     </a>
                   </div>
@@ -514,6 +514,16 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           Start over with a new profile
         </button>
       </div>
+      </div>
+
+      {/* Branded Footer */}
+      <footer className="w-full mt-12" style={{ background: NAVY }}>
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
+          <img src={jdnLogo} alt="JD-Next" style={{ height: 40 }} />
+          <span style={{ color: '#D1D5DB', fontSize: 13 }}>Pre-Law Advisory Engine — Powered by JD-Next</span>
+          <span style={{ color: '#D1D5DB', fontSize: 13 }}>© JD-Next / Aspen Publishing</span>
+        </div>
+      </footer>
     </div>
   );
 }
