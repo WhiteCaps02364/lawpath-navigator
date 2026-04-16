@@ -27,7 +27,8 @@ function TestRegistrationLinks() {
         href={JD_NEXT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#1A365D] underline text-sm font-medium hover:opacity-80"
+        className="underline text-sm font-medium hover:opacity-80"
+        style={{ color: GOLD }}
       >
         Register for JD-Next →
       </a>
@@ -35,7 +36,8 @@ function TestRegistrationLinks() {
         href={LSAT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#1A365D] underline text-sm font-medium hover:opacity-80"
+        className="underline text-sm font-medium hover:opacity-80"
+        style={{ color: GOLD }}
       >
         Register for the LSAT →
       </a>
@@ -44,6 +46,14 @@ function TestRegistrationLinks() {
 }
 
 function ReadinessIndicator({ level }: { level: string }) {
+  if (level === 'High') {
+    return (
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: GOLD }}>
+        <CheckCircle className="w-5 h-5 text-white" />
+        <span className="font-semibold text-white">{level}</span>
+      </div>
+    );
+  }
   const config = {
     'High': { color: 'text-success', bg: 'bg-success/10', icon: CheckCircle },
     'Developing': { color: 'text-gold', bg: 'bg-gold/10', icon: TrendingUp },
