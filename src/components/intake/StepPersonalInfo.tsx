@@ -12,7 +12,7 @@ export function StepPersonalInfo() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Let's get started</h2>
-        <p className="text-muted-foreground">Tell us about yourself. This takes about 10 minutes.</p>
+        <p className="text-muted-foreground">The entire process takes about 10 minutes. Let's start with the basics.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
