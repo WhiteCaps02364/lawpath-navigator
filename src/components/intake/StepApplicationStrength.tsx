@@ -6,7 +6,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Recommender, RiskFlag } from '@/types/intake';
 
-const riskOptions: RiskFlag[] = ['Low early GPA', 'GPA improvement', 'Major change', 'Academic probation', 'None'];
+const riskOptions: { value: RiskFlag; label: string }[] = [
+  { value: 'Low early GPA', label: 'My grades were lower early in college' },
+  { value: 'GPA improvement', label: 'My GPA improved significantly over time' },
+  { value: 'Major change', label: 'I changed my major' },
+  { value: 'Academic probation', label: 'I was placed on academic probation' },
+  { value: 'None', label: 'Nothing to address' },
+];
 
 export function StepApplicationStrength() {
   const { data, updateData } = useIntake();
@@ -63,7 +69,7 @@ export function StepApplicationStrength() {
               <Input value={data.recommenders[i].context} onChange={e => updateRecommender(i, { context: e.target.value })} placeholder="e.g. Constitutional Law professor, Fall 2024" />
             </div>
             <div className="space-y-1">
-              <Label className="text-xs">How strong?</Label>
+              <Label className="text-xs">How strong do you expect this letter to be?</Label>
               <Select value={data.recommenders[i].strength} onValueChange={v => updateRecommender(i, { strength: v as any })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -79,6 +85,7 @@ export function StepApplicationStrength() {
 
       <div className="space-y-2">
         <Label>Relevant Experiences</Label>
+        <p className="text-xs text-muted-foreground">Include internships, research, leadership roles, legal work, or anything else that demonstrates your readiness for law school.</p>
         <Textarea value={data.relevantExperiences} onChange={e => updateData({ relevantExperiences: e.target.value })} placeholder="Internships, leadership roles, research, volunteer work..." className="min-h-[80px]" />
       </div>
 
@@ -88,16 +95,17 @@ export function StepApplicationStrength() {
       </div>
 
       <div className="space-y-3">
-        <Label>Risk Flags</Label>
+        <Label>Is There Anything You May Need to Address in Your Application?</Label>
+        <p className="text-xs text-muted-foreground">Select anything that applies — your advisor will help you frame these as strengths, not weaknesses.</p>
         <div className="grid grid-cols-2 gap-2">
-          {riskOptions.map(flag => (
-            <div key={flag} className="flex items-center gap-2">
+          {riskOptions.map(({ value, label }) => (
+            <div key={value} className="flex items-center gap-2">
               <Checkbox
-                id={`risk-${flag}`}
-                checked={data.riskFlags.includes(flag)}
-                onCheckedChange={() => toggleRisk(flag)}
+                id={`risk-${value}`}
+                checked={data.riskFlags.includes(value)}
+                onCheckedChange={() => toggleRisk(value)}
               />
-              <Label htmlFor={`risk-${flag}`} className="text-sm font-normal cursor-pointer">{flag}</Label>
+              <Label htmlFor={`risk-${value}`} className="text-sm font-normal cursor-pointer">{label}</Label>
             </div>
           ))}
         </div>
