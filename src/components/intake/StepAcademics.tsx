@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useIntake } from '@/contexts/IntakeContext';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +8,13 @@ import { sampleInstitutions } from '@/data/lawSchools';
 
 export function StepAcademics() {
   const { data, updateData } = useIntake();
+
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    if (data.graduationYear < currentYear && data.currentYear !== 'Alumni / Recent Graduate') {
+      updateData({ currentYear: 'Alumni / Recent Graduate' as any });
+    }
+  }, []);
 
   return (
     <div className="space-y-6 animate-fade-in">

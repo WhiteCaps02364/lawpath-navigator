@@ -18,7 +18,7 @@ export interface StudentData {
   majorGPA: number;
   majors: string;
   minors: string;
-  currentYear: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior' | 'Graduate' | 'Other';
+  currentYear: 'Freshman' | 'Sophomore' | 'Junior' | 'Senior' | 'Graduate Student' | 'Alumni / Recent Graduate' | 'Other';
   hasGraduateDegree: boolean;
   graduateInstitution?: string;
   graduateDegreeType?: 'MA' | 'MS' | 'MBA' | 'PhD' | 'Other';
