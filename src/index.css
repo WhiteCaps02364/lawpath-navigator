@@ -18,13 +18,13 @@
     --primary: 218 45% 20%;
     --primary-foreground: 40 30% 95%;
 
-    --secondary: 38 45% 50%;
+    --secondary: 43 52% 54%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 94%;
     --muted-foreground: 220 10% 46%;
 
-    --accent: 38 45% 50%;
+    --accent: 43 52% 54%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
@@ -38,19 +38,19 @@
 
     --sidebar-background: 218 45% 15%;
     --sidebar-foreground: 220 15% 94%;
-    --sidebar-primary: 38 45% 50%;
+    --sidebar-primary: 43 52% 54%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 218 40% 22%;
     --sidebar-accent-foreground: 220 15% 94%;
     --sidebar-border: 218 35% 25%;
-    --sidebar-ring: 38 45% 50%;
+    --sidebar-ring: 43 52% 54%;
 
     /* Custom tokens */
     --navy: 218 45% 20%;
     --navy-deep: 218 50% 12%;
-    --gold: 38 45% 50%;
-    --gold-light: 38 50% 70%;
-    --gold-muted: 38 30% 90%;
+    --gold: 43 52% 54%;
+    --gold-light: 43 55% 70%;
+    --gold-muted: 43 30% 90%;
     --success: 152 60% 40%;
     --success-foreground: 0 0% 100%;
     --warning: 38 90% 55%;
