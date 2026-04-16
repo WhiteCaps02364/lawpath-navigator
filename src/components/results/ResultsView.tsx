@@ -270,6 +270,94 @@ function LsatAnalysisSection({ lsat, schools }: { lsat: number; schools: { id: s
   );
 }
 
+const practiceAreaLegalWork: Record<PracticeArea, string> = {
+  'Litigation': 'Given your interest in litigation, consider paralegal roles at litigation firms, public defender offices, or court clerk positions. These roles will expose you directly to the kind of work you want to do.',
+  'Corporate': 'Given your interest in corporate law, structured paralegal programs at major law firms are worth pursuing. Firms like Cravath, Skadden, and Sullivan & Cromwell run programs specifically for college graduates planning to attend law school.',
+  'Public Interest': 'Given your interest in public interest law, consider roles at legal aid organizations, the ACLU, NAACP Legal Defense Fund, public defender offices, or government legal departments. AmeriCorps Legal programs are also a strong pathway.',
+  'Criminal': 'Given your interest in criminal law, public defender investigator or paralegal roles and district attorney office positions provide direct exposure to criminal procedure and case strategy.',
+  'IP': 'Given your interest in intellectual property, patent agent assistant or IP paralegal roles — particularly for students with STEM backgrounds — are a strong fit.',
+  'Unsure': 'Since you are still exploring practice areas, any structured paralegal or legal assistant role will provide meaningful exposure. The goal at this stage is direct contact with legal work — the specialization can come later.',
+};
+
+function StrengthenApplicationSection({ studentData }: { studentData: StudentData }) {
+  const graduated = studentData.currentYear === 'Alumni / Recent Graduate' || studentData.currentYear === 'Graduate Student';
+  const yearsToGrad = studentData.graduationYear - new Date().getFullYear();
+  const enrolled = !graduated;
+
+  // Practice area paragraph — pick first non-Unsure, fall back to Unsure
+  const areas = studentData.practiceAreaInterest;
+  const primary: PracticeArea = (areas.find(a => a !== 'Unsure') || areas[0] || 'Unsure') as PracticeArea;
+  const practiceAreaText = practiceAreaLegalWork[primary];
+
+  // Academic subsection
+  let academic: { heading: string; body: string } | null = null;
+  if (enrolled && yearsToGrad >= 2) {
+    const semesters = Math.max(1, yearsToGrad * 2);
+    const remainingLabel = yearsToGrad >= 2 ? `${semesters} semesters` : `${yearsToGrad} year${yearsToGrad === 1 ? '' : 's'}`;
+    academic = {
+      heading: 'Use the Time to Raise Your GPA',
+      body: `With ${remainingLabel} remaining before graduation, you have a real opportunity to improve your academic record. Law schools look at GPA trends — a strong finish can meaningfully offset a weaker start. Focus on your most rigorous courses, seek academic support where needed, and let your upward trajectory tell part of your story.`,
+    };
+  } else if (enrolled && yearsToGrad < 2) {
+    academic = {
+      heading: 'Finish Strong',
+      body: `You don't have enough time remaining to dramatically change your GPA, but a strong final year still matters. Law schools notice upward trends. Focus on performing well in your remaining courses, and let your personal statement address your academic trajectory directly.`,
+    };
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.22 }}
+      className="rounded-xl p-6 bg-card space-y-5 border"
+      style={{ borderLeft: `4px solid ${GOLD}` }}
+    >
+      <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>
+        How to Strengthen Your Application Before You Apply
+      </h3>
+
+      {/* Subsection 1: Legal Work Experience */}
+      <div className="space-y-2">
+        <h4 className="font-heading font-bold text-base" style={{ color: NAVY }}>Get Legal Work Experience</h4>
+        <p className="text-sm text-muted-foreground">
+          Applicants with direct legal experience consistently produce stronger applications. A paralegal or legal assistant role does three things for you: it demonstrates genuine commitment to a legal career, it gives you specific, credible material for your personal statement, and it signals to admissions committees that you understand what you are getting into.
+        </p>
+        <p className="text-sm text-muted-foreground">{practiceAreaText}</p>
+        {graduated && (
+          <p className="text-sm text-muted-foreground">
+            For applicants who have already graduated, legal work experience carries even more weight — it becomes the primary signal that you have used your time intentionally and are genuinely committed to a legal career.
+          </p>
+        )}
+      </div>
+
+      {/* Subsection 2: Academic Profile (hidden if graduated) */}
+      {academic && (
+        <div className="space-y-2">
+          <h4 className="font-heading font-bold text-base" style={{ color: NAVY }}>{academic.heading}</h4>
+          <p className="text-sm text-muted-foreground">{academic.body}</p>
+        </div>
+      )}
+
+      {/* Subsection 3: Test Prep */}
+      <div className="space-y-2">
+        <h4 className="font-heading font-bold text-base" style={{ color: NAVY }}>Invest in Your Admissions Test Preparation</h4>
+        <p className="text-sm text-muted-foreground">
+          A strong test score can partially offset a lower GPA. Use your remaining time to prepare thoroughly. JD-Next is worth considering — it allows you to demonstrate law school readiness through structured coursework rather than a single timed exam, and a strong score can serve as a compelling addendum even at schools that require the LSAT.
+        </p>
+        <div className="flex flex-col gap-1 pt-1">
+          <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="underline text-sm font-medium hover:opacity-80" style={{ color: GOLD }}>
+            Register for JD-Next →
+          </a>
+          <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="underline text-sm font-medium hover:opacity-80" style={{ color: GOLD }}>
+            Register for the LSAT →
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 // Render markdown bold (**text**) as <strong>
 function renderBold(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -561,6 +649,11 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           {timelineMentionsTest && <TestRegistrationLinks />}
         </div>
       </motion.div>
+
+      {/* Strengthen Your Application — only for Needs Preparation */}
+      {results.readinessLevel === 'Needs Preparation' && (
+        <StrengthenApplicationSection studentData={studentData} />
+      )}
 
       {/* Test Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.25 }} className="border rounded-xl p-6 bg-card space-y-3">
