@@ -12,7 +12,7 @@ export function StepAcademics() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Academic Profile</h2>
-        <p className="text-muted-foreground">Your GPA is the primary input for our recommendations.</p>
+        <p className="text-muted-foreground">This helps us understand your academic profile and build a realistic application strategy.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -23,6 +23,7 @@ export function StepAcademics() {
         <div className="space-y-2">
           <Label htmlFor="majorGPA">Major GPA</Label>
           <Input id="majorGPA" type="number" step="0.01" min="0" max="4.0" value={data.majorGPA || ''} onChange={e => updateData({ majorGPA: parseFloat(e.target.value) || 0 })} placeholder="e.g. 3.80" />
+          <p className="text-xs text-muted-foreground">Optional — but helpful if your major GPA differs significantly from your cumulative GPA.</p>
         </div>
       </div>
 
@@ -38,11 +39,11 @@ export function StepAcademics() {
       </div>
 
       <div className="space-y-2">
-        <Label>Current Year *</Label>
+        <Label>Year in School *</Label>
         <Select value={data.currentYear} onValueChange={v => updateData({ currentYear: v as any })}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            {['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate', 'Other'].map(y => (
+            {['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate Student', 'Alumni / Recent Graduate', 'Other'].map(y => (
               <SelectItem key={y} value={y}>{y}</SelectItem>
             ))}
           </SelectContent>
