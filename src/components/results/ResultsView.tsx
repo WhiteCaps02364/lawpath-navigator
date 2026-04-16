@@ -296,24 +296,75 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         useCORS: true,
         backgroundColor: '#ffffff',
       });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'in', 'letter');
+      const pageW = pdf.internal.pageSize.getWidth();   // 8.5
+      const pageH = pdf.internal.pageSize.getHeight();  // 11
+      const margin = 1;
+      const headerH = 0.7;
+      const footerH = 0.4;
+      const contentTop = headerH + 0.2;
+      const contentBottom = pageH - footerH - 0.2;
+      const contentH = contentBottom - contentTop;
+      const contentW = pageW - margin * 2;
 
-      let heightLeft = imgHeight;
-      let position = 0;
+      // Scale full canvas to content width
+      const imgWidthIn = contentW;
+      const imgHeightIn = (canvas.height * imgWidthIn) / canvas.width;
+      const pxPerIn = canvas.width / imgWidthIn;
+      const sliceHeightPx = contentH * pxPerIn;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
+      // Pre-load logo
+      const logoImg = new Image();
+      logoImg.src = jdnLogo;
+      await new Promise<void>(res => { logoImg.onload = () => res(); logoImg.onerror = () => res(); });
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const studentLabel = `${studentData.firstName} ${studentData.lastName}`;
+
+      const totalPages = Math.ceil(canvas.height / sliceHeightPx);
+      for (let p = 0; p < totalPages; p++) {
+        if (p > 0) pdf.addPage();
+
+        // Slice canvas
+        const sy = p * sliceHeightPx;
+        const sh = Math.min(sliceHeightPx, canvas.height - sy);
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sh;
+        const ctx = sliceCanvas.getContext('2d')!;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, sliceCanvas.width, sh);
+        ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+        const sliceData = sliceCanvas.toDataURL('image/png');
+        const sliceHeightIn = (sh * imgWidthIn) / canvas.width;
+
+        // Header bar (navy)
+        pdf.setFillColor(26, 54, 93);
+        pdf.rect(0, 0, pageW, headerH, 'F');
+        try {
+          pdf.addImage(logoImg, 'PNG', margin, 0.1, 0.5, 0.5);
+        } catch {}
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(13);
+        pdf.text('Pre-Law Advisory Report', pageW / 2, headerH / 2 + 0.05, { align: 'center' });
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(9);
+        pdf.setTextColor(220, 220, 220);
+        pdf.text(studentLabel, pageW - margin, headerH / 2 - 0.05, { align: 'right' });
+        pdf.text(today, pageW - margin, headerH / 2 + 0.15, { align: 'right' });
+
+        // Body image
+        pdf.addImage(sliceData, 'PNG', margin, contentTop, imgWidthIn, sliceHeightIn);
+
+        // Footer
+        pdf.setDrawColor(26, 54, 93);
+        pdf.setLineWidth(0.01);
+        pdf.line(margin, pageH - footerH, pageW - margin, pageH - footerH);
+        pdf.setTextColor(120, 120, 120);
+        pdf.setFontSize(9);
+        pdf.text('Pre-Law Advisory Engine by JD-Next | jdnext.org', pageW / 2, pageH - footerH / 2, { align: 'center' });
+        pdf.text(`Page ${p + 1} of ${totalPages}`, pageW - margin, pageH - footerH / 2, { align: 'right' });
       }
 
       pdf.save(`${studentData.firstName}_${studentData.lastName}_PreLaw_Report.pdf`);
