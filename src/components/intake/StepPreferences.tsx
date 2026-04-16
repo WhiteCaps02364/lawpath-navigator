@@ -62,7 +62,14 @@ export function StepPreferences() {
           placeholder="Describe what motivates your interest in law school..."
           className="min-h-[100px]"
         />
-        <p className="text-xs text-muted-foreground">Be specific — this helps personalize your recommendations.</p>
+        <div className="flex justify-between">
+          <p className={`text-xs ${data.whyLawSchool.length < 50 && data.whyLawSchool.length > 0 ? 'text-destructive' : 'text-muted-foreground'}`}>
+            {data.whyLawSchool.length < 50 && data.whyLawSchool.length > 0
+              ? "Please tell us a bit more — this helps us personalize your recommendations."
+              : "Be specific — this helps personalize your recommendations."}
+          </p>
+          <p className="text-xs text-muted-foreground whitespace-nowrap ml-4">{data.whyLawSchool.length} characters (50 minimum)</p>
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -102,7 +109,7 @@ export function StepPreferences() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-normal">Second Choice State (optional)</Label>
+            <Label className="text-sm font-normal">2nd Choice State (optional)</Label>
             <Select
               value={data.secondChoiceState && data.secondChoiceState !== '' ? data.secondChoiceState : NONE_VALUE}
               onValueChange={v => updateData({ secondChoiceState: v === NONE_VALUE ? '' : v })}
@@ -115,7 +122,7 @@ export function StepPreferences() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-normal">Third Choice State (optional)</Label>
+            <Label className="text-sm font-normal">3rd Choice State (optional)</Label>
             <Select
               value={data.thirdChoiceState && data.thirdChoiceState !== '' ? data.thirdChoiceState : NONE_VALUE}
               onValueChange={v => updateData({ thirdChoiceState: v === NONE_VALUE ? '' : v })}
