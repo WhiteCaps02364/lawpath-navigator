@@ -4,6 +4,10 @@ import { CheckCircle, AlertTriangle, MapPin, ExternalLink, BookOpen, Target, Shi
 import { useMemo, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import jdnLogo from '@/assets/jdn-logo.png';
+
+const NAVY = '#1A365D';
+const GOLD = '#C9A84C';
 
 interface ResultsViewProps {
   results: ScoringResult;
@@ -23,7 +27,8 @@ function TestRegistrationLinks() {
         href={JD_NEXT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#1A365D] underline text-sm font-medium hover:opacity-80"
+        className="underline text-sm font-medium hover:opacity-80"
+        style={{ color: GOLD }}
       >
         Register for JD-Next →
       </a>
@@ -31,7 +36,8 @@ function TestRegistrationLinks() {
         href={LSAT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[#1A365D] underline text-sm font-medium hover:opacity-80"
+        className="underline text-sm font-medium hover:opacity-80"
+        style={{ color: GOLD }}
       >
         Register for the LSAT →
       </a>
@@ -40,6 +46,14 @@ function TestRegistrationLinks() {
 }
 
 function ReadinessIndicator({ level }: { level: string }) {
+  if (level === 'High') {
+    return (
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: GOLD }}>
+        <CheckCircle className="w-5 h-5 text-white" />
+        <span className="font-semibold text-white">{level}</span>
+      </div>
+    );
+  }
   const config = {
     'High': { color: 'text-success', bg: 'bg-success/10', icon: CheckCircle },
     'Developing': { color: 'text-gold', bg: 'bg-gold/10', icon: TrendingUp },
@@ -60,14 +74,23 @@ function SchoolCard({ assessment }: { assessment: SchoolAssessment }) {
   const { school, classification, geoNote } = assessment;
   const tagClass = classification === 'Reach' ? 'tag-reach' : classification === 'Target' ? 'tag-target' : 'tag-safety';
 
+  const safetyOverride = classification === 'Safety'
+    ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground'
+    : tagClass;
+
   return (
     <div className="school-card">
       <div className="flex items-start justify-between gap-2 mb-3">
         <h4 className="font-heading text-lg text-foreground">{school.name}</h4>
         <div className="flex gap-1.5 flex-shrink-0">
-          <span className={tagClass}>{classification}</span>
+          <span className={safetyOverride}>{classification}</span>
           {school.acceptsJDNext ? (
-            <span className="tag-jd-next">JD-Next ✓</span>
+            <span
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white"
+              style={{ background: GOLD }}
+            >
+              JD-Next ✓
+            </span>
           ) : (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">LSAT Required</span>
           )}
@@ -273,24 +296,75 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         useCORS: true,
         backgroundColor: '#ffffff',
       });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'in', 'letter');
+      const pageW = pdf.internal.pageSize.getWidth();   // 8.5
+      const pageH = pdf.internal.pageSize.getHeight();  // 11
+      const margin = 1;
+      const headerH = 0.7;
+      const footerH = 0.4;
+      const contentTop = headerH + 0.2;
+      const contentBottom = pageH - footerH - 0.2;
+      const contentH = contentBottom - contentTop;
+      const contentW = pageW - margin * 2;
 
-      let heightLeft = imgHeight;
-      let position = 0;
+      // Scale full canvas to content width
+      const imgWidthIn = contentW;
+      const imgHeightIn = (canvas.height * imgWidthIn) / canvas.width;
+      const pxPerIn = canvas.width / imgWidthIn;
+      const sliceHeightPx = contentH * pxPerIn;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
+      // Pre-load logo
+      const logoImg = new Image();
+      logoImg.src = jdnLogo;
+      await new Promise<void>(res => { logoImg.onload = () => res(); logoImg.onerror = () => res(); });
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const studentLabel = `${studentData.firstName} ${studentData.lastName}`;
+
+      const totalPages = Math.ceil(canvas.height / sliceHeightPx);
+      for (let p = 0; p < totalPages; p++) {
+        if (p > 0) pdf.addPage();
+
+        // Slice canvas
+        const sy = p * sliceHeightPx;
+        const sh = Math.min(sliceHeightPx, canvas.height - sy);
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sh;
+        const ctx = sliceCanvas.getContext('2d')!;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, sliceCanvas.width, sh);
+        ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+        const sliceData = sliceCanvas.toDataURL('image/png');
+        const sliceHeightIn = (sh * imgWidthIn) / canvas.width;
+
+        // Header bar (navy)
+        pdf.setFillColor(26, 54, 93);
+        pdf.rect(0, 0, pageW, headerH, 'F');
+        try {
+          pdf.addImage(logoImg, 'PNG', margin, 0.1, 0.5, 0.5);
+        } catch {}
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(13);
+        pdf.text('Pre-Law Advisory Report', pageW / 2, headerH / 2 + 0.05, { align: 'center' });
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(9);
+        pdf.setTextColor(220, 220, 220);
+        pdf.text(studentLabel, pageW - margin, headerH / 2 - 0.05, { align: 'right' });
+        pdf.text(today, pageW - margin, headerH / 2 + 0.15, { align: 'right' });
+
+        // Body image
+        pdf.addImage(sliceData, 'PNG', margin, contentTop, imgWidthIn, sliceHeightIn);
+
+        // Footer
+        pdf.setDrawColor(26, 54, 93);
+        pdf.setLineWidth(0.01);
+        pdf.line(margin, pageH - footerH, pageW - margin, pageH - footerH);
+        pdf.setTextColor(120, 120, 120);
+        pdf.setFontSize(9);
+        pdf.text('Pre-Law Advisory Engine by JD-Next | jdnext.org', pageW / 2, pageH - footerH / 2, { align: 'center' });
+        pdf.text(`Page ${p + 1} of ${totalPages}`, pageW - margin, pageH - footerH / 2, { align: 'right' });
       }
 
       pdf.save(`${studentData.firstName}_${studentData.lastName}_PreLaw_Report.pdf`);
@@ -300,11 +374,20 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 space-y-8">
+    <div className="min-h-screen bg-background">
+      {/* Branded Header Bar */}
+      <header className="w-full" style={{ background: NAVY }}>
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <img src={jdnLogo} alt="JD-Next" style={{ height: 56 }} />
+          <span style={{ color: '#D1D5DB', fontSize: 16 }}>Pre-Law Advisory Engine</span>
+        </div>
+      </header>
+
+      <div className="max-w-3xl mx-auto py-8 px-4 space-y-8">
       <div ref={reportRef} className="space-y-8">
       {/* Header */}
       <motion.div {...fadeIn} className="text-center space-y-4">
-        <h1 className="text-3xl md:text-4xl font-heading text-foreground">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold" style={{ color: NAVY }}>
           Your Pre-Law Advisory Report
         </h1>
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
@@ -315,7 +398,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* Readiness */}
       <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="border rounded-xl p-6 bg-card space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <h3 className="text-xl font-heading text-foreground">Readiness Level</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Readiness Level</h3>
           <ReadinessIndicator level={results.readinessLevel} />
         </div>
         <p className="text-muted-foreground">{results.readinessExplanation}</p>
@@ -327,7 +410,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <div className="border rounded-xl p-5 bg-card space-y-2">
           <div className="flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
-            <h3 className="font-heading text-lg text-foreground">Strategy</h3>
+            <h3 className="font-heading text-lg font-bold" style={{ color: NAVY }}>Strategy</h3>
           </div>
           <p className="font-semibold text-sm text-foreground">{results.strategyRecommendation}</p>
           <p className="text-sm text-muted-foreground">{strategyExplanation}</p>
@@ -336,7 +419,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <div className="border rounded-xl p-5 bg-card space-y-2">
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
-            <h3 className="font-heading text-lg text-foreground">Timeline</h3>
+            <h3 className="font-heading text-lg font-bold" style={{ color: NAVY }}>Timeline</h3>
           </div>
           <p className="font-semibold text-sm text-foreground">{results.timelineRecommendation}</p>
           <p className="text-sm text-muted-foreground">{results.timelineRationale}</p>
@@ -346,7 +429,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
 
       {/* Test Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.25 }} className="border rounded-xl p-6 bg-card space-y-3">
-        <h3 className="text-xl font-heading text-foreground">Test Strategy</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Test Strategy</h3>
         <p className="text-muted-foreground">{results.testRecommendation}</p>
         {results.jdNextSchools.length > 0 && (
           <div className="mt-2">
@@ -364,7 +447,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* School List */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-heading text-foreground">School Assessment</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>School Assessment</h3>
           <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
             results.listComposition === 'Healthy' ? 'bg-success/10 text-success' :
             results.listComposition === 'Overreaching' ? 'bg-destructive/10 text-destructive' :
@@ -384,7 +467,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
 
       {/* Recommender Guidance */}
       <motion.div {...fadeIn} transition={{ delay: 0.4 }} className="border rounded-xl p-6 bg-card space-y-3">
-        <h3 className="text-xl font-heading text-foreground">Recommender Strategy</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Recommender Strategy</h3>
         <div className="prose prose-sm max-w-none text-muted-foreground space-y-3">
           {personalizedGuidance.split('\n').filter(Boolean).map((p, i) => (
             <p key={i} className={p.includes('⚠️') ? 'text-destructive font-medium' : ''}>
@@ -398,28 +481,28 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* Career Path (conditional) */}
       {results.careerPathNote && (
         <motion.div {...fadeIn} transition={{ delay: 0.45 }} className="border rounded-xl p-6 bg-gold-muted space-y-2">
-          <h3 className="text-xl font-heading text-foreground">Career Pathway</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Career Pathway</h3>
           <p className="text-sm text-muted-foreground">{results.careerPathNote}</p>
         </motion.div>
       )}
 
       {/* Action Plan */}
       <motion.div {...fadeIn} transition={{ delay: 0.5 }} className="border rounded-xl p-6 bg-card space-y-4">
-        <h3 className="text-xl font-heading text-foreground">Your Action Plan</h3>
+        <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Your Action Plan</h3>
         <ol className="space-y-3">
           {finalActionPlan.map((step, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: NAVY }}>
                 {i + 1}
               </span>
               <div className="text-sm text-foreground pt-0.5 space-y-1">
                 <p>{step.text}</p>
                 {step.links && (
                   <div className="flex flex-col gap-0.5">
-                    <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="text-[#1A365D] underline text-xs font-medium hover:opacity-80">
+                    <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
                       Register for JD-Next →
                     </a>
-                    <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="text-[#1A365D] underline text-xs font-medium hover:opacity-80">
+                    <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
                       Register for the LSAT →
                     </a>
                   </div>
@@ -482,6 +565,16 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           Start over with a new profile
         </button>
       </div>
+      </div>
+
+      {/* Branded Footer */}
+      <footer className="w-full mt-12" style={{ background: NAVY }}>
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
+          <img src={jdnLogo} alt="JD-Next" style={{ height: 40 }} />
+          <span style={{ color: '#D1D5DB', fontSize: 13 }}>Pre-Law Advisory Engine — Powered by JD-Next</span>
+          <span style={{ color: '#D1D5DB', fontSize: 13 }}>© JD-Next / Aspen Publishing</span>
+        </div>
+      </footer>
     </div>
   );
 }
