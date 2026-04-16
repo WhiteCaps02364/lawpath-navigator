@@ -74,14 +74,23 @@ function SchoolCard({ assessment }: { assessment: SchoolAssessment }) {
   const { school, classification, geoNote } = assessment;
   const tagClass = classification === 'Reach' ? 'tag-reach' : classification === 'Target' ? 'tag-target' : 'tag-safety';
 
+  const safetyOverride = classification === 'Safety'
+    ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground'
+    : tagClass;
+
   return (
     <div className="school-card">
       <div className="flex items-start justify-between gap-2 mb-3">
         <h4 className="font-heading text-lg text-foreground">{school.name}</h4>
         <div className="flex gap-1.5 flex-shrink-0">
-          <span className={tagClass}>{classification}</span>
+          <span className={safetyOverride}>{classification}</span>
           {school.acceptsJDNext ? (
-            <span className="tag-jd-next">JD-Next ✓</span>
+            <span
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white"
+              style={{ background: GOLD }}
+            >
+              JD-Next ✓
+            </span>
           ) : (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">LSAT Required</span>
           )}
