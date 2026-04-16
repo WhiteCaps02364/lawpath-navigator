@@ -15,8 +15,10 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="max-w-4xl mx-auto px-4 pt-6">
-        <img src={jdnLogo} alt="JD-Next" className="h-14" />
+      <div className="bg-[#1A365D] w-full px-4 py-3">
+        <div className="max-w-4xl mx-auto">
+          <img src={jdnLogo} alt="JD-Next" className="w-[140px] h-auto" />
+        </div>
       </div>
 
       {/* Hero */}
