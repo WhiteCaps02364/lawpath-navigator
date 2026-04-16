@@ -579,6 +579,14 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <TestRegistrationLinks />
       </motion.div>
 
+      {/* LSAT Score Analysis (only if student entered LSAT) */}
+      {studentData.lsatScore && studentData.lsatScore > 0 && (
+        <LsatAnalysisSection
+          lsat={studentData.lsatScore}
+          schools={results.schoolAssessments.map(a => a.school)}
+        />
+      )}
+
       {/* School List */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="space-y-4">
         <div className="flex items-center justify-between">
