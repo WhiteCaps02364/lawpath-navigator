@@ -323,11 +323,20 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 space-y-8">
+    <div className="min-h-screen bg-background">
+      {/* Branded Header Bar */}
+      <header className="w-full" style={{ background: NAVY }}>
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <img src={jdnLogo} alt="JD-Next" style={{ height: 56 }} />
+          <span style={{ color: '#D1D5DB', fontSize: 16 }}>Pre-Law Advisory Engine</span>
+        </div>
+      </header>
+
+      <div className="max-w-3xl mx-auto py-8 px-4 space-y-8">
       <div ref={reportRef} className="space-y-8">
       {/* Header */}
       <motion.div {...fadeIn} className="text-center space-y-4">
-        <h1 className="text-3xl md:text-4xl font-heading text-foreground">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold" style={{ color: NAVY }}>
           Your Pre-Law Advisory Report
         </h1>
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
