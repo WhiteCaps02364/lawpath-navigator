@@ -3,7 +3,7 @@ import { IntakeProvider, useIntake } from '@/contexts/IntakeContext';
 import { IntakeProgressBar } from '@/components/intake/IntakeProgressBar';
 import { StepPersonalInfo } from '@/components/intake/StepPersonalInfo';
 import { StepAcademics } from '@/components/intake/StepAcademics';
-import { StepTesting } from '@/components/intake/StepTesting';
+import { StepTesting, isFutureDateValue } from '@/components/intake/StepTesting';
 import { StepPreferences } from '@/components/intake/StepPreferences';
 import { StepApplicationStrength } from '@/components/intake/StepApplicationStrength';
 import { StepSchoolSelection } from '@/components/intake/StepSchoolSelection';
@@ -58,7 +58,12 @@ function IntakeWizardInner() {
         return data.firstName && data.lastName && schoolEmailOk && data.personalEmail && data.undergraduateInstitution;
       }
       case 1: return data.cumulativeGPA > 0 && data.majors;
-      case 2: return true;
+      case 2: {
+        const hasFutureDate = data.testStatus === 'Taken' && (
+          isFutureDateValue(data.lsatDate) || isFutureDateValue(data.greDate) || isFutureDateValue(data.jdNextDate)
+        );
+        return !hasFutureDate;
+      }
       case 3: return data.whyLawSchool && data.practiceAreaInterest.length > 0;
       case 4: return true;
       case 5: return data.selectedSchools.length > 0;
