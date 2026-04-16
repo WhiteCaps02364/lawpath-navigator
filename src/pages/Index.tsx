@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import jdnLogo from '@/assets/jdn-logo.png';
 import { ArrowRight, Users, BarChart3, Shield } from 'lucide-react';
 import IntakeWizard from '@/components/intake/IntakeWizard';
 
