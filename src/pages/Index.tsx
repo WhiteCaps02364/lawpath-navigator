@@ -16,8 +16,9 @@ export default function Index() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-[#1A365D] w-full px-4 py-3">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" className="w-[140px] h-auto" />
+          <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
         </div>
       </div>
 
