@@ -6,7 +6,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const years = Array.from({ length: 8 }, (_, i) => 2020 + i);
 
-function MonthYearPicker({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function isFutureDate(monthStr: string, yearStr: string): boolean {
+  if (!monthStr || !yearStr) return false;
+  const now = new Date();
+  const monthIndex = months.indexOf(monthStr);
+  const year = parseInt(yearStr);
+  if (monthIndex === -1 || isNaN(year)) return false;
+  return year > now.getFullYear() || (year === now.getFullYear() && monthIndex > now.getMonth());
+}
+
+export function isFutureDateValue(value: string | undefined): boolean {
+  if (!value) return false;
+  const [month, year] = value.split(' ');
+  return isFutureDate(month, year);
+}
+
+function MonthYearPicker({ label, value, onChange, isFuture }: { label: string; value: string; onChange: (v: string) => void; isFuture: boolean }) {
   const [month, year] = value ? value.split(' ') : ['', ''];
   const update = (m: string, y: string) => {
     if (m && y) onChange(`${m} ${y}`);
@@ -31,6 +46,9 @@ function MonthYearPicker({ label, value, onChange }: { label: string; value: str
           </SelectContent>
         </Select>
       </div>
+      {isFuture && (
+        <p className="text-sm text-destructive">This date is in the future. Please enter the month and year you actually took the test, or leave this blank if you haven't tested yet.</p>
+      )}
     </div>
   );
 }
