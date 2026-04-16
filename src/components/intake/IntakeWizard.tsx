@@ -64,7 +64,11 @@ function IntakeWizardInner() {
         );
         return !hasFutureDate;
       }
-      case 3: return data.whyLawSchool && data.practiceAreaInterest.length > 0;
+      case 3: {
+        const sel = [data.firstChoiceState, data.secondChoiceState, data.thirdChoiceState].filter(s => s && s !== '' && s !== 'No preference');
+        const noDup = new Set(sel).size === sel.length;
+        return !!data.whyLawSchool && data.practiceAreaInterest.length > 0 && !!data.firstChoiceState && noDup;
+      }
       case 4: return true;
       case 5: return data.selectedSchools.length > 0;
       default: return true;

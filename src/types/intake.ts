@@ -42,6 +42,9 @@ export interface StudentData {
   practiceAreaInterest: PracticeArea[];
   geographicPreference: GeographicRegion;
   geographicStrength: 'Very strong' | 'Preferred but flexible' | 'Open to anywhere';
+  firstChoiceState: string;
+  secondChoiceState?: string;
+  thirdChoiceState?: string;
   intendedStartYear: number;
   applicationTimingIntent: 'This cycle' | 'Next cycle' | 'Not sure';
 

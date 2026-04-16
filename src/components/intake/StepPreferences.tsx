@@ -3,10 +3,31 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PracticeArea, GeographicRegion } from '@/types/intake';
+import { PracticeArea } from '@/types/intake';
 
 const practiceAreas: PracticeArea[] = ['Litigation', 'Corporate', 'Public Interest', 'Criminal', 'IP', 'Unsure'];
-const regions: GeographicRegion[] = ['Northeast', 'California', 'Texas', 'Midwest', 'Southeast', 'No preference'];
+
+const practiceAreaLabels: Record<PracticeArea, string> = {
+  'Litigation': 'Litigation',
+  'Corporate': 'Corporate',
+  'Public Interest': 'Public Interest',
+  'Criminal': 'Criminal',
+  'IP': 'Intellectual Property',
+  'Unsure': 'Unsure',
+};
+
+const US_STATES = [
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+  'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+  'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+  'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+  'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+  'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+  'Wisconsin', 'Wyoming',
+];
+
+const NONE_VALUE = '__none__';
 
 export function StepPreferences() {
   const { data, updateData } = useIntake();
@@ -20,15 +41,20 @@ export function StepPreferences() {
     }
   };
 
+  const selections = [data.firstChoiceState, data.secondChoiceState, data.thirdChoiceState].filter(
+    s => s && s !== '' && s !== 'No preference'
+  );
+  const hasDuplicates = new Set(selections).size !== selections.length;
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Goals & Preferences</h2>
-        <p className="text-muted-foreground">Help us understand what drives your interest in law school.</p>
+        <p className="text-muted-foreground">Help us understand your goals so we can build a strategy that fits where you want to go.</p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="whyLaw">Why do you want to go to law school? *</Label>
+        <Label htmlFor="whyLaw">What draws you to law school and a legal career? *</Label>
         <Textarea
           id="whyLaw"
           value={data.whyLawSchool}
@@ -41,6 +67,7 @@ export function StepPreferences() {
 
       <div className="space-y-3">
         <Label>Practice Area Interest *</Label>
+        <p className="text-xs text-muted-foreground -mt-2">Select all that apply.</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {practiceAreas.map(area => (
             <div key={area} className="flex items-center gap-2">
@@ -49,35 +76,63 @@ export function StepPreferences() {
                 checked={data.practiceAreaInterest.includes(area)}
                 onCheckedChange={() => togglePracticeArea(area)}
               />
-              <Label htmlFor={`area-${area}`} className="text-sm font-normal cursor-pointer">{area}</Label>
+              <Label htmlFor={`area-${area}`} className="text-sm font-normal cursor-pointer">{practiceAreaLabels[area]}</Label>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>Geographic Preference *</Label>
-          <Select value={data.geographicPreference} onValueChange={v => updateData({ geographicPreference: v as GeographicRegion })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {regions.map(r => (
-                <SelectItem key={r} value={r}>{r}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div className="space-y-3">
+        <Label>Where Do You Want to Practice?</Label>
+        <p className="text-xs text-muted-foreground -mt-2">
+          We'll compare your selections against ABA employment data showing where each school's graduates actually end up working. Select up to three states.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-normal">First Choice State *</Label>
+            <Select
+              value={data.firstChoiceState || 'No preference'}
+              onValueChange={v => updateData({ firstChoiceState: v })}
+            >
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="No preference">No preference</SelectItem>
+                {US_STATES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-normal">Second Choice State (optional)</Label>
+            <Select
+              value={data.secondChoiceState && data.secondChoiceState !== '' ? data.secondChoiceState : NONE_VALUE}
+              onValueChange={v => updateData({ secondChoiceState: v === NONE_VALUE ? '' : v })}
+            >
+              <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value={NONE_VALUE}>—</SelectItem>
+                {US_STATES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-normal">Third Choice State (optional)</Label>
+            <Select
+              value={data.thirdChoiceState && data.thirdChoiceState !== '' ? data.thirdChoiceState : NONE_VALUE}
+              onValueChange={v => updateData({ thirdChoiceState: v === NONE_VALUE ? '' : v })}
+            >
+              <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value={NONE_VALUE}>—</SelectItem>
+                {US_STATES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label>How strong is this preference?</Label>
-          <Select value={data.geographicStrength} onValueChange={v => updateData({ geographicStrength: v as any })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Very strong">Very strong — I need to be in this region</SelectItem>
-              <SelectItem value="Preferred but flexible">Preferred but flexible</SelectItem>
-              <SelectItem value="Open to anywhere">Open to anywhere</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {hasDuplicates && (
+          <p className="text-sm text-destructive">
+            You've selected this state more than once. Please choose three different states.
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
