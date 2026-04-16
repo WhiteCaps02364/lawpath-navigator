@@ -46,7 +46,7 @@ export default function Index() {
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
-              <Button size="lg" onClick={() => setStarted(true)} className="gap-2 text-base px-8">
+              <Button size="lg" onClick={() => setStarted(true)} className="gap-2 text-base px-8 bg-[#1A365D] text-white hover:bg-[#1A365D]/90">
                 Create My Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
