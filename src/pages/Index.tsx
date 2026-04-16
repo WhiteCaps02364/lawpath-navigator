@@ -103,7 +103,7 @@ export default function Index() {
         <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
           <h2 className="text-2xl md:text-3xl font-heading">Designed for You. Built for Your Advisor.</h2>
           <p className="text-base md:text-lg leading-relaxed opacity-90">
-            When you complete your intake, your pre-law advisor receives a full profile, school analysis, and a suggested meeting agenda — so your time together focuses on strategy, not background questions.
+            When you complete your intake, you and your pre-law advisor will receive a full profile, school analysis, and a suggested meeting agenda — so your time together focuses on strategy, not background questions.
           </p>
         </div>
       </div>
