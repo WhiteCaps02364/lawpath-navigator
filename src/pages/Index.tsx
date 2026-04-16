@@ -38,12 +38,12 @@ export default function Index() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Answer a few questions and get a personalized readiness score, law school application strategy, and school assessment — tailored to your story and powered by the latest ABA data.
+              Answer a few questions and get a personalized readiness score, application strategy, and school analysis — tailored to your story and powered by the latest ABA data.
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
               <Button size="lg" onClick={() => setStarted(true)} className="gap-2 text-base px-8">
-                Start My Assessment <ArrowRight className="w-5 h-5" />
+                Create My Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
                 Takes about 10 minutes. Free for all law school applicants.
@@ -53,23 +53,30 @@ export default function Index() {
         </div>
       </div>
 
+      {/* Proof line */}
+      <div className="max-w-3xl mx-auto px-4 pb-12 text-center">
+        <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
+          Every school analysis is grounded in ABA Required Disclosures data — the gold standard for understanding law school admissions and outcomes.
+        </p>
+      </div>
+
       {/* Features */}
       <div className="max-w-5xl mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
               icon: BarChart3,
-              title: 'Readiness Scoring',
+              title: 'Know Where You Stand',
               description: 'See where you stand academically and get a clear picture of whether now is the right time to apply — or what you need to do first.',
             },
             {
               icon: Shield,
-              title: 'School List Reality Check',
+              title: 'Are Your Target Schools Realistic?',
               description: 'Find out whether the schools you\'re considering are realistic targets based on your GPA, and whether they place graduates where you want to work.',
             },
             {
               icon: Users,
-              title: 'Advisor-Ready Reports',
+              title: 'Your Advisor, Fully Briefed',
               description: 'Your advisor receives a summary of your profile before you meet, so your conversation starts with strategy — not background questions.',
             },
           ].map((feature, i) => (
@@ -85,6 +92,16 @@ export default function Index() {
               <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
+        </div>
+      </div>
+
+      {/* Advisor section */}
+      <div className="bg-primary text-primary-foreground py-16 md:py-20">
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
+          <h2 className="text-2xl md:text-3xl font-heading">Designed for You. Built for Your Advisor.</h2>
+          <p className="text-base md:text-lg leading-relaxed opacity-90">
+            When you complete your intake, your pre-law advisor receives a full profile, school analysis, and a suggested meeting agenda — so your time together focuses on strategy, not background questions.
+          </p>
         </div>
       </div>
 
