@@ -81,23 +81,23 @@ export function StepTesting() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>LSAT Score (Highest)</Label>
-              <Input type="number" min="120" max="180" value={data.lsatScore || ''} onChange={e => updateData({ lsatScore: parseInt(e.target.value) || undefined })} placeholder="120–180" />
+              <Input type="number" min="120" max="180" value={isFutureDateValue(data.lsatDate) ? '' : (data.lsatScore || '')} onChange={e => updateData({ lsatScore: parseInt(e.target.value) || undefined })} placeholder="120–180" disabled={isFutureDateValue(data.lsatDate)} />
             </div>
-            <MonthYearPicker label="LSAT Month / Year" value={data.lsatDate || ''} onChange={v => updateData({ lsatDate: v })} />
+            <MonthYearPicker label="LSAT Month / Year" value={data.lsatDate || ''} onChange={v => { updateData({ lsatDate: v, ...(isFutureDateValue(v) ? { lsatScore: undefined } : {}) }); }} isFuture={isFutureDateValue(data.lsatDate)} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>GRE Score (Highest)</Label>
-              <Input type="number" min="260" max="340" value={data.greScore || ''} onChange={e => updateData({ greScore: parseInt(e.target.value) || undefined })} placeholder="260–340" />
+              <Input type="number" min="260" max="340" value={isFutureDateValue(data.greDate) ? '' : (data.greScore || '')} onChange={e => updateData({ greScore: parseInt(e.target.value) || undefined })} placeholder="260–340" disabled={isFutureDateValue(data.greDate)} />
             </div>
-            <MonthYearPicker label="GRE Month / Year" value={data.greDate || ''} onChange={v => updateData({ greDate: v })} />
+            <MonthYearPicker label="GRE Month / Year" value={data.greDate || ''} onChange={v => { updateData({ greDate: v, ...(isFutureDateValue(v) ? { greScore: undefined } : {}) }); }} isFuture={isFutureDateValue(data.greDate)} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>JD-Next Score</Label>
-              <Input type="number" value={data.jdNextScore || ''} onChange={e => updateData({ jdNextScore: parseInt(e.target.value) || undefined })} placeholder="400–1000" />
+              <Input type="number" value={isFutureDateValue(data.jdNextDate) ? '' : (data.jdNextScore || '')} onChange={e => updateData({ jdNextScore: parseInt(e.target.value) || undefined })} placeholder="400–1000" disabled={isFutureDateValue(data.jdNextDate)} />
             </div>
-            <MonthYearPicker label="JD-Next Month / Year" value={data.jdNextDate || ''} onChange={v => updateData({ jdNextDate: v })} />
+            <MonthYearPicker label="JD-Next Month / Year" value={data.jdNextDate || ''} onChange={v => { updateData({ jdNextDate: v, ...(isFutureDateValue(v) ? { jdNextScore: undefined } : {}) }); }} isFuture={isFutureDateValue(data.jdNextDate)} />
           </div>
         </div>
       )}

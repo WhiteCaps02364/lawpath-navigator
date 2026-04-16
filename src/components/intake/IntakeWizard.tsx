@@ -3,7 +3,7 @@ import { IntakeProvider, useIntake } from '@/contexts/IntakeContext';
 import { IntakeProgressBar } from '@/components/intake/IntakeProgressBar';
 import { StepPersonalInfo } from '@/components/intake/StepPersonalInfo';
 import { StepAcademics } from '@/components/intake/StepAcademics';
-import { StepTesting } from '@/components/intake/StepTesting';
+import { StepTesting, isFutureDateValue } from '@/components/intake/StepTesting';
 import { StepPreferences } from '@/components/intake/StepPreferences';
 import { StepApplicationStrength } from '@/components/intake/StepApplicationStrength';
 import { StepSchoolSelection } from '@/components/intake/StepSchoolSelection';
