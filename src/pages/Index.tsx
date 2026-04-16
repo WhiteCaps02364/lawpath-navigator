@@ -56,7 +56,7 @@ export default function Index() {
       {/* Proof line */}
       <div className="max-w-3xl mx-auto px-4 pb-12 text-center">
         <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
-          Every school analysis is grounded in ABA Required Disclosures data — the gold standard for understanding law school admissions and outcomes.
+          Every advising report starts with data law schools report to the ABA each year — so your admissions plan is built on facts, not guesswork.
         </p>
       </div>
 
