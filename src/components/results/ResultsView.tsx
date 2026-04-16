@@ -159,6 +159,117 @@ function formatList(items: string[]): string {
   return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 }
 
+function LsatAnalysisSection({ lsat, schools }: { lsat: number; schools: { id: string; name: string; lsat25: number; lsat50: number; lsat75: number }[] }) {
+  if (schools.length === 0) return null;
+  const total = schools.length;
+  const aboveP75 = schools.filter(s => lsat >= s.lsat75).length;
+  const inRange = schools.filter(s => lsat >= s.lsat25 && lsat < s.lsat75).length;
+  const belowP25 = schools.filter(s => lsat < s.lsat25).length;
+
+  let badgeLabel = '';
+  let badgeStyle: React.CSSProperties = {};
+  let overallMsg = '';
+  if (aboveP75 > total / 2) {
+    badgeLabel = 'Strong Score';
+    badgeStyle = { background: '#16A34A', color: '#fff' };
+    overallMsg = `Your LSAT score of ${lsat} is at or above the 75th percentile for most of your selected schools. Nice work — this is a meaningful asset in your application.`;
+  } else if (belowP25 > total / 2) {
+    badgeLabel = 'Score Gap Identified';
+    badgeStyle = { background: '#DC2626', color: '#fff' };
+    overallMsg = `Your LSAT score of ${lsat} falls below the typical admitted range for most of your selected schools. A retake is strongly recommended before applying to these programs.`;
+  } else {
+    badgeLabel = 'Competitive Score';
+    badgeStyle = { background: GOLD, color: '#fff' };
+    overallMsg = `Your LSAT score of ${lsat} is within the competitive range for several of your selected schools, though some of your targets may be a stretch. Consider whether a retake could strengthen your position.`;
+  }
+
+  const showCallout = schools.some(s => lsat < s.lsat25 || (lsat >= s.lsat25 && lsat < s.lsat75 && Math.abs(lsat - s.lsat50) <= 3));
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.28 }}
+      className="border rounded-xl p-6 bg-card space-y-4"
+    >
+      <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>Your LSAT Score Analysis</h3>
+
+      <div className="flex items-start gap-3 flex-wrap">
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold" style={badgeStyle}>
+          {badgeLabel}
+        </span>
+        <p className="text-sm text-muted-foreground flex-1 min-w-[240px]">{overallMsg}</p>
+      </div>
+
+      <div className="space-y-3 pt-2">
+        {schools.map(s => {
+          let posLabel = '';
+          let posStyle: React.CSSProperties = {};
+          let rec = '';
+          let showLinks = false;
+          if (lsat >= s.lsat75) {
+            posLabel = 'Above Median';
+            posStyle = { background: '#DCFCE7', color: '#15803D' };
+            rec = `Your LSAT is a strong asset for ${s.name}.`;
+          } else if (lsat >= s.lsat50) {
+            posLabel = 'Above Median';
+            posStyle = { background: '#DCFCE7', color: '#15803D' };
+            rec = `Your LSAT is competitive for ${s.name}. A strong application package can compensate for any gap.`;
+          } else if (lsat >= s.lsat25) {
+            posLabel = 'Near Median';
+            posStyle = { background: '#FEF3C7', color: '#92400E' };
+            rec = `Your LSAT is slightly below median for ${s.name}. Consider whether a retake or a JD-Next addendum could strengthen your file.`;
+            showLinks = true;
+          } else {
+            posLabel = 'Below 25th';
+            posStyle = { background: '#FEE2E2', color: '#B91C1C' };
+            rec = `Your LSAT score falls below the typical range for ${s.name}. A retake is recommended. In the meantime, a strong JD-Next score submitted as an addendum could demonstrate readiness and partially offset the gap.`;
+            showLinks = true;
+          }
+          return (
+            <div key={s.id} className="border rounded-lg p-3 space-y-1.5">
+              <div className="flex items-start justify-between gap-2 flex-wrap">
+                <span className="font-semibold text-sm text-foreground">{s.name}</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium" style={posStyle}>{posLabel}</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Your score: {lsat} <span className="text-muted-foreground/60">|</span> 25th: {s.lsat25} <span className="text-muted-foreground/60">|</span> 50th: {s.lsat50} <span className="text-muted-foreground/60">|</span> 75th: {s.lsat75}
+              </p>
+              <p className="text-xs text-foreground">{rec}</p>
+              {showLinks && (
+                <div className="flex flex-wrap gap-x-4 gap-y-1 pt-0.5">
+                  <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
+                    Register for the LSAT →
+                  </a>
+                  <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="underline text-xs font-medium hover:opacity-80" style={{ color: GOLD }}>
+                    Learn about JD-Next →
+                  </a>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {showCallout && (
+        <div className="rounded-lg p-4 bg-gold-muted/40 space-y-2" style={{ borderLeft: `4px solid ${GOLD}` }}>
+          <p className="text-sm text-foreground">
+            Regardless of your LSAT outcome, submitting a strong JD-Next score as an application addendum is a proven way to demonstrate law school readiness beyond a single test score. Several of your selected schools accept JD-Next as a standalone alternative — for others, it serves as powerful supporting evidence.
+          </p>
+          <div className="flex flex-col gap-0.5">
+            <a href={JD_NEXT_URL} target="_blank" rel="noopener noreferrer" className="underline text-sm font-medium hover:opacity-80" style={{ color: GOLD }}>
+              Register for JD-Next →
+            </a>
+            <a href={LSAT_URL} target="_blank" rel="noopener noreferrer" className="underline text-sm font-medium hover:opacity-80" style={{ color: GOLD }}>
+              Register for the LSAT →
+            </a>
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
 // Render markdown bold (**text**) as <strong>
 function renderBold(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
