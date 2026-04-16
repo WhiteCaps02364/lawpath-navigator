@@ -147,7 +147,7 @@ function getStrategy(data: StudentData, readiness: ReadinessLevel): { recommenda
 }
 
 function getTimeline(data: StudentData): { recommendation: string; rationale: string } {
-  const yearsUntilStart = data.intendedStartYear - currentYear;
+  const yearsUntilStart = (data.intendedStartYear ?? currentYear + 2) - currentYear;
 
   if (data.applicationTimingIntent === 'This cycle') {
     if (data.testStatus === 'None') {
