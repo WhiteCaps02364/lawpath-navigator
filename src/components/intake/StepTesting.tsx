@@ -69,8 +69,8 @@ export function StepTesting() {
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="Taken">I've taken a test</SelectItem>
-            <SelectItem value="Planned">I plan to take a test</SelectItem>
-            <SelectItem value="None">I haven't decided yet</SelectItem>
+            <SelectItem value="Planned">I'm registered or planning to take a test soon</SelectItem>
+            <SelectItem value="None">I haven't taken a test yet and have no current plans</SelectItem>
           </SelectContent>
         </Select>
       </div>
