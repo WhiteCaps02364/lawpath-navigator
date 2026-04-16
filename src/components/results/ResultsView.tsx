@@ -4,6 +4,10 @@ import { CheckCircle, AlertTriangle, MapPin, ExternalLink, BookOpen, Target, Shi
 import { useMemo, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import jdnLogo from '@/assets/jdn-logo.png';
+
+const NAVY = '#1A365D';
+const GOLD = '#C9A84C';
 
 interface ResultsViewProps {
   results: ScoringResult;
