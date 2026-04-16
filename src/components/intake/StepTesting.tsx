@@ -73,6 +73,19 @@ export function StepTesting() {
             <SelectItem value="None">I haven't taken a test yet and have no current plans</SelectItem>
           </SelectContent>
         </Select>
+        {data.intendedStartYear !== null && (() => {
+          const now = new Date();
+          const appCycleYear = data.intendedStartYear - 1;
+          const targetDate = new Date(appCycleYear, 8); // September
+          const monthsToApp = Math.round((targetDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24 * 30.44));
+          if (monthsToApp < 6) {
+            return <p className="text-sm text-[#1A365D]">Based on your intended start date, you have less than 6 months to complete a test. Immediate action is recommended.</p>;
+          } else if (monthsToApp <= 12) {
+            return <p className="text-sm text-[#1A365D]">Based on your intended start date, you have {monthsToApp} months to prepare and complete a test. You are well positioned if you begin now.</p>;
+          } else {
+            return <p className="text-sm text-[#1A365D]">Based on your intended start date, you have plenty of time to prepare. A staged testing plan is recommended.</p>;
+          }
+        })()}
       </div>
 
       {(data.testStatus === 'Taken') && (

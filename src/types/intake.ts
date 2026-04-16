@@ -45,7 +45,7 @@ export interface StudentData {
   firstChoiceState: string;
   secondChoiceState?: string;
   thirdChoiceState?: string;
-  intendedStartYear: number;
+  intendedStartYear: number | null;
   applicationTimingIntent: 'This cycle' | 'Next cycle' | 'Not sure';
 
   // Application Strength

@@ -135,30 +135,6 @@ export function StepPreferences() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>Intended Law School Start Year *</Label>
-          <Select value={String(data.intendedStartYear)} onValueChange={v => updateData({ intendedStartYear: Number(v) })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() + 1 + i).map(y => (
-                <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label>Application Timing Intent *</Label>
-          <Select value={data.applicationTimingIntent} onValueChange={v => updateData({ applicationTimingIntent: v as any })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="This cycle">This cycle</SelectItem>
-              <SelectItem value="Next cycle">Next cycle</SelectItem>
-              <SelectItem value="Not sure">Not sure</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
     </div>
   );
 }
