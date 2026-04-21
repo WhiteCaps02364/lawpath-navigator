@@ -55,21 +55,21 @@ export const lawSchools: LawSchool[] = [
     gpa25: 3.58, gpa50: 3.78, gpa75: 3.91,
     lsat25: 167, lsat50: 171, lsat75: 174,
     employmentRateTotal: 94.3, employmentRateFTJD: 83.8,
-    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: true,
+    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: false,
   },
   {
     id: 'michigan', name: 'University of Michigan Law School',
     gpa25: 3.57, gpa50: 3.78, gpa75: 3.90,
     lsat25: 166, lsat50: 170, lsat75: 173,
     employmentRateTotal: 93.8, employmentRateFTJD: 82.1,
-    primaryPlacementRegion: 'Midwest', regionalPortability: 'National', acceptsJDNext: true,
+    primaryPlacementRegion: 'Midwest', regionalPortability: 'National', acceptsJDNext: false,
   },
   {
     id: 'duke', name: 'Duke University School of Law',
     gpa25: 3.60, gpa50: 3.79, gpa75: 3.91,
     lsat25: 167, lsat50: 170, lsat75: 173,
     employmentRateTotal: 94.1, employmentRateFTJD: 83.5,
-    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: true,
+    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: false,
   },
   {
     id: 'georgetown', name: 'Georgetown University Law Center',
@@ -83,14 +83,14 @@ export const lawSchools: LawSchool[] = [
     gpa25: 3.48, gpa50: 3.72, gpa75: 3.87,
     lsat25: 163, lsat50: 167, lsat75: 170,
     employmentRateTotal: 92.5, employmentRateFTJD: 80.1,
-    primaryPlacementRegion: 'Texas', regionalPortability: 'Regional', acceptsJDNext: true,
+    primaryPlacementRegion: 'Texas', regionalPortability: 'Regional', acceptsJDNext: false,
   },
   {
     id: 'ucla', name: 'UCLA School of Law',
     gpa25: 3.52, gpa50: 3.74, gpa75: 3.89,
     lsat25: 164, lsat50: 168, lsat75: 171,
     employmentRateTotal: 91.8, employmentRateFTJD: 79.6,
-    primaryPlacementRegion: 'California', regionalPortability: 'Regional', acceptsJDNext: true,
+    primaryPlacementRegion: 'California', regionalPortability: 'Regional', acceptsJDNext: false,
   },
   {
     id: 'vanderbilt', name: 'Vanderbilt University Law School',
@@ -104,14 +104,14 @@ export const lawSchools: LawSchool[] = [
     gpa25: 3.42, gpa50: 3.68, gpa75: 3.85,
     lsat25: 162, lsat50: 166, lsat75: 169,
     employmentRateTotal: 90.2, employmentRateFTJD: 76.8,
-    primaryPlacementRegion: 'Midwest', regionalPortability: 'Regional', acceptsJDNext: true,
+    primaryPlacementRegion: 'Midwest', regionalPortability: 'Regional', acceptsJDNext: false,
   },
   {
     id: 'bu', name: 'Boston University School of Law',
     gpa25: 3.45, gpa50: 3.65, gpa75: 3.82,
     lsat25: 161, lsat50: 164, lsat75: 167,
     employmentRateTotal: 88.7, employmentRateFTJD: 74.2,
-    primaryPlacementRegion: 'Northeast', regionalPortability: 'Regional', acceptsJDNext: true,
+    primaryPlacementRegion: 'Northeast', regionalPortability: 'Regional', acceptsJDNext: false,
   },
   {
     id: 'gwu', name: 'George Washington University Law School',
@@ -139,7 +139,7 @@ export const lawSchools: LawSchool[] = [
     gpa25: 3.35, gpa50: 3.60, gpa75: 3.78,
     lsat25: 157, lsat50: 161, lsat75: 164,
     employmentRateTotal: 85.4, employmentRateFTJD: 70.2,
-    primaryPlacementRegion: 'Southeast', regionalPortability: 'Primarily Local', acceptsJDNext: true,
+    primaryPlacementRegion: 'Southeast', regionalPortability: 'Primarily Local', acceptsJDNext: false,
   },
 ];
 
