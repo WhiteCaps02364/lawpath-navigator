@@ -101,6 +101,9 @@ export default function SignIn() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <div className="text-center mt-6 pt-4 border-t">
+        <Link to="/advisor-register" className="text-sm text-[#1A365D] underline">Are You a Pre-Law Advisor?</Link>
+      </div>
     </AuthCard>
   );
 }

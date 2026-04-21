@@ -138,13 +138,19 @@ export default function Index() {
 
       {/* Footer */}
       <footer className="border-t py-8">
-        <div className="max-w-4xl mx-auto px-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xs">JD</span>
             </div>
             <span className="text-sm text-muted-foreground">JD-Next</span>
           </div>
+          <button
+            onClick={() => navigate('/advisor-register')}
+            className="text-sm text-[#1A365D] underline font-medium"
+          >
+            Are You a Pre-Law Advisor?
+          </button>
           <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} JD-Next. All rights reserved.</p>
         </div>
       </footer>
