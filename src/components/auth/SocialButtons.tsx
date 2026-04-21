@@ -1,26 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import { GoogleIcon, AppleIcon } from './AuthCard';
 
-export function SocialButtons({ advisorId }: { advisorId?: string | null }) {
-  const { toast } = useToast();
+export function SocialButtons({ advisorId: _advisorId }: { advisorId?: string | null }) {
+  const navigate = useNavigate();
 
-  const handleOAuth = async (provider: 'google' | 'apple') => {
-    const redirectTo = `${window.location.origin}/auth/callback${advisorId ? `?advisor=${advisorId}` : ''}`;
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: { redirectTo },
-    });
-    if (error) {
-      toast({
-        title: `${provider === 'google' ? 'Google' : 'Apple'} sign-in unavailable`,
-        description: error.message.includes('provider is not enabled')
-          ? 'This provider hasn\'t been configured yet. Please use email or try the other option.'
-          : error.message,
-        variant: 'destructive',
-      });
-    }
+  // Dummy bypass: skip OAuth and route straight to intake.
+  const handleOAuth = (_provider: 'google' | 'apple') => {
+    navigate('/intake', { replace: true });
   };
 
   return (

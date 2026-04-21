@@ -28,23 +28,7 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    setSubmitting(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: {
-          account_type: 'student',
-          ...(advisorId ? { advisor_id: advisorId } : {}),
-        },
-      },
-    });
-    setSubmitting(false);
-    if (error) {
-      toast({ title: 'Could not create account', description: error.message, variant: 'destructive' });
-      return;
-    }
+    // Dummy bypass: skip Supabase signup and route straight to intake.
     navigate('/intake', { replace: true });
   };
 

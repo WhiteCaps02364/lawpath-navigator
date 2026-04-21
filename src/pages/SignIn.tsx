@@ -26,15 +26,8 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setSubmitting(false);
-    if (error) {
-      toast({ title: 'Sign in failed', description: error.message, variant: 'destructive' });
-      return;
-    }
-    // Routing decision happens in PostAuthRouter
-    navigate('/post-auth', { replace: true });
+    // Dummy bypass: skip Supabase sign-in and route straight to intake.
+    navigate('/intake', { replace: true });
   };
 
   const sendReset = async () => {
