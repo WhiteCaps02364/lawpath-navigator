@@ -29,7 +29,11 @@ export default function SignUp() {
     e.preventDefault();
     if (!canSubmit) return;
     // Dummy bypass: skip Supabase signup and route straight to intake.
-    navigate('/intake', { replace: true });
+    const inst = params.get('institution');
+    const qs = new URLSearchParams();
+    if (advisorId) qs.set('advisor', advisorId);
+    if (inst) qs.set('institution', inst);
+    navigate(`/intake${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
   };
 
   return (

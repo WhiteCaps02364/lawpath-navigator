@@ -1,12 +1,18 @@
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { GoogleIcon, AppleIcon } from './AuthCard';
 
-export function SocialButtons({ advisorId: _advisorId }: { advisorId?: string | null }) {
+export function SocialButtons({ advisorId }: { advisorId?: string | null }) {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
   // Dummy bypass: skip OAuth and route straight to intake.
   const handleOAuth = (_provider: 'google' | 'apple') => {
-    navigate('/intake', { replace: true });
+    const inst = params.get('institution');
+    const qs = new URLSearchParams();
+    if (advisorId) qs.set('advisor', advisorId);
+    if (inst) qs.set('institution', inst);
+    navigate(`/intake${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
   };
 
   return (
