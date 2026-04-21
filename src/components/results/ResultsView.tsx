@@ -1,10 +1,12 @@
 import { ScoringResult, SchoolAssessment, StudentData, PracticeArea } from '@/types/intake';
 import { motion } from 'framer-motion';
 import { CheckCircle, AlertTriangle, MapPin, ExternalLink, BookOpen, Target, Shield, TrendingUp, Share2, Download } from 'lucide-react';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import jdnLogo from '@/assets/jdn-logo.png';
+import { ShareWithAdvisor } from '@/components/results/ShareWithAdvisor';
+import { supabase } from '@/integrations/supabase/client';
 
 const NAVY = '#1A365D';
 const GOLD = '#C9A84C';
@@ -387,6 +389,41 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   }, []);
   const arrivedViaAdvisor = !!advisorParam;
 
+  // Look up the advisor's display name + institution for the share confirmation
+  const [advisorMeta, setAdvisorMeta] = useState<{ firstName: string; institution: string } | null>(null);
+  useEffect(() => {
+    if (!advisorParam) return;
+    (async () => {
+      const { data } = await supabase
+        .from('advisors')
+        .select('first_name, institution')
+        .eq('id', advisorParam)
+        .maybeSingle();
+      if (data) setAdvisorMeta({ firstName: data.first_name, institution: data.institution });
+    })();
+  }, [advisorParam]);
+
+  // Auto-link the most recent completed submission to the advisor (one-time)
+  useEffect(() => {
+    if (!advisorParam) return;
+    (async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      const uid = auth?.user?.id;
+      if (!uid) return;
+      const { data: sub } = await supabase
+        .from('intake_submissions')
+        .select('id, advisor_id')
+        .eq('user_id', uid)
+        .eq('completed', true)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (sub && !sub.advisor_id) {
+        await supabase.from('intake_submissions').update({ advisor_id: advisorParam }).eq('id', sub.id);
+      }
+    })();
+  }, [advisorParam]);
+
   // Months until intended start
   const monthsToStart = useMemo(() => {
     if (!studentData.intendedStartYear) return null;
@@ -751,32 +788,24 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       </div>
 
       {/* Advisor Share / Download */}
-      <motion.div {...fadeIn} transition={{ delay: 0.52 }} className="flex justify-center">
+      <motion.div {...fadeIn} transition={{ delay: 0.52 }}>
         {arrivedViaAdvisor ? (
-          shareConfirmed ? (
-            <div className="border rounded-xl p-5 bg-success/10 text-center max-w-md">
-              <p className="text-sm text-foreground font-medium">
-                Your report has been shared with your advisor. They will be in touch to schedule your advising meeting.
-              </p>
-            </div>
-          ) : (
-            <button
-              onClick={handleShareWithAdvisor}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 transition"
-            >
-              <Share2 className="w-4 h-4" />
-              Share with My Pre-Law Advisor
-            </button>
-          )
+          <div className="border rounded-xl p-5 bg-success/10 text-center max-w-2xl mx-auto">
+            <p className="text-sm text-foreground font-medium">
+              Your report has been automatically shared with{' '}
+              <strong>{advisorMeta?.firstName ?? 'your advisor'}</strong>
+              {advisorMeta?.institution ? <> at <strong>{advisorMeta.institution}</strong></> : null}.
+              They will be in touch to schedule your advising meeting.
+            </p>
+          </div>
         ) : (
-          <button
-            onClick={handleDownloadPdf}
-            disabled={generatingPdf}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white border-2 border-[#1A365D] text-[#1A365D] font-medium hover:bg-[#1A365D]/5 transition disabled:opacity-60"
-          >
-            <Download className="w-4 h-4" />
-            {generatingPdf ? 'Generating PDF…' : 'Download to Share with My Pre-Law Advisor'}
-          </button>
+          <div className="max-w-2xl mx-auto">
+            <ShareWithAdvisor
+              studentInstitution={studentData.undergraduateInstitution}
+              onDownloadPdf={handleDownloadPdf}
+            />
+            {generatingPdf && <p className="text-xs text-muted-foreground mt-2">Generating PDF…</p>}
+          </div>
         )}
       </motion.div>
 

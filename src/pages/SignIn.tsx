@@ -27,7 +27,11 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Dummy bypass: skip Supabase sign-in and route straight to intake.
-    navigate('/intake', { replace: true });
+    const inst = params.get('institution');
+    const qs = new URLSearchParams();
+    if (advisorId) qs.set('advisor', advisorId);
+    if (inst) qs.set('institution', inst);
+    navigate(`/intake${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
   };
 
   const sendReset = async () => {
@@ -101,6 +105,9 @@ export default function SignIn() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <div className="text-center mt-6 pt-4 border-t">
+        <Link to="/advisor-register" className="text-sm text-[#1A365D] underline">Are You a Pre-Law Advisor?</Link>
+      </div>
     </AuthCard>
   );
 }

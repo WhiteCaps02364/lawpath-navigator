@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      advisors: {
+        Row: {
+          biography: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          institution: string
+          last_name: string
+          phone: string | null
+          slug: string
+          title: string
+          updated_at: string
+          years_advising: string
+        }
+        Insert: {
+          biography?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id: string
+          institution: string
+          last_name: string
+          phone?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+          years_advising: string
+        }
+        Update: {
+          biography?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          institution?: string
+          last_name?: string
+          phone?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+          years_advising?: string
+        }
+        Relationships: []
+      }
       intake_submissions: {
         Row: {
           advisor_id: string | null
