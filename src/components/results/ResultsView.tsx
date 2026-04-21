@@ -1,10 +1,12 @@
 import { ScoringResult, SchoolAssessment, StudentData, PracticeArea } from '@/types/intake';
 import { motion } from 'framer-motion';
 import { CheckCircle, AlertTriangle, MapPin, ExternalLink, BookOpen, Target, Shield, TrendingUp, Share2, Download } from 'lucide-react';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import jdnLogo from '@/assets/jdn-logo.png';
+import { ShareWithAdvisor } from '@/components/results/ShareWithAdvisor';
+import { supabase } from '@/integrations/supabase/client';
 
 const NAVY = '#1A365D';
 const GOLD = '#C9A84C';
