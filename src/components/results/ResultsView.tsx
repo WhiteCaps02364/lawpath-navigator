@@ -389,6 +389,41 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   }, []);
   const arrivedViaAdvisor = !!advisorParam;
 
+  // Look up the advisor's display name + institution for the share confirmation
+  const [advisorMeta, setAdvisorMeta] = useState<{ firstName: string; institution: string } | null>(null);
+  useEffect(() => {
+    if (!advisorParam) return;
+    (async () => {
+      const { data } = await supabase
+        .from('advisors')
+        .select('first_name, institution')
+        .eq('id', advisorParam)
+        .maybeSingle();
+      if (data) setAdvisorMeta({ firstName: data.first_name, institution: data.institution });
+    })();
+  }, [advisorParam]);
+
+  // Auto-link the most recent completed submission to the advisor (one-time)
+  useEffect(() => {
+    if (!advisorParam) return;
+    (async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      const uid = auth?.user?.id;
+      if (!uid) return;
+      const { data: sub } = await supabase
+        .from('intake_submissions')
+        .select('id, advisor_id')
+        .eq('user_id', uid)
+        .eq('completed', true)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (sub && !sub.advisor_id) {
+        await supabase.from('intake_submissions').update({ advisor_id: advisorParam }).eq('id', sub.id);
+      }
+    })();
+  }, [advisorParam]);
+
   // Months until intended start
   const monthsToStart = useMemo(() => {
     if (!studentData.intendedStartYear) return null;
