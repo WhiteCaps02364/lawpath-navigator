@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
-import { buildAdvisorUrl } from '@/lib/advisorSlug';
+import { buildAdvisorUrl, buildAdvisorPath } from '@/lib/advisorSlug';
 
 export default function ShareableLink() {
   const { advisor } = useAdvisorDemo();
@@ -53,7 +53,7 @@ ${advisor.firstName} ${advisor.lastName}`;
             {copiedLink ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
           </button>
           <a
-            href={`/advisor/${advisor.slug}`}
+            href={buildAdvisorPath(advisor.slug, advisor.institution)}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 border border-[#1A365D] text-[#1A365D] px-4 py-2 rounded font-medium text-sm hover:bg-muted"
