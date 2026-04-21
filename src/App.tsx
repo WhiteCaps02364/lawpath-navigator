@@ -49,6 +49,7 @@ const App = () => (
             <Route path="/advisor-register" element={<AdvisorRegister />} />
             <Route path="/advisor-register/details" element={<AdvisorRegisterDetails />} />
             <Route path="/advisor/:slug" element={<AdvisorPublicProfile />} />
+            <Route path="/:institution/advisor/:slug" element={<AdvisorPublicProfile />} />
             <Route path="/advisor-dashboard" element={<AdvisorDashboardLayout />}>
               <Route index element={<MyStudents />} />
               <Route path="preview" element={<PreviewStudentExperience />} />
