@@ -62,14 +62,14 @@ export const lawSchools: LawSchool[] = [
     gpa25: 3.57, gpa50: 3.78, gpa75: 3.90,
     lsat25: 166, lsat50: 170, lsat75: 173,
     employmentRateTotal: 93.8, employmentRateFTJD: 82.1,
-    primaryPlacementRegion: 'Midwest', regionalPortability: 'National', acceptsJDNext: true,
+    primaryPlacementRegion: 'Midwest', regionalPortability: 'National', acceptsJDNext: false,
   },
   {
     id: 'duke', name: 'Duke University School of Law',
     gpa25: 3.60, gpa50: 3.79, gpa75: 3.91,
     lsat25: 167, lsat50: 170, lsat75: 173,
     employmentRateTotal: 94.1, employmentRateFTJD: 83.5,
-    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: true,
+    primaryPlacementRegion: 'Southeast', regionalPortability: 'National', acceptsJDNext: false,
   },
   {
     id: 'georgetown', name: 'Georgetown University Law Center',
