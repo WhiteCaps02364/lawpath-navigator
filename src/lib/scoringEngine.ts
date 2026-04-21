@@ -271,7 +271,14 @@ export function calculateScores(data: StudentData): ScoringResult {
 
   const schoolAssessments: SchoolAssessment[] = selectedSchoolObjects.map(school => {
     const classification = classifySchool(data.cumulativeGPA, school);
-    const { alignment, note } = getGeoAlignment(school, data.geographicPreference, data.geographicStrength);
+    const { alignment, note } = getGeoAlignment(
+      school,
+      data.geographicPreference,
+      data.geographicStrength,
+      data.firstChoiceState,
+      data.secondChoiceState,
+      data.thirdChoiceState,
+    );
     return { school, classification, geoAlignment: alignment, geoNote: note };
   });
 
