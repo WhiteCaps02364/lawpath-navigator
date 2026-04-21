@@ -25,6 +25,7 @@ const defaultStudent: StudentData = {
 interface IntakeContextType {
   data: StudentData;
   updateData: (partial: Partial<StudentData>) => void;
+  setData: (data: StudentData) => void;
   currentStep: number;
   setCurrentStep: (step: number) => void;
   totalSteps: number;
@@ -42,7 +43,7 @@ export function IntakeProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <IntakeContext.Provider value={{ data, updateData, currentStep, setCurrentStep, totalSteps }}>
+    <IntakeContext.Provider value={{ data, updateData, setData, currentStep, setCurrentStep, totalSteps }}>
       {children}
     </IntakeContext.Provider>
   );
