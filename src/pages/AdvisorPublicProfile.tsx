@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { institutionShortcode } from '@/lib/advisorSlug';
 import { ArrowRight, Building2, BarChart3, Shield, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import jdnLogo from '@/assets/jdn-logo.png';
@@ -6,12 +7,15 @@ import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
 
 export default function AdvisorPublicProfile() {
-  const { slug } = useParams();
+  const { slug, institution: institutionParam } = useParams();
   const navigate = useNavigate();
   const { advisor: ownAdvisor } = useAdvisorDemo();
 
   // For prototype: only the demo advisor's own profile resolves; otherwise show a generic placeholder using the slug.
-  const matched = ownAdvisor && ownAdvisor.slug === slug;
+  const matched =
+    !!ownAdvisor &&
+    ownAdvisor.slug === slug &&
+    (!institutionParam || institutionShortcode(ownAdvisor.institution) === institutionParam);
   const advisor = matched ? ownAdvisor : null;
   const displayName = advisor ? `${advisor.firstName} ${advisor.lastName}` : 'Pre-Law Advisor';
   const institution = advisor?.institution || 'Your Institution';

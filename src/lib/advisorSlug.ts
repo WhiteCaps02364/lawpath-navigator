@@ -35,19 +35,28 @@ export function institutionShortcode(institution: string): string {
   if (shortcode[institution]) return shortcode[institution];
   return institution
     .toLowerCase()
-    .replace(/university of /g, '')
-    .replace(/university/g, '')
+    .trim()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 24) || 'school';
+    .replace(/^-+|-+$/g, '') || 'school';
 }
 
-export function buildAdvisorSlug(firstName: string, lastName: string, institution: string): string {
+export function buildAdvisorNameSlug(firstName: string, lastName: string): string {
   const norm = (s: string) =>
     s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  return `${norm(firstName)}-${norm(lastName)}-${institutionShortcode(institution)}`;
+  return `${norm(firstName)}-${norm(lastName)}`;
 }
 
-export function buildAdvisorUrl(slug: string): string {
-  return `prelaw.jdnext.org/advisor/${slug}`;
+// Backward-compatible: returns just the name slug (first-last). Institution is encoded
+// separately in the URL path now.
+export function buildAdvisorSlug(firstName: string, lastName: string, _institution?: string): string {
+  return buildAdvisorNameSlug(firstName, lastName);
+}
+
+// New URL format: prelaw.jdnext.org/[institution-shortcode]/advisor/[firstname-lastname]
+export function buildAdvisorUrl(nameSlug: string, institution: string): string {
+  return `prelaw.jdnext.org/${institutionShortcode(institution)}/advisor/${nameSlug}`;
+}
+
+export function buildAdvisorPath(nameSlug: string, institution: string): string {
+  return `/${institutionShortcode(institution)}/advisor/${nameSlug}`;
 }

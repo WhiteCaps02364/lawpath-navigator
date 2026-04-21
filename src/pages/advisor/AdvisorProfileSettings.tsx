@@ -22,7 +22,7 @@ export default function AdvisorProfileSettings() {
   const [copied, setCopied] = useState(false);
 
   if (!advisor) return null;
-  const url = buildAdvisorUrl(advisor.slug);
+  const url = buildAdvisorUrl(advisor.slug, advisor.institution);
 
   const save = () => {
     updateAdvisor({ biography: bio, title, phone, yearsAdvising: years });

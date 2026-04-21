@@ -33,7 +33,7 @@ export default function MyStudents() {
   }, [advisor]);
 
   if (!advisor) return null;
-  const url = buildAdvisorUrl(advisor.slug);
+  const url = buildAdvisorUrl(advisor.slug, advisor.institution);
 
   const copy = () => {
     navigator.clipboard.writeText(`https://${url}`);
