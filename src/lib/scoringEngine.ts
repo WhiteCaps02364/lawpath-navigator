@@ -6,6 +6,37 @@ import { lawSchools } from '@/data/lawSchools';
 
 const currentYear = new Date().getFullYear();
 
+const STATE_TO_REGION: Record<string, string> = {
+  // Northeast
+  CT: 'Northeast', ME: 'Northeast', MA: 'Northeast', NH: 'Northeast',
+  NJ: 'Northeast', NY: 'Northeast', PA: 'Northeast', RI: 'Northeast',
+  VT: 'Northeast', DC: 'Northeast', MD: 'Northeast', DE: 'Northeast',
+  // Southeast
+  AL: 'Southeast', AR: 'Southeast', FL: 'Southeast', GA: 'Southeast',
+  KY: 'Southeast', LA: 'Southeast', MS: 'Southeast', NC: 'Southeast',
+  SC: 'Southeast', TN: 'Southeast', VA: 'Southeast', WV: 'Southeast',
+  // Midwest
+  IL: 'Midwest', IN: 'Midwest', IA: 'Midwest', KS: 'Midwest',
+  MI: 'Midwest', MN: 'Midwest', MO: 'Midwest', NE: 'Midwest',
+  ND: 'Midwest', OH: 'Midwest', SD: 'Midwest', WI: 'Midwest',
+  // Texas
+  TX: 'Texas',
+  // California
+  CA: 'California',
+  // Southwest
+  AZ: 'Southwest', CO: 'Southwest', NM: 'Southwest', NV: 'Southwest', UT: 'Southwest',
+  // Pacific Northwest
+  AK: 'Pacific Northwest', HI: 'Pacific Northwest', ID: 'Pacific Northwest',
+  MT: 'Pacific Northwest', OR: 'Pacific Northwest', WA: 'Pacific Northwest',
+  WY: 'Pacific Northwest',
+};
+
+function getRegionForState(state: string | undefined | null): string | null {
+  if (!state) return null;
+  const key = state.trim().toUpperCase();
+  return STATE_TO_REGION[key] ?? null;
+}
+
 function getRegionForPreference(pref: GeographicRegion): string[] {
   const map: Record<string, string[]> = {
     'Northeast': ['Northeast'],
@@ -29,29 +60,50 @@ function classifySchool(gpa: number, school: LawSchool): SchoolClassification {
 function getGeoAlignment(
   school: LawSchool,
   preference: GeographicRegion,
-  strength: string
+  strength: string,
+  firstChoiceState?: string,
+  secondChoiceState?: string,
+  thirdChoiceState?: string
 ): { alignment: GeographicAlignment; note: string } {
   if (preference === 'No preference' || strength === 'Open to anywhere') {
     return { alignment: 'Aligned', note: `${school.name} places graduates primarily in ${school.primaryPlacementRegion}.` };
   }
 
-  const preferredRegions = getRegionForPreference(preference);
-  const matches = preferredRegions.includes(school.primaryPlacementRegion);
+  const firstRegion = getRegionForState(firstChoiceState);
+  const secondRegion = getRegionForState(secondChoiceState);
+  const thirdRegion = getRegionForState(thirdChoiceState);
+  const placement = school.primaryPlacementRegion;
 
-  if (matches) {
+  if (firstRegion && firstRegion === placement) {
+    return {
+      alignment: 'Aligned',
+      note: `${school.name} aligns well with your first-choice state (${firstChoiceState}) — most graduates practice in the ${placement} region.`,
+    };
+  }
+
+  if ((secondRegion && secondRegion === placement) || (thirdRegion && thirdRegion === placement)) {
+    const matchedState = secondRegion === placement ? secondChoiceState : thirdChoiceState;
+    return {
+      alignment: 'Partially Misaligned',
+      note: `${school.name} primarily places graduates in ${placement}, which matches your secondary preference (${matchedState}) but not your first-choice state (${firstChoiceState}).`,
+    };
+  }
+
+  const preferredRegions = getRegionForPreference(preference);
+  if (preferredRegions.includes(placement)) {
     return { alignment: 'Aligned', note: `${school.name} aligns well with your ${preference} preference — most graduates practice in this region.` };
   }
 
   if (strength === 'Very strong') {
     return {
       alignment: 'Misaligned',
-      note: `${school.name} primarily places graduates in ${school.primaryPlacementRegion}, which does not align with your strong preference for ${preference}. Regional law schools often have concentrated local placement networks.`,
+      note: `${school.name} primarily places graduates in ${placement}, which does not align with your strong preference for ${preference}. Regional law schools often have concentrated local placement networks.`,
     };
   }
 
   return {
     alignment: 'Partially Misaligned',
-    note: `${school.name} primarily places in ${school.primaryPlacementRegion}. Since your ${preference} preference is flexible, this may still work depending on your networking strategy.`,
+    note: `${school.name} primarily places in ${placement}. Since your ${preference} preference is flexible, this may still work depending on your networking strategy.`,
   };
 }
 
@@ -219,7 +271,14 @@ export function calculateScores(data: StudentData): ScoringResult {
 
   const schoolAssessments: SchoolAssessment[] = selectedSchoolObjects.map(school => {
     const classification = classifySchool(data.cumulativeGPA, school);
-    const { alignment, note } = getGeoAlignment(school, data.geographicPreference, data.geographicStrength);
+    const { alignment, note } = getGeoAlignment(
+      school,
+      data.geographicPreference,
+      data.geographicStrength,
+      data.firstChoiceState,
+      data.secondChoiceState,
+      data.thirdChoiceState,
+    );
     return { school, classification, geoAlignment: alignment, geoNote: note };
   });
 
