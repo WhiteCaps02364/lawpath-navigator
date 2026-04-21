@@ -10,7 +10,7 @@ export default function ShareableLink() {
   const [copiedText, setCopiedText] = useState(false);
 
   if (!advisor) return null;
-  const url = buildAdvisorUrl(advisor.slug);
+  const url = buildAdvisorUrl(advisor.slug, advisor.institution);
   const fullUrl = `https://${url}`;
 
   const emailBody = `Subject: Complete This Before Our Next Meeting — Free Pre-Law Advising Tool
