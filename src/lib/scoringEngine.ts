@@ -60,29 +60,50 @@ function classifySchool(gpa: number, school: LawSchool): SchoolClassification {
 function getGeoAlignment(
   school: LawSchool,
   preference: GeographicRegion,
-  strength: string
+  strength: string,
+  firstChoiceState?: string,
+  secondChoiceState?: string,
+  thirdChoiceState?: string
 ): { alignment: GeographicAlignment; note: string } {
   if (preference === 'No preference' || strength === 'Open to anywhere') {
     return { alignment: 'Aligned', note: `${school.name} places graduates primarily in ${school.primaryPlacementRegion}.` };
   }
 
-  const preferredRegions = getRegionForPreference(preference);
-  const matches = preferredRegions.includes(school.primaryPlacementRegion);
+  const firstRegion = getRegionForState(firstChoiceState);
+  const secondRegion = getRegionForState(secondChoiceState);
+  const thirdRegion = getRegionForState(thirdChoiceState);
+  const placement = school.primaryPlacementRegion;
 
-  if (matches) {
+  if (firstRegion && firstRegion === placement) {
+    return {
+      alignment: 'Aligned',
+      note: `${school.name} aligns well with your first-choice state (${firstChoiceState}) — most graduates practice in the ${placement} region.`,
+    };
+  }
+
+  if ((secondRegion && secondRegion === placement) || (thirdRegion && thirdRegion === placement)) {
+    const matchedState = secondRegion === placement ? secondChoiceState : thirdChoiceState;
+    return {
+      alignment: 'Partially Misaligned',
+      note: `${school.name} primarily places graduates in ${placement}, which matches your secondary preference (${matchedState}) but not your first-choice state (${firstChoiceState}).`,
+    };
+  }
+
+  const preferredRegions = getRegionForPreference(preference);
+  if (preferredRegions.includes(placement)) {
     return { alignment: 'Aligned', note: `${school.name} aligns well with your ${preference} preference — most graduates practice in this region.` };
   }
 
   if (strength === 'Very strong') {
     return {
       alignment: 'Misaligned',
-      note: `${school.name} primarily places graduates in ${school.primaryPlacementRegion}, which does not align with your strong preference for ${preference}. Regional law schools often have concentrated local placement networks.`,
+      note: `${school.name} primarily places graduates in ${placement}, which does not align with your strong preference for ${preference}. Regional law schools often have concentrated local placement networks.`,
     };
   }
 
   return {
     alignment: 'Partially Misaligned',
-    note: `${school.name} primarily places in ${school.primaryPlacementRegion}. Since your ${preference} preference is flexible, this may still work depending on your networking strategy.`,
+    note: `${school.name} primarily places in ${placement}. Since your ${preference} preference is flexible, this may still work depending on your networking strategy.`,
   };
 }
 
