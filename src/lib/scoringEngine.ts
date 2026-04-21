@@ -6,6 +6,37 @@ import { lawSchools } from '@/data/lawSchools';
 
 const currentYear = new Date().getFullYear();
 
+const STATE_TO_REGION: Record<string, string> = {
+  // Northeast
+  CT: 'Northeast', ME: 'Northeast', MA: 'Northeast', NH: 'Northeast',
+  NJ: 'Northeast', NY: 'Northeast', PA: 'Northeast', RI: 'Northeast',
+  VT: 'Northeast', DC: 'Northeast', MD: 'Northeast', DE: 'Northeast',
+  // Southeast
+  AL: 'Southeast', AR: 'Southeast', FL: 'Southeast', GA: 'Southeast',
+  KY: 'Southeast', LA: 'Southeast', MS: 'Southeast', NC: 'Southeast',
+  SC: 'Southeast', TN: 'Southeast', VA: 'Southeast', WV: 'Southeast',
+  // Midwest
+  IL: 'Midwest', IN: 'Midwest', IA: 'Midwest', KS: 'Midwest',
+  MI: 'Midwest', MN: 'Midwest', MO: 'Midwest', NE: 'Midwest',
+  ND: 'Midwest', OH: 'Midwest', SD: 'Midwest', WI: 'Midwest',
+  // Texas
+  TX: 'Texas',
+  // California
+  CA: 'California',
+  // Southwest
+  AZ: 'Southwest', CO: 'Southwest', NM: 'Southwest', NV: 'Southwest', UT: 'Southwest',
+  // Pacific Northwest
+  AK: 'Pacific Northwest', HI: 'Pacific Northwest', ID: 'Pacific Northwest',
+  MT: 'Pacific Northwest', OR: 'Pacific Northwest', WA: 'Pacific Northwest',
+  WY: 'Pacific Northwest',
+};
+
+function getRegionForState(state: string | undefined | null): string | null {
+  if (!state) return null;
+  const key = state.trim().toUpperCase();
+  return STATE_TO_REGION[key] ?? null;
+}
+
 function getRegionForPreference(pref: GeographicRegion): string[] {
   const map: Record<string, string[]> = {
     'Northeast': ['Northeast'],
