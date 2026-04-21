@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { IntakeProvider, useIntake } from '@/contexts/IntakeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -28,9 +29,39 @@ const stepLabels = [
 function IntakeWizardInner() {
   const { data, setData, currentStep, setCurrentStep, totalSteps } = useIntake();
   const { user } = useAuth();
+  const [params] = useSearchParams();
+  const advisorIdParam = params.get('advisor');
+  const institutionParam = params.get('institution');
+  const isDemo = params.get('demo') === '1';
   const [results, setResults] = useState<ScoringResult | null>(null);
   const submissionId = useRef<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [appliedAdvisor, setAppliedAdvisor] = useState(false);
+
+  // Apply institution / demo prefill once on mount
+  useEffect(() => {
+    if (appliedAdvisor) return;
+    if (isDemo) {
+      setData({
+        ...data,
+        firstName: 'Alex', lastName: 'Johnson',
+        personalEmail: 'alex.johnson@example.com',
+        undergraduateInstitution: 'Duke University',
+        cumulativeGPA: 3.6, majorGPA: 3.7, majors: 'Political Science',
+        currentYear: 'Junior',
+        testStatus: 'None',
+        practiceAreaInterest: ['Litigation'],
+        intendedStartYear: 2027,
+        firstChoiceState: 'NY',
+        whyLawSchool: 'I want to use legal training to advocate in the courtroom and work on cases that have meaningful real-world impact.',
+        selectedSchools: ['nyu','georgetown','duke','unc','wake-forest'],
+      } as typeof data);
+    } else if (institutionParam) {
+      setData({ ...data, undergraduateInstitution: institutionParam } as typeof data);
+    }
+    setAppliedAdvisor(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load existing in-progress submission
   useEffect(() => {
@@ -57,21 +88,21 @@ function IntakeWizardInner() {
 
   // Autosave on data/step change (debounced via timeout)
   useEffect(() => {
-    if (!user || !hydrated) return;
+    if (!user || !hydrated || isDemo) return;
     const t = setTimeout(async () => {
       if (submissionId.current) {
-        await supabase.from('intake_submissions').update({ student_data: data as never }).eq('id', submissionId.current);
+        await supabase.from('intake_submissions').update({ student_data: data as never, advisor_id: advisorIdParam || undefined } as never).eq('id', submissionId.current);
       } else {
         const { data: ins } = await supabase
           .from('intake_submissions')
-          .insert({ user_id: user.id, student_data: data as never, completed: false })
+          .insert({ user_id: user.id, student_data: data as never, completed: false, advisor_id: advisorIdParam || undefined } as never)
           .select('id')
           .single();
         if (ins) submissionId.current = ins.id;
       }
     }, 800);
     return () => clearTimeout(t);
-  }, [data, user, hydrated]);
+  }, [data, user, hydrated, isDemo, advisorIdParam]);
 
   if (results) {
     return (
@@ -126,17 +157,18 @@ function IntakeWizardInner() {
       const scored = calculateScores(data);
       setResults(scored);
       // Persist completion
+      if (isDemo) return;
       (async () => {
         if (!user) return;
         if (submissionId.current) {
           await supabase
             .from('intake_submissions')
-            .update({ student_data: data as never, results: scored as never, completed: true })
+            .update({ student_data: data as never, results: scored as never, completed: true, advisor_id: advisorIdParam || undefined } as never)
             .eq('id', submissionId.current);
         } else {
           await supabase
             .from('intake_submissions')
-            .insert({ user_id: user.id, student_data: data as never, results: scored as never, completed: true });
+            .insert({ user_id: user.id, student_data: data as never, results: scored as never, completed: true, advisor_id: advisorIdParam || undefined } as never);
         }
         await supabase.from('profiles').update({ intake_completed: true }).eq('id', user.id);
       })();
@@ -147,6 +179,12 @@ function IntakeWizardInner() {
 
   return (
     <div className="min-h-screen bg-background">
+      {isDemo && (
+        <div className="px-4 py-3 text-sm flex items-center justify-between" style={{ background: '#F8E9C2', color: '#5C4A1A' }}>
+          <span>You are previewing the student experience. This is what your advisees will see.</span>
+          <button onClick={() => window.close()} className="bg-[#1A365D] text-white px-3 py-1.5 rounded text-xs font-medium">Exit Preview</button>
+        </div>
+      )}
       {/* Header */}
       <header className="bg-[#1A365D] sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-3">
