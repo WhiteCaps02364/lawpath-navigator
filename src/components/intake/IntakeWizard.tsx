@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IntakeProvider, useIntake } from '@/contexts/IntakeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { IntakeProgressBar } from '@/components/intake/IntakeProgressBar';
 import { StepPersonalInfo } from '@/components/intake/StepPersonalInfo';
 import { StepAcademics } from '@/components/intake/StepAcademics';
@@ -24,8 +26,52 @@ const stepLabels = [
 ];
 
 function IntakeWizardInner() {
-  const { data, currentStep, setCurrentStep, totalSteps } = useIntake();
+  const { data, setData, currentStep, setCurrentStep, totalSteps } = useIntake();
+  const { user } = useAuth();
   const [results, setResults] = useState<ScoringResult | null>(null);
+  const submissionId = useRef<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load existing in-progress submission
+  useEffect(() => {
+    if (!user || hydrated) return;
+    (async () => {
+      const { data: sub } = await supabase
+        .from('intake_submissions')
+        .select('id, student_data, completed')
+        .eq('user_id', user.id)
+        .eq('completed', false)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (sub) {
+        submissionId.current = sub.id;
+        if (sub.student_data && Object.keys(sub.student_data as object).length) {
+          setData({ ...data, ...(sub.student_data as object) } as typeof data);
+        }
+      }
+      setHydrated(true);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  // Autosave on data/step change (debounced via timeout)
+  useEffect(() => {
+    if (!user || !hydrated) return;
+    const t = setTimeout(async () => {
+      if (submissionId.current) {
+        await supabase.from('intake_submissions').update({ student_data: data as never }).eq('id', submissionId.current);
+      } else {
+        const { data: ins } = await supabase
+          .from('intake_submissions')
+          .insert({ user_id: user.id, student_data: data as never, completed: false })
+          .select('id')
+          .single();
+        if (ins) submissionId.current = ins.id;
+      }
+    }, 800);
+    return () => clearTimeout(t);
+  }, [data, user, hydrated]);
 
   if (results) {
     return (
@@ -79,6 +125,21 @@ function IntakeWizardInner() {
     if (currentStep === totalSteps - 1) {
       const scored = calculateScores(data);
       setResults(scored);
+      // Persist completion
+      (async () => {
+        if (!user) return;
+        if (submissionId.current) {
+          await supabase
+            .from('intake_submissions')
+            .update({ student_data: data as never, results: scored as never, completed: true })
+            .eq('id', submissionId.current);
+        } else {
+          await supabase
+            .from('intake_submissions')
+            .insert({ user_id: user.id, student_data: data as never, results: scored as never, completed: true });
+        }
+        await supabase.from('profiles').update({ intake_completed: true }).eq('id', user.id);
+      })();
     } else {
       setCurrentStep(currentStep + 1);
     }

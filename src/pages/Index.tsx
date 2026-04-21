@@ -1,16 +1,31 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import jdnLogo from '@/assets/jdn-logo.png';
-import { ArrowRight, Users, BarChart3, Shield } from 'lucide-react';
-import IntakeWizard from '@/components/intake/IntakeWizard';
+import { ArrowRight, Users, BarChart3, Shield, ChevronDown } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function Index() {
-  const [started, setStarted] = useState(false);
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const advisorId = params.get('advisor');
+  const { user, signOut } = useAuth();
+  const [firstName, setFirstName] = useState<string>('');
 
-  if (started) {
-    return <IntakeWizard />;
-  }
+  useEffect(() => {
+    if (!user) { setFirstName(''); return; }
+    supabase.from('profiles').select('first_name').eq('id', user.id).maybeSingle().then(({ data }) => {
+      setFirstName(data?.first_name ?? '');
+    });
+  }, [user]);
+
+  const handleStart = () => {
+    if (user) navigate('/post-auth');
+    else navigate(`/auth${advisorId ? `?advisor=${advisorId}` : ''}`);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -18,7 +33,19 @@ export default function Index() {
       <div className="bg-[#1A365D] w-full px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" className="w-[140px] h-auto" />
-          <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 text-base text-gray-200 hover:text-white">
+                {firstName || 'Account'} <ChevronDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate('/report')}>My Report</DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => { await signOut(); navigate('/'); }}>Sign Out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
+          )}
         </div>
       </div>
 
@@ -46,7 +73,7 @@ export default function Index() {
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
-              <Button size="lg" onClick={() => setStarted(true)} className="gap-2 text-base px-8 bg-[#1A365D] text-white hover:bg-[#1A365D]/90">
+              <Button size="lg" onClick={handleStart} className="gap-2 text-base px-8 bg-[#1A365D] text-white hover:bg-[#1A365D]/90">
                 Create My Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
