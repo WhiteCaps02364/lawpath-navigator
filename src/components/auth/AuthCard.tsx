@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import jdnLogo from '@/assets/jdn-logo.png';
 
-export function AuthCard({ children }: { children: ReactNode }) {
+export function AuthCard({ children, beforeCard }: { children: ReactNode; beforeCard?: ReactNode }) {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="bg-[#1A365D] w-full px-4 py-3">
@@ -10,7 +10,8 @@ export function AuthCard({ children }: { children: ReactNode }) {
           <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
         </div>
       </div>
-      <div className="px-4 py-12 flex justify-center">
+      <div className="px-4 py-12 flex flex-col items-center">
+        {beforeCard}
         <div
           className="w-full bg-white rounded-2xl border shadow-sm"
           style={{ maxWidth: 480, padding: 40 }}
