@@ -123,9 +123,6 @@ export default function AdvisorRegister() {
             ))}
           </div>
         </div>
-        <div className="flex h-12 w-screen items-center justify-center px-4 text-center text-[14px] font-medium text-navy" style={{ background: 'hsl(45 53% 54%)' }}>
-          Launching at NAPLA and SWAPLA Pre-Law Advising Conferences — be among the first advisors to join.
-        </div>
       </section>
     </>
   );
