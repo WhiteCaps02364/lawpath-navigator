@@ -166,7 +166,7 @@ export default function AdvisorRegister() {
   return (
     <>
     <AuthCard beforeCard={advisorIntro}>
-      <div ref={registrationCardRef} />
+      <div ref={registrationCardRef} className="mt-[60px]" />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
         We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
@@ -174,9 +174,6 @@ export default function AdvisorRegister() {
       <div style={{ height: 24 }} />
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <p className="mb-4 text-[14px] leading-6 text-muted-foreground">
-            Create your free advisor account to access your personal dashboard, generate a custom student link, and start receiving pre-analyzed student profiles before your advising meetings.
-          </p>
           <Label htmlFor="email">Institutional Email Address (.edu required)</Label>
           <Input
             id="email"
