@@ -61,8 +61,8 @@ export default function AdvisorRegister() {
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
         <h1 className="mx-auto max-w-4xl text-4xl font-heading leading-tight md:text-6xl">
-          <span className="text-navy">Spend Less Time Gathering Information.</span><br />
-          <span style={{ color: 'hsl(45 53% 54%)' }}>More Time Changing Outcomes.</span>
+          <span className="text-navy">Better Pre-Law Advising</span><br />
+          <span style={{ color: 'hsl(44 54% 54%)' }}>Starts Before the Meeting.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
           The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
