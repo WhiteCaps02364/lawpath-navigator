@@ -75,7 +75,7 @@ export default function AdvisorRegister() {
           >
             Create My Free Advisor Account →
           </button>
-          <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for advisors and students.</p>
+          <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for pre-law advisors and law school applicants.</p>
         </div>
         <div className="h-10" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
