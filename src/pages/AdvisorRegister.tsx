@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, BarChart3, ClipboardCheck, Mail, ShieldCheck } from 'lucide-react';
+import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
+import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 export default function AdvisorRegister() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const registrationCardRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -42,6 +45,10 @@ export default function AdvisorRegister() {
     navigate(`/advisor-register/details?email=${encodeURIComponent(email.trim().toLowerCase())}`);
   };
 
+  const scrollToRegistration = () => {
+    registrationCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const submitManual = () => {
     if (!mvName || !mvInstitution || !mvTitle) {
       toast({ title: 'Please complete required fields', variant: 'destructive' });
@@ -53,12 +60,23 @@ export default function AdvisorRegister() {
   const advisorIntro = (
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
-        <h1 className="mx-auto max-w-4xl text-[32px] font-bold leading-tight text-[#1A365D]">
-          Spend Less Time Gathering Information. More Time Changing Outcomes.
+        <h1 className="mx-auto max-w-4xl text-4xl font-heading leading-tight md:text-6xl">
+          <span className="text-navy">Spend Less Time Gathering Information.</span><br />
+          <span style={{ color: 'hsl(45 53% 54%)' }}>More Time Changing Outcomes.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
           The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
         </p>
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={scrollToRegistration}
+            className="h-11 rounded-md bg-navy px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-navy/90"
+          >
+            Create My Free Advisor Account →
+          </button>
+          <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for advisors and students.</p>
+        </div>
         <div className="h-10" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {[
@@ -89,48 +107,72 @@ export default function AdvisorRegister() {
         <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
           Free for advisors and students. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
         </div>
+        <div className="mx-auto max-w-5xl px-4 py-10">
+          <h2 className="text-center text-[18px] font-bold text-navy">Here's What Advisors Are Saying</h2>
+          <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {[1, 2].map((item) => (
+              <div key={item} className="rounded-xl border bg-card p-6 text-left transition-shadow hover:shadow-md">
+                <div className="flex items-start gap-4">
+                  <SilhouetteAvatar size={48} />
+                  <div>
+                    <p className="text-[14px] italic leading-6 text-gray-600">Placeholder quote — to be replaced with real advisor testimonial before launch.</p>
+                    <p className="mt-3 text-[13px] font-medium text-navy">Advisor Name, Title, Institution</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex h-12 w-screen items-center justify-center px-4 text-center text-[14px] font-medium text-navy" style={{ background: 'hsl(45 53% 54%)' }}>
+          Launching at NAPLA and SWAPLA Pre-Law Advising Conferences — be among the first advisors to join.
+        </div>
       </section>
     </>
   );
 
   if (sent) {
     return (
-      <AuthCard>
-        <div className="text-center space-y-4">
-          <div className="mx-auto w-12 h-12 rounded-full bg-[#1A365D]/10 flex items-center justify-center">
-            <Mail className="w-6 h-6 text-[#1A365D]" />
-          </div>
-          <h1 className="text-[24px] font-bold text-[#1A365D]">Check your inbox</h1>
-          <p className="text-[14px] text-muted-foreground">
-            We've sent a verification link to <span className="font-medium text-foreground">{email}</span>. Click the link to continue setting up your account.
-          </p>
-          <button
-            type="button"
-            onClick={() => toast({ title: 'Verification email resent' })}
-            className="text-[13px] text-muted-foreground underline"
-          >
-            Resend Email
-          </button>
-          <div className="pt-4 border-t">
+      <>
+        <AuthCard>
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-12 h-12 rounded-full bg-[#1A365D]/10 flex items-center justify-center">
+              <Mail className="w-6 h-6 text-[#1A365D]" />
+            </div>
+            <h1 className="text-[24px] font-bold text-[#1A365D]">Check your inbox</h1>
+            <p className="text-[14px] text-muted-foreground">
+              We've sent a verification link to <span className="font-medium text-foreground">{email}</span>. Click the link to continue setting up your account.
+            </p>
             <button
               type="button"
-              onClick={proceedToStep2}
-              className="text-[12px] text-muted-foreground underline"
+              onClick={() => toast({ title: 'Verification email resent' })}
+              className="text-[13px] text-muted-foreground underline"
             >
-              [Demo: Skip verification]
+              Resend Email
             </button>
-            <p className="text-[11px] text-muted-foreground mt-1">Prototype shortcut — will be removed before launch.</p>
+            <div className="pt-4 border-t">
+              <button
+                type="button"
+                onClick={proceedToStep2}
+                className="text-[12px] text-muted-foreground underline"
+              >
+                [Demo: Skip verification]
+              </button>
+              <p className="text-[11px] text-muted-foreground mt-1">Prototype shortcut — will be removed before launch.</p>
+            </div>
           </div>
-        </div>
-      </AuthCard>
+        </AuthCard>
+        <AdvisorFooter />
+      </>
     );
   }
 
   return (
+    <>
     <AuthCard beforeCard={advisorIntro}>
+      <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
-        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school.
+        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
       </p>
       <div style={{ height: 24 }} />
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -161,7 +203,7 @@ export default function AdvisorRegister() {
           type="submit"
           className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 transition-colors flex items-center justify-center gap-2"
         >
-          Send Verification Link <ArrowRight className="w-4 h-4" />
+          Get Started — Create My Free Account <ArrowRight className="w-4 h-4" />
         </button>
       </form>
 
@@ -211,5 +253,7 @@ export default function AdvisorRegister() {
         </DialogContent>
       </Dialog>
     </AuthCard>
+    <AdvisorFooter />
+    </>
   );
 }

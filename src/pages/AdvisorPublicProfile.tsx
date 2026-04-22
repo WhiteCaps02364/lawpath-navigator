@@ -3,6 +3,7 @@ import { institutionShortcode } from '@/lib/advisorSlug';
 import { ArrowRight, Building2, BarChart3, Shield, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import jdnLogo from '@/assets/jdn-logo.png';
+import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
 import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
 
@@ -114,17 +115,7 @@ export default function AdvisorPublicProfile() {
         </div>
       </section>
 
-      <footer className="border-t py-8">
-        <div className="max-w-4xl mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-[#1A365D] flex items-center justify-center">
-              <span className="text-white font-bold text-xs">JD</span>
-            </div>
-            <span className="text-sm text-muted-foreground">JD-Next</span>
-          </div>
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} JD-Next. All rights reserved.</p>
-        </div>
-      </footer>
+      <AdvisorFooter />
     </div>
   );
 }
