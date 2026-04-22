@@ -74,8 +74,8 @@ export default function AdvisorRegister() {
             },
             {
               icon: ShieldCheck,
-              title: 'Built on Real ABA Data',
-              description: 'Every school assessment is grounded in ABA Required Disclosures data — the most reliable source for admissions percentiles, employment outcomes, and graduate placement patterns.',
+              title: 'Built on ABA 509 Data',
+              description: 'Every target school assessment is grounded in ABA Required Disclosures data — the most reliable source for admissions percentiles, employment outcomes, and law school acceptance patterns.',
             },
           ].map((card) => (
             <div key={card.title} className="border rounded-xl p-6 bg-card hover:shadow-md transition-shadow text-left">
