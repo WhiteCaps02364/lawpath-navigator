@@ -70,7 +70,7 @@ export default function AdvisorRegister() {
             {
               icon: BarChart3,
               title: 'Your Dashboard, Ready to Go',
-              description: 'As students complete their assessments, their reports flow directly into your advisor dashboard. One click to see readiness level, school list analysis, GPA, test status, and more.',
+              description: 'As students complete their intake form, their advising report is added to your dashboard. One click to see readiness level, target school list analysis, UGPA, testing status, application timeline, and more.',
             },
             {
               icon: ShieldCheck,
