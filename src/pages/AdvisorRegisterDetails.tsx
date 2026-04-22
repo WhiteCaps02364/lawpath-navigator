@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -42,13 +43,14 @@ export default function AdvisorRegisterDetails() {
   };
 
   return (
-    <AuthCard>
-      <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Complete Your Advisor Profile</h1>
-      <p className="text-[14px] text-muted-foreground text-center mt-2">
-        These details power your public profile page and shareable link.
-      </p>
-      <div style={{ height: 24 }} />
-      <form onSubmit={submit} className="space-y-4">
+    <>
+      <AuthCard>
+        <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Complete Your Advisor Profile</h1>
+        <p className="text-[14px] text-muted-foreground text-center mt-2">
+          These details power your public profile page and shareable link.
+        </p>
+        <div style={{ height: 24 }} />
+        <form onSubmit={submit} className="space-y-4">
         <div>
           <Label>Verified Institutional Email</Label>
           <Input value={email} readOnly className="mt-1.5 bg-muted text-muted-foreground" />
@@ -131,7 +133,9 @@ export default function AdvisorRegisterDetails() {
           and{' '}
           <a href="https://aspenpublishing.com/policies/privacy-policy" target="_blank" rel="noreferrer" className="underline">Privacy Policy</a>.
         </p>
-      </form>
-    </AuthCard>
+        </form>
+      </AuthCard>
+      <AdvisorFooter />
+    </>
   );
 }
