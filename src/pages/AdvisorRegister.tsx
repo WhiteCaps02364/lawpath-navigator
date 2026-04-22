@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, BarChart3, ClipboardCheck, Mail, ShieldCheck } from 'lucide-react';
 import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
-import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -77,7 +76,7 @@ export default function AdvisorRegister() {
           </button>
           <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for pre-law advisors and law school applicants.</p>
         </div>
-        <div className="h-10" />
+        <div className="h-[72px]" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {[
             {
@@ -96,32 +95,16 @@ export default function AdvisorRegister() {
               description: 'Every target school assessment is grounded in ABA Required Disclosures data — the most reliable source for admissions percentiles, employment outcomes, and law school acceptance patterns.',
             },
           ].map((card) => (
-            <div key={card.title} className="border rounded-xl p-6 bg-card hover:shadow-md transition-shadow text-left">
+            <div key={card.title} className="border rounded-xl p-8 bg-card hover:shadow-md transition-shadow text-left">
               <card.icon className="w-10 h-10 text-secondary mb-4" />
               <h2 className="text-lg font-bold text-[#1A365D]">{card.title}</h2>
-              <p className="mt-3 text-[14px] leading-6 text-muted-foreground">{card.description}</p>
+              <p className="mt-3 text-[14px] leading-[1.7] text-muted-foreground">{card.description}</p>
             </div>
           ))}
         </div>
-        <div className="h-10" />
+        <div className="h-[72px]" />
         <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
           Free for pre-law advisors and law school applicants. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
-        </div>
-        <div className="mx-auto max-w-5xl px-4 py-10">
-          <h2 className="text-center text-[18px] font-bold text-navy">Here's What Advisors Are Saying</h2>
-          <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {[1, 2].map((item) => (
-              <div key={item} className="rounded-xl border bg-card p-6 text-left transition-shadow hover:shadow-md">
-                <div className="flex items-start gap-4">
-                  <SilhouetteAvatar size={48} />
-                  <div>
-                    <p className="text-[14px] italic leading-6 text-gray-600">Placeholder quote — to be replaced with real advisor testimonial before launch.</p>
-                    <p className="mt-3 text-[13px] font-medium text-navy">Advisor Name, Title, Institution</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
     </>
@@ -165,7 +148,7 @@ export default function AdvisorRegister() {
 
   return (
     <>
-    <AuthCard beforeCard={advisorIntro} cardClassName="mt-12" cardStyle={{ padding: '32px 40px' }}>
+    <AuthCard beforeCard={advisorIntro} cardClassName="mt-[72px] shadow-md" cardStyle={{ maxWidth: 520, padding: '48px 40px' }}>
       <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-4">
