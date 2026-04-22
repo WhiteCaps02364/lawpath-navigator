@@ -57,7 +57,7 @@ export default function AdvisorRegister() {
           Your Students Arrive Underprepared. This Fixes That.
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
-          The Pre-Law Advisory Engine gives every advisee a structured, data-driven profile before they walk into your office — so your meetings start with strategy, not background questions.
+          The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
         </p>
         <div className="h-10" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
