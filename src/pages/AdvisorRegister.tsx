@@ -105,7 +105,7 @@ export default function AdvisorRegister() {
         </div>
         <div className="h-10" />
         <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
-          Free for advisors and students. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
+          Free for pre-law advisors and law school applicants. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
         </div>
         <div className="mx-auto max-w-5xl px-4 py-10">
           <h2 className="text-center text-[18px] font-bold text-navy">Here's What Advisors Are Saying</h2>
