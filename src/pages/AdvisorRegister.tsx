@@ -132,42 +132,47 @@ export default function AdvisorRegister() {
 
   if (sent) {
     return (
-      <AuthCard>
-        <div className="text-center space-y-4">
-          <div className="mx-auto w-12 h-12 rounded-full bg-[#1A365D]/10 flex items-center justify-center">
-            <Mail className="w-6 h-6 text-[#1A365D]" />
-          </div>
-          <h1 className="text-[24px] font-bold text-[#1A365D]">Check your inbox</h1>
-          <p className="text-[14px] text-muted-foreground">
-            We've sent a verification link to <span className="font-medium text-foreground">{email}</span>. Click the link to continue setting up your account.
-          </p>
-          <button
-            type="button"
-            onClick={() => toast({ title: 'Verification email resent' })}
-            className="text-[13px] text-muted-foreground underline"
-          >
-            Resend Email
-          </button>
-          <div className="pt-4 border-t">
+      <>
+        <AuthCard>
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-12 h-12 rounded-full bg-[#1A365D]/10 flex items-center justify-center">
+              <Mail className="w-6 h-6 text-[#1A365D]" />
+            </div>
+            <h1 className="text-[24px] font-bold text-[#1A365D]">Check your inbox</h1>
+            <p className="text-[14px] text-muted-foreground">
+              We've sent a verification link to <span className="font-medium text-foreground">{email}</span>. Click the link to continue setting up your account.
+            </p>
             <button
               type="button"
-              onClick={proceedToStep2}
-              className="text-[12px] text-muted-foreground underline"
+              onClick={() => toast({ title: 'Verification email resent' })}
+              className="text-[13px] text-muted-foreground underline"
             >
-              [Demo: Skip verification]
+              Resend Email
             </button>
-            <p className="text-[11px] text-muted-foreground mt-1">Prototype shortcut — will be removed before launch.</p>
+            <div className="pt-4 border-t">
+              <button
+                type="button"
+                onClick={proceedToStep2}
+                className="text-[12px] text-muted-foreground underline"
+              >
+                [Demo: Skip verification]
+              </button>
+              <p className="text-[11px] text-muted-foreground mt-1">Prototype shortcut — will be removed before launch.</p>
+            </div>
           </div>
-        </div>
-      </AuthCard>
+        </AuthCard>
+        <AdvisorFooter />
+      </>
     );
   }
 
   return (
+    <>
     <AuthCard beforeCard={advisorIntro}>
+      <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
-        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school.
+        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
       </p>
       <div style={{ height: 24 }} />
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -198,7 +203,7 @@ export default function AdvisorRegister() {
           type="submit"
           className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 transition-colors flex items-center justify-center gap-2"
         >
-          Send Verification Link <ArrowRight className="w-4 h-4" />
+          Get Started — Create My Free Account <ArrowRight className="w-4 h-4" />
         </button>
       </form>
 
@@ -248,5 +253,7 @@ export default function AdvisorRegister() {
         </DialogContent>
       </Dialog>
     </AuthCard>
+    <AdvisorFooter />
+    </>
   );
 }
