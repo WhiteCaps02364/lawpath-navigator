@@ -77,7 +77,7 @@ export default function AdvisorRegister() {
           <p className="text-[15px] font-medium text-[#344054]">Account setup takes less than 2 minutes. Free for pre-law advisors and law school applicants.</p>
         </div>
         <div className="h-[72px]" />
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-stretch gap-6 md:grid-cols-3">
           {[
             {
               icon: ClipboardCheck,
@@ -95,7 +95,7 @@ export default function AdvisorRegister() {
               description: 'Every target school assessment is grounded in ABA Required Disclosures data — the most reliable source for admissions percentiles, employment outcomes, and law school acceptance patterns.',
             },
           ].map((card) => (
-            <div key={card.title} className="border rounded-xl p-8 bg-card hover:shadow-md transition-shadow text-left">
+            <div key={card.title} className="min-h-[280px] border rounded-xl p-8 bg-card hover:shadow-md transition-shadow text-left">
               <card.icon className="w-10 h-10 text-secondary mb-4" />
               <h2 className="text-lg font-bold text-[#1A365D]">{card.title}</h2>
               <p className="mt-3 text-[14px] leading-[1.7] text-muted-foreground">{card.description}</p>
@@ -144,10 +144,10 @@ export default function AdvisorRegister() {
 
   return (
     <>
-    <AuthCard beforeCard={advisorIntro} cardClassName="mt-[72px] shadow-md" cardStyle={{ maxWidth: 520, padding: '48px 40px' }}>
+    <AuthCard beforeCard={advisorIntro} cardClassName="mt-12 shadow-md" cardStyle={{ maxWidth: 520, padding: '48px 40px' }}>
       <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
-      <p className="text-[14px] text-muted-foreground text-center mt-4">
+      <p className="text-[14px] text-muted-foreground text-left mt-4">
         We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
       </p>
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
