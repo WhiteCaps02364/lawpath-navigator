@@ -60,7 +60,7 @@ export default function AdvisorRegister() {
   const advisorIntro = (
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
-        <h1 className="mx-auto max-w-4xl text-4xl font-heading font-bold leading-tight md:text-6xl">
+        <h1 className="mx-auto max-w-4xl text-4xl font-heading leading-tight md:text-6xl">
           <span className="text-navy">Spend Less Time Gathering Information.</span><br />
           <span style={{ color: 'hsl(45 53% 54%)' }}>More Time Changing Outcomes.</span>
         </h1>

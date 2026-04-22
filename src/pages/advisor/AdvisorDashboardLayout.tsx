@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Users, Eye, LayoutDashboard, BookOpen, Link2, X } from 'lucide-react';
+import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
 import { AdvisorHeader } from '@/components/advisor/AdvisorHeader';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
 
@@ -62,6 +63,7 @@ export default function AdvisorDashboardLayout() {
           <Outlet />
         </main>
       </div>
+      <AdvisorFooter />
     </div>
   );
 }
