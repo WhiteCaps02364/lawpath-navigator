@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, BarChart3, ClipboardCheck, Mail, ShieldCheck } from 'lucide-react';
+import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
+import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 export default function AdvisorRegister() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const registrationCardRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -42,6 +45,10 @@ export default function AdvisorRegister() {
     navigate(`/advisor-register/details?email=${encodeURIComponent(email.trim().toLowerCase())}`);
   };
 
+  const scrollToRegistration = () => {
+    registrationCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const submitManual = () => {
     if (!mvName || !mvInstitution || !mvTitle) {
       toast({ title: 'Please complete required fields', variant: 'destructive' });
@@ -53,12 +60,23 @@ export default function AdvisorRegister() {
   const advisorIntro = (
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
-        <h1 className="mx-auto max-w-4xl text-[32px] font-bold leading-tight text-[#1A365D]">
-          Spend Less Time Gathering Information. More Time Changing Outcomes.
+        <h1 className="mx-auto max-w-4xl text-4xl font-heading font-bold leading-tight md:text-6xl">
+          <span className="text-[#1A365D]">Spend Less Time Gathering Information.</span><br />
+          <span style={{ color: '#C9A84C' }}>More Time Changing Outcomes.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
           The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
         </p>
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={scrollToRegistration}
+            className="h-11 rounded-md bg-[#1A365D] px-6 text-sm font-medium text-white transition-colors hover:bg-[#1A365D]/90"
+          >
+            Create My Free Advisor Account →
+          </button>
+          <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for advisors and students.</p>
+        </div>
         <div className="h-10" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {[
@@ -88,6 +106,25 @@ export default function AdvisorRegister() {
         <div className="h-10" />
         <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
           Free for advisors and students. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
+        </div>
+        <div className="mx-auto max-w-5xl px-4 py-10">
+          <h2 className="text-center text-[18px] font-bold text-[#1A365D]">Here's What Advisors Are Saying</h2>
+          <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {[1, 2].map((item) => (
+              <div key={item} className="rounded-xl border bg-card p-6 text-left transition-shadow hover:shadow-md">
+                <div className="flex items-start gap-4">
+                  <SilhouetteAvatar size={48} />
+                  <div>
+                    <p className="text-[14px] italic leading-6 text-gray-600">Placeholder quote — to be replaced with real advisor testimonial before launch.</p>
+                    <p className="mt-3 text-[13px] font-medium text-[#1A365D]">Advisor Name, Title, Institution</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex h-12 w-screen items-center justify-center px-4 text-center text-[14px] font-medium text-[#1A365D]" style={{ background: '#C9A84C' }}>
+          Launching at NAPLA and SWAPLA Pre-Law Advising Conferences — be among the first advisors to join.
         </div>
       </section>
     </>
