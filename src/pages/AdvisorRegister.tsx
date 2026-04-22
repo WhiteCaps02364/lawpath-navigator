@@ -74,7 +74,7 @@ export default function AdvisorRegister() {
           >
             Create My Free Advisor Account →
           </button>
-          <p className="text-[13px] text-gray-500">Account setup takes less than 2 minutes. Free for pre-law advisors and law school applicants.</p>
+          <p className="text-[15px] font-medium text-[#344054]">Account setup takes less than 2 minutes. Free for pre-law advisors and law school applicants.</p>
         </div>
         <div className="h-[72px]" />
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
@@ -101,10 +101,6 @@ export default function AdvisorRegister() {
               <p className="mt-3 text-[14px] leading-[1.7] text-muted-foreground">{card.description}</p>
             </div>
           ))}
-        </div>
-        <div className="h-[72px]" />
-        <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
-          Free for pre-law advisors and law school applicants. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
         </div>
       </section>
     </>
