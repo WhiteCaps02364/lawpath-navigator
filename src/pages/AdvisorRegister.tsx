@@ -165,14 +165,13 @@ export default function AdvisorRegister() {
 
   return (
     <>
-    <AuthCard beforeCard={advisorIntro}>
-      <div ref={registrationCardRef} className="mt-[60px]" />
+    <AuthCard beforeCard={advisorIntro} cardClassName="mt-12" cardStyle={{ padding: '32px 40px' }}>
+      <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
-      <p className="text-[14px] text-muted-foreground text-center mt-2">
+      <p className="text-[14px] text-muted-foreground text-center mt-4">
         We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
       </p>
-      <div style={{ height: 24 }} />
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <div>
           <Label htmlFor="email">Institutional Email Address (.edu required)</Label>
           <Input
