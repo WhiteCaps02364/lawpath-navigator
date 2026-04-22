@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, BarChart3, ClipboardCheck, Mail, ShieldCheck } from 'lucide-react';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -50,6 +50,49 @@ export default function AdvisorRegister() {
     setMvSent(true);
   };
 
+  const advisorIntro = (
+    <>
+      <section className="w-screen bg-white py-14 px-4 text-center">
+        <h1 className="mx-auto max-w-4xl text-[32px] font-bold leading-tight text-[#1A365D]">
+          Your Students Arrive Underprepared. This Fixes That.
+        </h1>
+        <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
+          The Pre-Law Advisory Engine gives every advisee a structured, data-driven profile before they walk into your office — so your meetings start with strategy, not background questions.
+        </p>
+        <div className="h-10" />
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+          {[
+            {
+              icon: ClipboardCheck,
+              title: 'Students Arrive Briefed, Not Blank',
+              description: 'Every advisee completes a structured 10-minute intake before your meeting. You receive a pre-analyzed profile, risk flags, and a suggested meeting agenda — before the conversation begins.',
+            },
+            {
+              icon: BarChart3,
+              title: 'Your Dashboard, Ready to Go',
+              description: 'As students complete their assessments, their reports flow directly into your advisor dashboard. One click to see readiness level, school list analysis, GPA, test status, and more.',
+            },
+            {
+              icon: ShieldCheck,
+              title: 'Built on Real ABA Data',
+              description: 'Every school assessment is grounded in ABA Required Disclosures data — the most reliable source for admissions percentiles, employment outcomes, and graduate placement patterns.',
+            },
+          ].map((card) => (
+            <div key={card.title} className="border rounded-xl p-6 bg-card hover:shadow-md transition-shadow text-left">
+              <card.icon className="w-10 h-10 text-secondary mb-4" />
+              <h2 className="text-lg font-bold text-[#1A365D]">{card.title}</h2>
+              <p className="mt-3 text-[14px] leading-6 text-muted-foreground">{card.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="h-10" />
+        <div className="flex h-12 w-screen items-center justify-center bg-[#F2F4F7] px-4 text-center text-[14px] text-gray-600">
+          Free for advisors and students. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
+        </div>
+      </section>
+    </>
+  );
+
   if (sent) {
     return (
       <AuthCard>
@@ -84,14 +127,17 @@ export default function AdvisorRegister() {
   }
 
   return (
-    <AuthCard>
+    <AuthCard beforeCard={advisorIntro}>
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
-        Pre-Law Advisor accounts require a verified institutional email address.
+        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school.
       </p>
       <div style={{ height: 24 }} />
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <p className="mb-4 text-[14px] leading-6 text-muted-foreground">
+            Create your free advisor account to access your personal dashboard, generate a custom student link, and start receiving pre-analyzed student profiles before your advising meetings.
+          </p>
           <Label htmlFor="email">Institutional Email Address (.edu required)</Label>
           <Input
             id="email"
