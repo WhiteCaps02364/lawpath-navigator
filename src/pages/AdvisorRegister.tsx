@@ -65,7 +65,7 @@ export default function AdvisorRegister() {
           <span style={{ color: 'hsl(44 54% 54%)' }}>Starts Before the Meeting.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
-          The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
+          The Pre-Law Advisory Engine delivers a structured, data-driven advisee profile before your first meeting — so every conversation starts with insight, not intake.
         </p>
         <div className="mt-6 flex flex-col items-center gap-2">
           <button
