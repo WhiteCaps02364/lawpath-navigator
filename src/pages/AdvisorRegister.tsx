@@ -54,7 +54,7 @@ export default function AdvisorRegister() {
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
         <h1 className="mx-auto max-w-4xl text-[32px] font-bold leading-tight text-[#1A365D]">
-          Your Students Arrive Underprepared. This Fixes That.
+          Spend Less Time Gathering Information. More Time Changing Outcomes.
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
           The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
