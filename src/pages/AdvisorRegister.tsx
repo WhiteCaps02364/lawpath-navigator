@@ -61,8 +61,8 @@ export default function AdvisorRegister() {
     <>
       <section className="w-screen bg-white py-14 px-4 text-center">
         <h1 className="mx-auto max-w-4xl text-4xl font-heading font-bold leading-tight md:text-6xl">
-          <span className="text-[#1A365D]">Spend Less Time Gathering Information.</span><br />
-          <span style={{ color: '#C9A84C' }}>More Time Changing Outcomes.</span>
+          <span className="text-navy">Spend Less Time Gathering Information.</span><br />
+          <span style={{ color: 'hsl(45 53% 54%)' }}>More Time Changing Outcomes.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[560px] text-[16px] leading-7 text-gray-600">
           The Pre-Law Advisory Engine gives pre-law advisors a structured, data-driven advisee profile before they walk into your office — so your meetings start with strategy, not background questions.
@@ -71,7 +71,7 @@ export default function AdvisorRegister() {
           <button
             type="button"
             onClick={scrollToRegistration}
-            className="h-11 rounded-md bg-[#1A365D] px-6 text-sm font-medium text-white transition-colors hover:bg-[#1A365D]/90"
+            className="h-11 rounded-md bg-navy px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-navy/90"
           >
             Create My Free Advisor Account →
           </button>
@@ -108,7 +108,7 @@ export default function AdvisorRegister() {
           Free for advisors and students. Verified institutional accounts only. Built by JD-Next in partnership with pre-law advisors nationwide.
         </div>
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <h2 className="text-center text-[18px] font-bold text-[#1A365D]">Here's What Advisors Are Saying</h2>
+          <h2 className="text-center text-[18px] font-bold text-navy">Here's What Advisors Are Saying</h2>
           <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
             {[1, 2].map((item) => (
               <div key={item} className="rounded-xl border bg-card p-6 text-left transition-shadow hover:shadow-md">
@@ -116,14 +116,14 @@ export default function AdvisorRegister() {
                   <SilhouetteAvatar size={48} />
                   <div>
                     <p className="text-[14px] italic leading-6 text-gray-600">Placeholder quote — to be replaced with real advisor testimonial before launch.</p>
-                    <p className="mt-3 text-[13px] font-medium text-[#1A365D]">Advisor Name, Title, Institution</p>
+                    <p className="mt-3 text-[13px] font-medium text-navy">Advisor Name, Title, Institution</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="flex h-12 w-screen items-center justify-center px-4 text-center text-[14px] font-medium text-[#1A365D]" style={{ background: '#C9A84C' }}>
+        <div className="flex h-12 w-screen items-center justify-center px-4 text-center text-[14px] font-medium text-navy" style={{ background: 'hsl(45 53% 54%)' }}>
           Launching at NAPLA and SWAPLA Pre-Law Advising Conferences — be among the first advisors to join.
         </div>
       </section>
