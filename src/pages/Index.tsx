@@ -32,7 +32,7 @@ export default function Index() {
       {/* Header */}
       <div className="bg-[#1A365D] w-full px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <img src={jdnLogo} alt="JD-Next" className="w-[140px] h-auto" />
+          <img src={jdnLogo} alt="JD-Next" className="h-[56px] w-auto" />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 text-base text-gray-200 hover:text-white">
@@ -52,7 +52,7 @@ export default function Index() {
       {/* Hero */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-gold/5" />
-        <div className="relative max-w-4xl mx-auto px-4 py-20 md:py-32 text-center">
+        <div className="relative max-w-4xl mx-auto px-4 pt-4 pb-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -85,14 +85,16 @@ export default function Index() {
       </div>
 
       {/* Proof line */}
-      <div className="max-w-3xl mx-auto px-4 pb-12 text-center">
-        <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
+      <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
+        <div className="h-px bg-[#D0D5DD]" />
+        <p className="text-base text-[#344054] leading-relaxed">
           Every advising report starts with data law schools report to the ABA each year — so your admissions plan is built on facts, not guesswork.
         </p>
+        <div className="h-px bg-[#D0D5DD]" />
       </div>
 
       {/* Features */}
-      <div className="max-w-5xl mx-auto px-4 py-16 md:py-24">
+      <div className="max-w-5xl mx-auto px-4 pt-10 pb-16 md:pb-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
