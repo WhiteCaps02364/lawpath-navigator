@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -51,6 +51,9 @@
     --gold: 43 52% 54%;
     --gold-light: 43 55% 70%;
     --gold-muted: 43 30% 90%;
+    --brand-navy: 215 56% 23%;
+    --credibility-text: 217 24% 27%;
+    --callout-background: 211 100% 96%;
     --success: 152 60% 40%;
     --success-foreground: 0 0% 100%;
     --warning: 38 90% 55%;
