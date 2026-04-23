@@ -260,6 +260,7 @@ function getRecommenderGuidance(data: StudentData): {
 }
 
 export function calculateScores(data: StudentData): ScoringResult {
+  const graduated = hasGraduated(data);
   const { level: readinessLevel, explanation: readinessExplanation } = getReadiness(data);
   const { recommendation: strategyRecommendation, explanation: strategyExplanation } = getStrategy(data, readinessLevel);
   const { recommendation: timelineRecommendation, rationale: timelineRationale } = getTimeline(data);
@@ -337,7 +338,9 @@ export function calculateScores(data: StudentData): ScoringResult {
     actionPlan.push('Identify and approach a professor who can write a strong academic recommendation letter.');
   }
   if (data.riskFlags.some(f => f !== 'None')) {
-    actionPlan.push('Prepare an addendum addressing your academic history — frame it as growth, not excuse.');
+    actionPlan.push(graduated
+      ? 'Identify and pursue legal work experience relevant to your practice area interest before applying.'
+      : 'Prepare an addendum addressing your academic history — frame it as growth, not excuse.');
   }
   actionPlan.push('Review your school list with your advisor and discuss reach/target/safety balance.');
   if (data.personalStatementThemes.length < 20) {
