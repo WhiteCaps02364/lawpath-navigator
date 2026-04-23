@@ -6,6 +6,10 @@ import { lawSchools } from '@/data/lawSchools';
 
 const currentYear = new Date().getFullYear();
 
+function hasGraduated(data: StudentData): boolean {
+  return data.graduationYear < currentYear || data.currentYear === 'Alumni / Recent Graduate';
+}
+
 const STATE_TO_REGION: Record<string, string> = {
   // Northeast
   CT: 'Northeast', ME: 'Northeast', MA: 'Northeast', NH: 'Northeast',
@@ -108,6 +112,7 @@ function getGeoAlignment(
 }
 
 function getReadiness(data: StudentData): { level: ReadinessLevel; explanation: string } {
+  const graduated = hasGraduated(data);
   let base: ReadinessLevel;
   if (data.cumulativeGPA >= 3.7) base = 'High';
   else if (data.cumulativeGPA >= 3.3) base = 'Developing';
@@ -139,8 +144,12 @@ function getReadiness(data: StudentData): { level: ReadinessLevel; explanation: 
   const level = levels[idx];
   const explanations: Record<ReadinessLevel, string> = {
     'High': `With a ${data.cumulativeGPA.toFixed(2)} GPA${strongLSAT ? ` and a ${data.lsatScore} LSAT` : ''}, you are competitively positioned for your target schools.`,
-    'Developing': `Your ${data.cumulativeGPA.toFixed(2)} GPA shows a solid academic foundation. Strategic preparation can strengthen your application significantly.`,
-    'Needs Preparation': `Your current academic profile suggests additional preparation will improve your outcomes. This is a starting point, not a ceiling.`,
+    'Developing': graduated
+      ? 'Your academic record is already established. Focus on test preparation, relevant work experience, and strong recommender strategy to strengthen your application significantly.'
+      : `Your ${data.cumulativeGPA.toFixed(2)} GPA shows a solid academic foundation. Strategic preparation can strengthen your application significantly.`,
+    'Needs Preparation': graduated
+      ? 'Your academic record is already established, so test preparation and relevant legal work experience are the primary levers available to improve your outcomes.'
+      : 'Your current academic profile suggests additional preparation will improve your outcomes. This is a starting point, not a ceiling.',
   };
 
   return { level, explanation: explanations[level] };
@@ -200,30 +209,22 @@ function getStrategy(data: StudentData, readiness: ReadinessLevel): { recommenda
 
 function getTimeline(data: StudentData): { recommendation: string; rationale: string } {
   const yearsUntilStart = (data.intendedStartYear ?? currentYear + 2) - currentYear;
-
-  if (data.applicationTimingIntent === 'This cycle') {
-    if (data.testStatus === 'None') {
-      return {
-        recommendation: 'Apply next cycle instead',
-        rationale: 'You plan to apply this cycle but have not yet taken an admissions test. Rushing a test may not yield your best score. Consider taking the next available test date and applying early next cycle for better outcomes.',
-      };
-    }
-    return {
-      recommendation: 'Apply this cycle — submit early',
-      rationale: 'With your test completed, aim to submit applications by October–November for the best consideration. Early applicants statistically receive more favorable scholarship offers.',
-    };
-  }
+  const graduated = hasGraduated(data);
 
   if (yearsUntilStart >= 2) {
     return {
       recommendation: 'You have time — use it strategically',
-      rationale: `With ${yearsUntilStart} years until your intended start, focus on raising your GPA, gaining relevant experience, and preparing thoroughly for your admissions test.`,
+      rationale: graduated
+        ? `With ${yearsUntilStart} years until your intended start, focus on gaining relevant legal work experience, building strong professional recommender relationships, and preparing thoroughly for your admissions test.`
+        : `With ${yearsUntilStart} years until your intended start, focus on raising your GPA, gaining relevant experience, and preparing thoroughly for your admissions test.`,
     };
   }
 
   return {
     recommendation: 'Begin preparation now',
-    rationale: 'Plan to take your admissions test at least 6–9 months before your application deadline. This gives time for retakes if needed and positions you for early application submission.',
+    rationale: graduated
+      ? 'Plan to take your admissions test at least 6–9 months before your application deadline. Focus on building your strongest possible application — test preparation and recommender strategy should be your immediate priorities.'
+      : 'Focus on finishing strong academically, securing strong recommenders, and beginning your admissions test preparation. Early applicants statistically receive more favorable scholarship offers.',
   };
 }
 
