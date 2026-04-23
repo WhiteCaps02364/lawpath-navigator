@@ -60,7 +60,7 @@ export default function Index() {
             className="space-y-6"
           >
             <p className="text-sm text-muted-foreground">
-              Provided free by JD-Next.
+              Provided free by JD-Next — for advisors and applicants alike.
             </p>
 
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
@@ -127,7 +127,7 @@ export default function Index() {
           ))}
         </div>
 
-        <div className="mt-10 mx-auto max-w-[720px] border-l-4 border-brand-navy bg-callout p-6 text-center">
+        <div className="mt-10 w-full border-l-4 border-brand-navy bg-callout p-6 text-center">
           <h2 className="text-[15px] font-bold text-brand-navy">Working with a Pre-Law Advisor?</h2>
           <p className="mt-3 text-sm text-credibility leading-relaxed">
             If your advisor has set up an account, your completed report will go directly to their dashboard before your meeting. Don't have an advisor? Your report is fully personalized and actionable on its own — download it as a PDF or share it with anyone supporting your application.
