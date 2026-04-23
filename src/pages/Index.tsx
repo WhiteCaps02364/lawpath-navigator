@@ -60,7 +60,7 @@ export default function Index() {
             className="space-y-6"
           >
             <p className="text-sm text-muted-foreground">
-              Provided free by JD-Next in partnership with your pre-law advisor.
+              Provided free by JD-Next.
             </p>
 
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
@@ -109,8 +109,8 @@ export default function Index() {
             },
             {
               icon: Users,
-              title: 'Your Advisor, Fully Briefed',
-              description: 'Your advisor receives a summary of your profile before you meet, so your conversation starts with strategy — not background questions.',
+              title: 'Share With Your Advisor — Or Keep It for Yourself',
+              description: 'Your report is yours. If you\'re working with a pre-law advisor, you can send it directly to their dashboard. If not, download it as a PDF and use it to guide your own planning.',
             },
           ].map((feature, i) => (
             <motion.div
@@ -126,14 +126,21 @@ export default function Index() {
             </motion.div>
           ))}
         </div>
+
+        <div className="mt-10 mx-auto max-w-[720px] border-l-4 border-brand-navy bg-callout p-6 text-center">
+          <h2 className="text-[15px] font-bold text-brand-navy">Working with a Pre-Law Advisor?</h2>
+          <p className="mt-3 text-sm text-credibility leading-relaxed">
+            If your advisor has set up an account, your completed report will go directly to their dashboard before your meeting. Don't have an advisor? Your report is fully personalized and actionable on its own — download it as a PDF or share it with anyone supporting your application.
+          </p>
+        </div>
       </div>
 
       {/* Advisor section */}
       <div className="bg-primary text-primary-foreground py-16 md:py-20">
         <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
-          <h2 className="text-2xl md:text-3xl font-heading">Designed for You. Built for Your Advisor.</h2>
+          <h2 className="text-2xl md:text-3xl font-heading">Built for Every Path to Law School.</h2>
           <p className="text-base md:text-lg leading-relaxed opacity-90">
-            When you complete your intake, you and your pre-law advisor will receive a full profile, school analysis, and a suggested meeting agenda — so your time together focuses on strategy, not background questions.
+            When you complete your intake, you'll receive a full profile, school analysis, and personalized action plan. If you're working with a pre-law advisor, they'll receive a copy too — so your time together focuses on strategy, not background questions.
           </p>
         </div>
       </div>

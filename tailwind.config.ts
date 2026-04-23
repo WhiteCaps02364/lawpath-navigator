@@ -60,6 +60,15 @@ export default {
           light: "hsl(var(--gold-light))",
           muted: "hsl(var(--gold-muted))",
         },
+        brand: {
+          navy: "hsl(var(--brand-navy))",
+        },
+        credibility: {
+          DEFAULT: "hsl(var(--credibility-text))",
+        },
+        callout: {
+          DEFAULT: "hsl(var(--callout-background))",
+        },
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
