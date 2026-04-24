@@ -130,7 +130,7 @@ export default function Index() {
         <div className="mt-10 w-full border-l-4 border-brand-navy bg-callout p-6 text-center">
           <h2 className="text-[15px] font-bold text-brand-navy">Working with a Pre-Law Advisor?</h2>
           <p className="mt-3 text-sm text-credibility leading-relaxed">
-            If your advisor has set up an account, your completed report will go directly to their dashboard before your meeting. Don't have an advisor? Your report is fully personalized and actionable on its own — download it as a PDF or share it with anyone supporting your application.
+            If your advisor has set up an account, you can send your completed report to their dashboard before your meeting. Don't have an advisor? Your report is fully personalized — download it as a PDF and use it as a starting point for your application strategy.
           </p>
         </div>
       </div>
