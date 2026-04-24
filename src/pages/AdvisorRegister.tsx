@@ -148,7 +148,7 @@ export default function AdvisorRegister() {
       <div ref={registrationCardRef} />
       <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-left mt-4">
-        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.)
+        We verify all advisor accounts using your institutional .edu email — so students know they're connecting with a real, verified advisor at their school. (This also ensures your dashboard and student data remain private and institution-specific.) We may also ask for a link to your institutional bio page to confirm your affiliation.
       </p>
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <div>

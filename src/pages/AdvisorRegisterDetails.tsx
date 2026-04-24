@@ -25,18 +25,31 @@ export default function AdvisorRegisterDetails() {
   const [phone, setPhone] = useState('');
   const [years, setYears] = useState('');
   const [bio, setBio] = useState('');
+  const [bioUrl, setBioUrl] = useState('');
+  const [bioUrlError, setBioUrlError] = useState<string | null>(null);
+  const [verificationNotes, setVerificationNotes] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
   const [showPw, setShowPw] = useState(false);
 
-  const canSubmit = firstName && lastName && title && institution && years && pw.length >= 8 && pw === pwConfirm;
+  const isValidUrl = (u: string) => /^https?:\/\/.+\..+/i.test(u.trim());
+  const canSubmit =
+    firstName && lastName && title && institution && years &&
+    bioUrl && isValidUrl(bioUrl) &&
+    pw.length >= 8 && pw === pwConfirm;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isValidUrl(bioUrl)) {
+      setBioUrlError('Please enter a valid URL beginning with https://');
+      return;
+    }
     if (!canSubmit) return;
     const advisor = buildDemoAdvisor({
       email, firstName, lastName, title, institution,
       phone: phone || undefined, yearsAdvising: years, biography: bio || undefined,
+      institutionalBioUrl: bioUrl,
+      verificationNotes: verificationNotes || undefined,
     });
     setAdvisor(advisor);
     navigate('/advisor-dashboard', { replace: true });
@@ -79,6 +92,41 @@ export default function AdvisorRegisterDetails() {
               ))}
             </SelectContent>
           </Select>
+        </div>
+        <div>
+          <Label htmlFor="bioUrl">Link to Your Institutional Bio or Faculty Page</Label>
+          <p className="text-[12px] text-muted-foreground mt-1">
+            Please provide a link to your bio, faculty profile, or directory listing on your institution's website. This helps us verify your affiliation. Example: https://www.university.edu/staff/jane-smith
+          </p>
+          <Input
+            id="bioUrl"
+            type="url"
+            placeholder="https://www.university.edu/your-bio"
+            value={bioUrl}
+            onChange={e => { setBioUrl(e.target.value); setBioUrlError(null); }}
+            onBlur={() => {
+              if (bioUrl && !isValidUrl(bioUrl)) {
+                setBioUrlError('Please enter a valid URL beginning with https://');
+              }
+            }}
+            className="mt-1.5"
+            required
+          />
+          {bioUrlError && <p className="text-[12px] text-destructive mt-1">{bioUrlError}</p>}
+        </div>
+        <div>
+          <Label htmlFor="verificationNotes">Notes (Optional)</Label>
+          <p className="text-[12px] text-muted-foreground mt-1">
+            If your institutional bio isn't posted yet or you'd like to add context about your role, please add a brief note here.
+          </p>
+          <Textarea
+            id="verificationNotes"
+            value={verificationNotes}
+            onChange={e => setVerificationNotes(e.target.value.slice(0, 300))}
+            rows={3}
+            className="mt-1.5"
+          />
+          <p className="text-[12px] text-muted-foreground mt-1">{verificationNotes.length}/300</p>
         </div>
         <div>
           <Label>Phone Number</Label>
