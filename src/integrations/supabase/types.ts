@@ -22,11 +22,13 @@ export type Database = {
           first_name: string
           id: string
           institution: string
+          institutional_bio_url: string | null
           last_name: string
           phone: string | null
           slug: string
           title: string
           updated_at: string
+          verification_notes: string | null
           years_advising: string
         }
         Insert: {
@@ -36,11 +38,13 @@ export type Database = {
           first_name: string
           id: string
           institution: string
+          institutional_bio_url?: string | null
           last_name: string
           phone?: string | null
           slug: string
           title: string
           updated_at?: string
+          verification_notes?: string | null
           years_advising: string
         }
         Update: {
@@ -50,11 +54,13 @@ export type Database = {
           first_name?: string
           id?: string
           institution?: string
+          institutional_bio_url?: string | null
           last_name?: string
           phone?: string | null
           slug?: string
           title?: string
           updated_at?: string
+          verification_notes?: string | null
           years_advising?: string
         }
         Relationships: []
