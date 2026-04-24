@@ -11,6 +11,8 @@ export interface AdvisorProfile {
   phone?: string;
   yearsAdvising: string;
   biography?: string;
+  institutionalBioUrl?: string;
+  verificationNotes?: string;
   slug: string;
 }
 
