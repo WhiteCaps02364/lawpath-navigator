@@ -8,7 +8,7 @@ const defaultRecommender: Recommender = {
 const defaultStudent: StudentData = {
   firstName: '', lastName: '', schoolEmail: '', personalEmail: '',
   undergraduateInstitution: '', graduationYear: new Date().getFullYear() + 1,
-  optInLawSchools: false, optInBigLaw: false, optInParalegal: false, optInPublicInterest: false,
+  lawSchoolOptIn: false,
   cumulativeGPA: 0, majorGPA: 0, majors: '', minors: '',
   currentYear: 'Junior', hasGraduateDegree: false,
   testStatus: 'None', testComfortLevel: 'Neutral',
