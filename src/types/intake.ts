@@ -12,6 +12,7 @@ export interface StudentData {
   optInBigLaw: boolean;
   optInParalegal: boolean;
   optInPublicInterest: boolean;
+  lawSchoolOptIn: boolean;
 
   // Academic
   cumulativeGPA: number;
