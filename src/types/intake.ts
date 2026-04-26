@@ -8,10 +8,6 @@ export interface StudentData {
   personalEmail: string;
   undergraduateInstitution: string;
   graduationYear: number;
-  optInLawSchools: boolean;
-  optInBigLaw: boolean;
-  optInParalegal: boolean;
-  optInPublicInterest: boolean;
   lawSchoolOptIn: boolean;
 
   // Academic
