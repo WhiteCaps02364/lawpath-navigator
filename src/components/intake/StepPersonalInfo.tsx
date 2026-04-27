@@ -99,24 +99,22 @@ export function StepPersonalInfo() {
       </div>
 
       <div className="border rounded-lg p-4 space-y-3 bg-muted/30">
-        <p className="text-sm font-medium text-foreground">Outreach Preferences</p>
-        <p className="text-xs text-muted-foreground">By checking these boxes, you agree to be contacted about opportunities that may match your profile. Your information will not be shared without your explicit consent.</p>
-        <div className="space-y-2">
-          {[
-            { key: 'optInLawSchools' as const, label: "I'd like to hear from law schools that may be a strong fit for my profile" },
-            { key: 'optInBigLaw' as const, label: "I'd like to hear from BigLaw firms about early-career and paralegal programs" },
-            { key: 'optInParalegal' as const, label: "I'd like to hear about paralegal and legal training program opportunities" },
-            { key: 'optInPublicInterest' as const, label: "I'd like to hear about public interest and government legal opportunities" },
-          ].map(opt => (
-            <div key={opt.key} className="flex items-center gap-2">
-              <Checkbox
-                id={opt.key}
-                checked={data[opt.key]}
-                onCheckedChange={c => updateData({ [opt.key]: !!c })}
-              />
-              <Label htmlFor={opt.key} className="text-sm font-normal cursor-pointer">{opt.label}</Label>
-            </div>
-          ))}
+        <p className="text-sm font-medium text-foreground">Law School Outreach (Optional)</p>
+        <div className="flex items-start gap-2">
+          <Checkbox
+            id="lawSchoolOptIn"
+            checked={data.lawSchoolOptIn}
+            onCheckedChange={c => updateData({ lawSchoolOptIn: !!c })}
+            className="mt-0.5"
+          />
+          <div className="space-y-1">
+            <Label htmlFor="lawSchoolOptIn" className="text-sm font-normal cursor-pointer">
+              I'd like to hear from law schools that may be a strong fit for my profile
+            </Label>
+            <p className="text-muted-foreground" style={{ fontSize: '13px' }}>
+              If you opt in, we may share your profile with a small number of ABA-accredited law schools whose admissions ranges align with yours. Your information will never be sold or shared without your explicit consent.
+            </p>
+          </div>
         </div>
       </div>
     </div>
