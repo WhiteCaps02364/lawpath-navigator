@@ -112,7 +112,7 @@ export function StepPersonalInfo() {
               I'd like to hear from law schools that may be a strong fit for my profile
             </Label>
             <p className="text-muted-foreground" style={{ fontSize: '13px' }}>
-              If you opt in, we may share your profile with a small number of ABA-accredited law schools whose admissions ranges align with yours. Your information will never be sold or shared without your explicit consent.
+              If you opt in, we may share your contact information with law schools that may want to connect with prospective applicants. Your information will never be sold or shared without your explicit consent.
             </p>
           </div>
         </div>
