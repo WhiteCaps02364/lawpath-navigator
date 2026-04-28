@@ -69,7 +69,7 @@ export default function AdvisorRegister() {
         <div className="mt-6 flex flex-col items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate('/advisor-register')}
+            onClick={scrollToRegistration}
             className="h-11 rounded-md bg-navy px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-navy/90"
           >
             Create My Free Advisor Account →
