@@ -74,7 +74,7 @@ export default function Index() {
 
             <div className="flex flex-col items-center gap-2 pt-4">
               <Button size="lg" onClick={handleStart} className="gap-2 text-base px-8 bg-[#1A365D] text-white hover:bg-[#1A365D]/90">
-                Create My Advising Report <ArrowRight className="w-5 h-5" />
+                Create My Custom Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
                 Takes about 10 minutes. Free for all law school applicants.
