@@ -38,12 +38,10 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Dummy bypass: skip Supabase sign-in and route straight to intake.
-    const inst = params.get('institution');
+    // Dummy bypass: route through PostAuthRouter so pending advisor token is applied.
     const qs = new URLSearchParams();
-    if (advisorId) qs.set('advisor', advisorId);
-    if (inst) qs.set('institution', inst);
-    navigate(`/intake${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
+    if (advisorId) qs.set('advisor_id', advisorId);
+    navigate(`/post-auth${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
   };
 
   const sendReset = async () => {
