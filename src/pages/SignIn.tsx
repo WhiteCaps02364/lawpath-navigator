@@ -13,7 +13,19 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const advisorId = params.get('advisor');
+  const institutionParam = params.get('institution');
   const { toast } = useToast();
+
+  // Read advisor first name from sessionStorage (set when arriving via advisor profile page).
+  let advisorFirstName = '';
+  let advisorInstitution = institutionParam || '';
+  try {
+    advisorFirstName = sessionStorage.getItem('pending_advisor_first_name') || '';
+    if (!advisorInstitution) advisorInstitution = sessionStorage.getItem('pending_advisor_institution') || '';
+    // Backup: if URL had advisor but sessionStorage missing it, store now.
+    if (advisorId) sessionStorage.setItem('pending_advisor_id', advisorId);
+    if (advisorInstitution) sessionStorage.setItem('pending_advisor_institution', advisorInstitution);
+  } catch {}
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,6 +68,15 @@ export default function SignIn() {
         Sign in to view your report and advising profile.
       </p>
       <div style={{ height: 24 }} />
+      {advisorId && (
+        <div
+          className="text-[13px] text-[#1A365D] px-3 py-2 mb-4 rounded"
+          style={{ background: '#EBF4FF', borderLeft: '3px solid #1A365D' }}
+        >
+          You're signing in via {advisorFirstName || 'your advisor'}{advisorFirstName ? "'s" : ''} advising link
+          {advisorInstitution ? ` at ${advisorInstitution}` : ''}. Your completed report will be shared with them automatically once you sign in.
+        </div>
+      )}
       <SocialButtons advisorId={advisorId} />
       <div style={{ height: 20 }} />
       <EmailDivider />
@@ -88,7 +109,7 @@ export default function SignIn() {
       <div style={{ height: 20 }} />
       <p className="text-[14px] text-center">
         Don't have an account?{' '}
-        <Link to={`/auth${advisorId ? `?advisor=${advisorId}` : ''}`} className="text-[#1A365D] underline font-medium">Create Account</Link>
+        <Link to={`/auth${advisorId ? `?advisor=${encodeURIComponent(advisorId)}${advisorInstitution ? `&institution=${encodeURIComponent(advisorInstitution)}` : ''}` : ''}`} className="text-[#1A365D] underline font-medium">Create Account</Link>
       </p>
 
       <Dialog open={forgotOpen} onOpenChange={setForgotOpen}>
