@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { institutionShortcode } from '@/lib/advisorSlug';
 import { ArrowRight, Building2, BarChart3, Shield, Users } from 'lucide-react';
@@ -6,11 +7,16 @@ import jdnLogo from '@/assets/jdn-logo.png';
 import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
 import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdvisorPublicProfile() {
   const { slug, institution: institutionParam } = useParams();
   const navigate = useNavigate();
   const { advisor: ownAdvisor } = useAdvisorDemo();
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   // For prototype: only the demo advisor's own profile resolves; otherwise show a generic placeholder using the slug.
   const matched =
@@ -25,11 +31,77 @@ export default function AdvisorPublicProfile() {
   const bio = advisor?.biography || 'Your pre-law advisor has set up this free tool to help you build a smarter, more informed law school application strategy.';
   const studentsHelped = 0;
   const firstName = advisor?.firstName || 'Your advisor';
+  const advisorIdValue = advisor?.id || slug || '';
+
+  // Persist pending advisor token in sessionStorage on page load (before any interaction).
+  useEffect(() => {
+    if (!advisorIdValue) return;
+    try {
+      sessionStorage.setItem('pending_advisor_id', advisorIdValue);
+      sessionStorage.setItem('pending_advisor_institution', institution);
+      sessionStorage.setItem('pending_advisor_first_name', firstName);
+    } catch {}
+  }, [advisorIdValue, institution, firstName]);
+
+  // Returning-student detection: logged in + completed intake?
+  const [returningState, setReturningState] = useState<'unknown' | 'no' | 'yes'>('unknown');
+  const [latestSubmissionId, setLatestSubmissionId] = useState<string | null>(null);
+  const [alreadyLinked, setAlreadyLinked] = useState(false);
+  const [shared, setShared] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const userFirstName = (user?.user_metadata?.first_name as string) || (user?.user_metadata?.given_name as string) || (user?.email?.split('@')[0] ?? 'there');
+
+  useEffect(() => {
+    if (!user) { setReturningState('no'); return; }
+    (async () => {
+      const { data: sub } = await supabase
+        .from('intake_submissions')
+        .select('id, advisor_id')
+        .eq('user_id', user.id)
+        .eq('completed', true)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (sub) {
+        setLatestSubmissionId(sub.id);
+        setAlreadyLinked(!!sub.advisor_id && sub.advisor_id === advisorIdValue);
+        setReturningState('yes');
+      } else {
+        setReturningState('no');
+      }
+    })();
+  }, [user, advisorIdValue]);
 
   const start = () => {
-    const adv = advisor?.id || slug || '';
-    navigate(`/auth?advisor=${encodeURIComponent(adv)}&institution=${encodeURIComponent(institution)}`);
+    navigate(`/auth?advisor=${encodeURIComponent(advisorIdValue)}&institution=${encodeURIComponent(institution)}`);
   };
+
+  const goSignIn = () => {
+    navigate(`/signin?advisor=${encodeURIComponent(advisorIdValue)}&institution=${encodeURIComponent(institution)}`);
+  };
+
+  const shareReport = async () => {
+    if (!user || !advisorIdValue) return;
+    setSharing(true);
+    try {
+      if (!alreadyLinked) {
+        await supabase.from('profiles').update({ advisor_id: advisorIdValue }).eq('id', user.id);
+        if (latestSubmissionId) {
+          await supabase.from('intake_submissions').update({ advisor_id: advisorIdValue } as never).eq('id', latestSubmissionId);
+        }
+      }
+      setShared(true);
+      setAlreadyLinked(true);
+      toast({
+        title: 'Report shared',
+        description: `Your report has been shared with ${firstName}. They will be able to review it before your meeting.`,
+      });
+    } finally {
+      setSharing(false);
+    }
+  };
+
+  const showReturning = returningState === 'yes';
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,21 +142,61 @@ export default function AdvisorPublicProfile() {
       {/* CTA section */}
       <section className="bg-muted/40 py-16">
         <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
-          <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#1A365D]">
-            Your Law School Plan, Built Around You.
-          </motion.h2>
-          <p className="text-base md:text-lg text-muted-foreground">
-            {firstName} has set up this free tool to help you build a smarter, more informed law school application strategy.
-          </p>
-          <div className="pt-2">
-            <button
-              onClick={start}
-              className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/90"
-            >
-              Start My Assessment <ArrowRight className="w-5 h-5" />
-            </button>
-            <p className="text-sm text-muted-foreground mt-3">Takes about 10 minutes. Free for all law school applicants.</p>
-          </div>
+          {showReturning ? (
+            <>
+              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#1A365D]">
+                Welcome back, {userFirstName}.
+              </motion.h2>
+              <p className="text-base md:text-lg text-muted-foreground">
+                It looks like you already have a completed advising report. Would you like to share it with {firstName} at {institution}?
+              </p>
+              <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <button
+                  onClick={shareReport}
+                  disabled={sharing || shared || alreadyLinked}
+                  className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-6 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/90 disabled:opacity-60"
+                >
+                  {shared || alreadyLinked ? 'Report Shared ✓' : <>Share My Report with {firstName} <ArrowRight className="w-5 h-5" /></>}
+                </button>
+                <button
+                  onClick={() => navigate('/report')}
+                  className="inline-flex items-center gap-2 bg-white text-[#1A365D] border border-[#1A365D] px-6 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/5"
+                >
+                  View My Report
+                </button>
+              </div>
+              {(shared || alreadyLinked) && (
+                <p className="text-sm text-[#1A365D] mt-2">
+                  Your report has been shared with {firstName}. They will be able to review it before your meeting.
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground mt-2">
+                Sharing your report is optional. Your advisor will only see your report if you choose to share it.
+              </p>
+            </>
+          ) : (
+            <>
+              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#1A365D]">
+                Your Law School Plan, Built Around You.
+              </motion.h2>
+              <p className="text-base md:text-lg text-muted-foreground">
+                {firstName} has set up this free tool to help you build a smarter, more informed law school application strategy.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={start}
+                  className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/90"
+                >
+                  Start My Assessment <ArrowRight className="w-5 h-5" />
+                </button>
+                <p className="text-sm text-muted-foreground mt-3">Takes about 10 minutes. Free for all law school applicants.</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Already have an account?{' '}
+                  <button onClick={goSignIn} className="text-[#1A365D] underline font-medium">Sign In</button>
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
