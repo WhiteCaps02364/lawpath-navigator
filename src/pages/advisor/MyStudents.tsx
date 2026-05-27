@@ -64,19 +64,25 @@ export default function MyStudents() {
         <p className="text-xs text-muted-foreground">Share this link with your advisees. Their completed reports will appear here automatically.</p>
       </div>
 
+      <p className="text-sm text-[#1A365D]">
+        Have a student who already created a profile? Ask them to visit your advisor link and sign in — their report will be shared with you automatically.
+      </p>
+
       <p className="text-sm font-semibold" style={{ color: '#C9A84C' }}>
         {submissions.length} {submissions.length === 1 ? 'student has' : 'students have'} completed their assessment
       </p>
 
-      <div className="relative">
-        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search by student name or institution"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="pl-10"
-        />
-      </div>
+      {submissions.length > 0 && (
+        <div className="relative">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search by student name or institution"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      )}
 
       {filtered.length === 0 ? (
         <div className="border-2 border-dashed rounded-lg p-10 text-center space-y-3">
