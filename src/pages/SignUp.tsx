@@ -28,12 +28,15 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    // Dummy bypass: skip Supabase signup and route straight to intake.
-    const inst = params.get('institution');
+    // Persist advisor token to sessionStorage as backup, then route through PostAuthRouter.
+    try {
+      if (advisorId) sessionStorage.setItem('pending_advisor_id', advisorId);
+      const inst = params.get('institution');
+      if (inst) sessionStorage.setItem('pending_advisor_institution', inst);
+    } catch {}
     const qs = new URLSearchParams();
-    if (advisorId) qs.set('advisor', advisorId);
-    if (inst) qs.set('institution', inst);
-    navigate(`/intake${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
+    if (advisorId) qs.set('advisor_id', advisorId);
+    navigate(`/post-auth${qs.toString() ? `?${qs.toString()}` : ''}`, { replace: true });
   };
 
   return (
