@@ -20,18 +20,11 @@ const STATE_TO_REGION: Record<string, string> = {
   'Kentucky': 'Southeast', 'West Virginia': 'Southeast', 'Arkansas': 'Southeast',
 };
 
-function employmentPctForState(school: LawSchool, state: string): number | null {
-  if (!state) return null;
+export function stateOverlapsSchool(state: string | undefined, school: LawSchool): boolean {
+  if (!state || state === 'No preference') return false;
   const region = STATE_TO_REGION[state];
-  if (!region) return null;
-  if (region === school.primaryPlacementRegion) {
-    // Use FTJD as proxy for in-region placement
-    return Math.round(school.employmentRateFTJD * 0.7 * 10) / 10;
-  }
-  if (school.regionalPortability === 'National') {
-    return Math.round(school.employmentRateFTJD * 0.08 * 10) / 10;
-  }
-  return null;
+  if (!region) return false;
+  return region === school.primaryPlacementRegion;
 }
 
 function ArrowDiff({ value }: { value: number }) {
@@ -66,11 +59,10 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
   const studentLSAT = studentData.lsatScore ?? null;
   const studentJDNext = studentData.jdNextScore ?? null;
 
-  const states = [
-    studentData.firstChoiceState,
-    studentData.secondChoiceState,
-    studentData.thirdChoiceState,
-  ].filter((s): s is string => !!s && s !== 'No preference').slice(0, 3);
+  const firstChoice = studentData.firstChoiceState && studentData.firstChoiceState !== 'No preference' ? studentData.firstChoiceState : '';
+  const secondChoice = studentData.secondChoiceState && studentData.secondChoiceState !== 'No preference' ? studentData.secondChoiceState : '';
+  const thirdChoice = studentData.thirdChoiceState && studentData.thirdChoiceState !== 'No preference' ? studentData.thirdChoiceState : '';
+  const states = [firstChoice, secondChoice, thirdChoice].filter(Boolean);
 
   // At a glance
   const belowGPA25 = selected.filter(s => studentGPA < s.gpa25).length;
@@ -81,27 +73,30 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
   const lsat25Max = Math.max(...selected.map(s => s.lsat25));
   const belowLSAT25 = studentLSAT != null ? selected.filter(s => studentLSAT! < s.lsat25).length : 0;
 
-  // Geo fit
-  let geoFit = 'Limited placement data';
-  if (states.length > 0) {
-    const pcts: number[] = [];
-    states.forEach(st => selected.forEach(s => {
-      const p = employmentPctForState(s, st);
-      if (p != null) pcts.push(p);
-    }));
-    if (pcts.some(p => p >= 5)) geoFit = 'Strong fit';
-    else if (pcts.every(p => p < 2) && pcts.length > 0) geoFit = 'Limited placement data';
-    else if (pcts.length === 0) geoFit = 'Limited placement data';
-    else geoFit = 'Mixed';
+  // Geographic overlap on first choice state
+  const firstChoiceMatches = firstChoice ? selected.filter(s => stateOverlapsSchool(firstChoice, s)).length : 0;
+  const anyPreferredMatches = states.some(st => selected.some(s => stateOverlapsSchool(st, s)));
+  let geoFitLabel = 'No overlap detected';
+  if (firstChoice) {
+    if (firstChoiceMatches === selected.length && selected.length > 0) geoFitLabel = 'Strong overlap';
+    else if (firstChoiceMatches >= 2) geoFitLabel = 'Partial overlap';
+    else if (firstChoiceMatches >= 1) geoFitLabel = 'Limited overlap';
+    else if (anyPreferredMatches) geoFitLabel = 'Limited overlap';
+    else geoFitLabel = 'No overlap detected';
+  } else if (!anyPreferredMatches) {
+    geoFitLabel = 'No overlap detected';
   }
+  const geoFit = `${geoFitLabel} — see Where Graduates Practice above for details`;
 
-  let nextStep = 'Profile is well-positioned — focus on application quality and recommender strength.';
+  const limitedGeo = geoFitLabel === 'No overlap detected' || geoFitLabel === 'Limited overlap';
+
+  let nextStep = 'Your profile is well-positioned relative to your selected schools. Focus on application quality, recommender strength, and a compelling personal statement.';
   if (belowGPA25 > selected.length / 2) {
-    nextStep = 'Discuss school list recalibration and profile strengthening before applying.';
+    nextStep = 'Your school list may benefit from rebalancing. Consider discussing reach, target, and safety options with your advisor or reviewing the school cards above.';
   } else if (studentLSAT != null && belowLSAT25 > selected.length / 2) {
-    nextStep = 'Consider LSAT retake or JD-Next as a supplemental credential.';
-  } else if (geoFit === 'Limited placement data' && states.length > 0) {
-    nextStep = 'Discuss regional school options in preferred practice location.';
+    nextStep = 'A stronger test score would improve your competitiveness at most of your selected schools. Consider an LSAT retake or explore JD-Next as a supplemental credential.';
+  } else if (limitedGeo && firstChoice) {
+    nextStep = 'Most of your selected schools place graduates outside your preferred practice location. Consider researching regional schools closer to where you want to work, or plan for proactive networking in your target market.';
   }
 
   const headerBar = (text: string, bg: string) => (
@@ -111,16 +106,6 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
   );
 
   const rowShade = (i: number) => (i % 2 === 0 ? 'bg-gray-50' : 'bg-white');
-
-  const SchoolHeaders = () => (
-    <tr>
-      <th className="text-left text-xs font-semibold px-3 py-2 bg-gray-100 text-gray-700 sticky left-0 z-10">&nbsp;</th>
-      {selected.map(s => (
-        <th key={s.id} className="text-xs font-semibold px-3 py-2 bg-gray-100 text-gray-800 text-center">{s.name}</th>
-      ))}
-      <th className="text-xs font-semibold px-3 py-2 text-center text-white" style={{ background: NAVY }}>Your {`{col}`}</th>
-    </tr>
-  );
 
   const renderTable = (
     title: string,
@@ -161,7 +146,7 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
         Law School Fit Snapshot | ABA 509 Data Comparison
       </div>
       <p className="text-xs italic text-gray-500 text-center px-4 py-2">
-        Source: ABA 509 Disclosure Reports (most recent available). This chart is for informational comparison only. No predictions are made — data is presented for advising context.
+        Source: ABA 509 Disclosure Reports (most recent available). This chart compares your academic profile against published admissions data for your selected schools. It is for informational purposes only — no predictions or admissions likelihood estimates are made or implied.
       </p>
 
       {/* Student profile block */}
@@ -242,12 +227,9 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
         </div>
       </div>
 
-      {/* Geographic */}
+      {/* Where Graduates Practice */}
       <div className="mt-2">
-        {headerBar('GEOGRAPHIC EMPLOYMENT DATA', GOLD)}
-        <p className="text-xs italic text-gray-500 px-4 pt-2">
-          Percentage of graduates employed in student's preferred state(s) within 10 months of graduation, per ABA employment reports.
-        </p>
+        {headerBar('WHERE GRADUATES PRACTICE', GOLD)}
         <div className="p-3 overflow-x-auto">
           <table className="w-full text-sm border-collapse min-w-[600px]">
             <thead>
@@ -256,33 +238,41 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
                 {selected.map(s => (
                   <th key={s.id} className="text-xs font-semibold px-3 py-2 bg-gray-100 text-gray-800 text-center border border-gray-200">{s.name}</th>
                 ))}
-                <th className="text-xs font-semibold px-3 py-2 text-center text-white border border-gray-200" style={{ background: NAVY }}>Your Goal</th>
+                <th className="text-xs font-semibold px-3 py-2 text-center text-white border border-gray-200" style={{ background: NAVY }}>Your Preference</th>
               </tr>
             </thead>
             <tbody>
-              {states.length === 0 ? (
-                <tr><td colSpan={selected.length + 2} className="text-xs italic text-gray-500 text-center py-3 border border-gray-200">No state preferences specified.</td></tr>
-              ) : states.map((st, i) => (
-                <tr key={st} className={rowShade(i)}>
-                  <td className="text-xs font-medium px-3 py-2 text-gray-700 border border-gray-200">Employed in {st}</td>
-                  {selected.map(s => {
-                    const p = employmentPctForState(s, st);
-                    return (
-                      <td key={s.id} className="text-sm px-3 py-2 text-center border border-gray-200">
-                        {p != null ? `${p.toFixed(1)}%` : <span className="text-gray-400 italic">N/A</span>}
-                      </td>
-                    );
-                  })}
-                  <td className="text-sm px-3 py-2 text-center border border-gray-200 font-bold" style={{ color: NAVY }}>{st}</td>
-                </tr>
-              ))}
-              <tr className={rowShade(states.length)}>
-                <td className="text-xs font-medium px-3 py-2 text-gray-700 border border-gray-200">Primary placement markets</td>
+              <tr className={rowShade(0)}>
+                <td className="text-xs font-medium px-3 py-2 text-gray-700 border border-gray-200">Where Majority of Graduates Practice</td>
                 {selected.map(s => (
-                  <td key={s.id} className="text-xs px-3 py-2 text-center border border-gray-200">{s.primaryPlacementRegion}</td>
+                  <td key={s.id} className="text-sm px-3 py-2 text-center border border-gray-200">{s.primaryPlacementRegion}</td>
                 ))}
-                <td className="px-3 py-2 border border-gray-200">&nbsp;</td>
+                <td className="px-3 py-2 border border-gray-200 text-center text-gray-400">—</td>
               </tr>
+              {([
+                ['Your First Choice State', firstChoice],
+                ['Your Second Choice State', secondChoice],
+                ['Your Third Choice State', thirdChoice],
+              ] as const)
+                .filter(([, st]) => !!st)
+                .map(([label, st], idx) => (
+                  <tr key={label} className={rowShade(idx + 1)}>
+                    <td className="text-xs font-medium px-3 py-2 text-gray-700 border border-gray-200">{label}</td>
+                    {selected.map(s => {
+                      const overlap = stateOverlapsSchool(st, s);
+                      return (
+                        <td key={s.id} className="text-sm px-3 py-2 text-center border border-gray-200">
+                          {overlap ? (
+                            <span style={{ color: '#15803d', fontWeight: 600 }}>✓ Overlap</span>
+                          ) : (
+                            <span className="text-gray-400">—</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                    <td className="text-sm px-3 py-2 text-center border border-gray-200 font-bold" style={{ color: NAVY }}>{st}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -311,7 +301,7 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
       </div>
 
       <p className="text-xs italic text-gray-500 px-4 py-3 border-t">
-        ABA 509 data reflects enrolled 1L class statistics from the most recent available disclosure year. Geographic employment figures represent graduates employed in the indicated state within 10 months of graduation. This chart is for informational comparison purposes only. No predictions or admissions likelihood estimates are made or implied. Verify current data directly with each law school and at abarequireddisclosures.org.
+        ABA 509 data reflects enrolled 1L class statistics from the most recent available disclosure year. Primary placement region reflects where the majority of graduates practice based on ABA employment disclosure reports. This chart is for informational comparison purposes only — no predictions or admissions likelihood estimates are made or implied. Individual outcomes vary significantly. Verify current data directly with each law school and at abarequireddisclosures.org.
       </p>
     </div>
   );
