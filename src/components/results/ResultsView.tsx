@@ -831,11 +831,11 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           ))}
         </ol>
       </motion.div>
+      </div>
 
-      {/* Law School Fit Snapshot — included in both student and advisor views, and in the PDF */}
+      {/* Law School Fit Snapshot — appears in both student and advisor views, captured separately for the PDF (landscape if >5 schools) */}
       <div ref={snapshotRef}>
         <LawSchoolFitSnapshot studentData={studentData} />
-      </div>
       </div>
 
       {/* Advisor Share / Download */}
