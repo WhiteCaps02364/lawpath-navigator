@@ -390,6 +390,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
   };
 
   const reportRef = useRef<HTMLDivElement>(null);
+  const snapshotRef = useRef<HTMLDivElement>(null);
   const [shareConfirmed, setShareConfirmed] = useState(false);
   const [generatingPdf, setGeneratingPdf] = useState(false);
 
@@ -563,27 +564,25 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
     if (!reportRef.current) return;
     setGeneratingPdf(true);
     try {
-      const canvas = await html2canvas(reportRef.current, {
+      const mainCanvas = await html2canvas(reportRef.current, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
       });
-      const pdf = new jsPDF('p', 'in', 'letter');
-      const pageW = pdf.internal.pageSize.getWidth();   // 8.5
-      const pageH = pdf.internal.pageSize.getHeight();  // 11
-      const margin = 1;
-      const headerH = 0.7;
-      const footerH = 0.4;
-      const contentTop = headerH + 0.2;
-      const contentBottom = pageH - footerH - 0.2;
-      const contentH = contentBottom - contentTop;
-      const contentW = pageW - margin * 2;
 
-      // Scale full canvas to content width
-      const imgWidthIn = contentW;
-      const imgHeightIn = (canvas.height * imgWidthIn) / canvas.width;
-      const pxPerIn = canvas.width / imgWidthIn;
-      const sliceHeightPx = contentH * pxPerIn;
+      const selectedCount = (studentData.selectedSchools || []).length;
+      const snapshotLandscape = selectedCount > 5;
+      let snapshotCanvas: HTMLCanvasElement | null = null;
+      if (snapshotRef.current) {
+        snapshotCanvas = await html2canvas(snapshotRef.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          windowWidth: snapshotLandscape ? 1400 : undefined,
+        });
+      }
+
+      const pdf = new jsPDF('p', 'in', 'letter');
 
       // Pre-load logo
       const logoImg = new Image();
@@ -593,51 +592,86 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       const studentLabel = `${studentData.firstName} ${studentData.lastName}`;
 
-      const totalPages = Math.ceil(canvas.height / sliceHeightPx);
-      for (let p = 0; p < totalPages; p++) {
-        if (p > 0) pdf.addPage();
+      // Per-section page builder
+      const sections: { canvas: HTMLCanvasElement; orientation: 'p' | 'l' }[] = [
+        { canvas: mainCanvas, orientation: 'p' },
+      ];
+      if (snapshotCanvas) {
+        sections.push({ canvas: snapshotCanvas, orientation: snapshotLandscape ? 'l' : 'p' });
+      }
 
-        // Slice canvas
-        const sy = p * sliceHeightPx;
-        const sh = Math.min(sliceHeightPx, canvas.height - sy);
+      // Pre-compute pages per section
+      type PageInfo = { canvas: HTMLCanvasElement; orientation: 'p' | 'l'; sy: number; sh: number; pageW: number; pageH: number; imgWidthIn: number; contentTop: number };
+      const pages: PageInfo[] = [];
+      const margin = 1;
+      const headerH = 0.7;
+      const footerH = 0.4;
+
+      sections.forEach((sec, secIdx) => {
+        const pageW = sec.orientation === 'p' ? 8.5 : 11;
+        const pageH = sec.orientation === 'p' ? 11 : 8.5;
+        const contentTop = headerH + 0.2;
+        const contentBottom = pageH - footerH - 0.2;
+        const contentH = contentBottom - contentTop;
+        const contentW = pageW - margin * 2;
+        const imgWidthIn = contentW;
+        const pxPerIn = sec.canvas.width / imgWidthIn;
+        const sliceHeightPx = contentH * pxPerIn;
+        const totalSecPages = Math.ceil(sec.canvas.height / sliceHeightPx);
+        for (let p = 0; p < totalSecPages; p++) {
+          const sy = p * sliceHeightPx;
+          const sh = Math.min(sliceHeightPx, sec.canvas.height - sy);
+          pages.push({ canvas: sec.canvas, orientation: sec.orientation, sy, sh, pageW, pageH, imgWidthIn, contentTop });
+        }
+      });
+
+      const totalPages = pages.length;
+      pages.forEach((pg, idx) => {
+        if (idx > 0) pdf.addPage([pg.pageW, pg.pageH], pg.orientation);
+        else if (pg.orientation === 'l') {
+          // Replace initial portrait page with landscape (rare: snapshot-only)
+          pdf.deletePage(1);
+          pdf.addPage([pg.pageW, pg.pageH], pg.orientation);
+        }
+
         const sliceCanvas = document.createElement('canvas');
-        sliceCanvas.width = canvas.width;
-        sliceCanvas.height = sh;
+        sliceCanvas.width = pg.canvas.width;
+        sliceCanvas.height = pg.sh;
         const ctx = sliceCanvas.getContext('2d')!;
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, sliceCanvas.width, sh);
-        ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+        ctx.fillRect(0, 0, sliceCanvas.width, pg.sh);
+        ctx.drawImage(pg.canvas, 0, pg.sy, pg.canvas.width, pg.sh, 0, 0, pg.canvas.width, pg.sh);
         const sliceData = sliceCanvas.toDataURL('image/png');
-        const sliceHeightIn = (sh * imgWidthIn) / canvas.width;
+        const sliceHeightIn = (pg.sh * pg.imgWidthIn) / pg.canvas.width;
 
         // Header bar (navy)
         pdf.setFillColor(26, 54, 93);
-        pdf.rect(0, 0, pageW, headerH, 'F');
+        pdf.rect(0, 0, pg.pageW, headerH, 'F');
         try {
           pdf.addImage(logoImg, 'PNG', margin, 0.1, 0.5, 0.5);
         } catch {}
         pdf.setTextColor(255, 255, 255);
         pdf.setFont('helvetica', 'bold');
         pdf.setFontSize(13);
-        pdf.text('Pre-Law Advisory Report', pageW / 2, headerH / 2 + 0.05, { align: 'center' });
+        pdf.text('Pre-Law Advisory Report', pg.pageW / 2, headerH / 2 + 0.05, { align: 'center' });
         pdf.setFont('helvetica', 'normal');
         pdf.setFontSize(9);
         pdf.setTextColor(220, 220, 220);
-        pdf.text(studentLabel, pageW - margin, headerH / 2 - 0.05, { align: 'right' });
-        pdf.text(today, pageW - margin, headerH / 2 + 0.15, { align: 'right' });
+        pdf.text(studentLabel, pg.pageW - margin, headerH / 2 - 0.05, { align: 'right' });
+        pdf.text(today, pg.pageW - margin, headerH / 2 + 0.15, { align: 'right' });
 
         // Body image
-        pdf.addImage(sliceData, 'PNG', margin, contentTop, imgWidthIn, sliceHeightIn);
+        pdf.addImage(sliceData, 'PNG', margin, pg.contentTop, pg.imgWidthIn, sliceHeightIn);
 
         // Footer
         pdf.setDrawColor(26, 54, 93);
         pdf.setLineWidth(0.01);
-        pdf.line(margin, pageH - footerH, pageW - margin, pageH - footerH);
+        pdf.line(margin, pg.pageH - footerH, pg.pageW - margin, pg.pageH - footerH);
         pdf.setTextColor(120, 120, 120);
         pdf.setFontSize(9);
-        pdf.text('Pre-Law Advisory Engine by JD-Next | jdnext.org', pageW / 2, pageH - footerH / 2, { align: 'center' });
-        pdf.text(`Page ${p + 1} of ${totalPages}`, pageW - margin, pageH - footerH / 2, { align: 'right' });
-      }
+        pdf.text('Pre-Law Advisory Engine by JD-Next | jdnext.org', pg.pageW / 2, pg.pageH - footerH / 2, { align: 'center' });
+        pdf.text(`Page ${idx + 1} of ${totalPages}`, pg.pageW - margin, pg.pageH - footerH / 2, { align: 'right' });
+      });
 
       pdf.save(`${studentData.firstName}_${studentData.lastName}_PreLaw_Report.pdf`);
     } finally {
@@ -797,6 +831,11 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           ))}
         </ol>
       </motion.div>
+
+      {/* Law School Fit Snapshot — included in both student and advisor views, and in the PDF */}
+      <div ref={snapshotRef}>
+        <LawSchoolFitSnapshot studentData={studentData} />
+      </div>
       </div>
 
       {/* Advisor Share / Download */}
