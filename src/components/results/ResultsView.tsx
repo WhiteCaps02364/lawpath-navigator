@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 import jdnLogo from '@/assets/jdn-logo.png';
 import { ShareWithAdvisor } from '@/components/results/ShareWithAdvisor';
 import { supabase } from '@/integrations/supabase/client';
+import { LawSchoolFitSnapshot, stateOverlapsSchool } from '@/components/advisor/LawSchoolFitSnapshot';
 
 const NAVY = '#1A365D';
 const GOLD = '#C9A84C';
@@ -72,8 +73,10 @@ function ReadinessIndicator({ level }: { level: string }) {
   );
 }
 
-function SchoolCard({ assessment }: { assessment: SchoolAssessment }) {
-  const { school, classification, geoNote } = assessment;
+function SchoolCard({ assessment, firstChoiceState }: { assessment: SchoolAssessment; firstChoiceState?: string }) {
+  const { school, classification } = assessment;
+  const overlaps = stateOverlapsSchool(firstChoiceState, school);
+  const hasFirstChoice = !!firstChoiceState && firstChoiceState !== 'No preference';
   const tagClass = classification === 'Reach' ? 'tag-reach' : classification === 'Target' ? 'tag-target' : 'tag-safety';
 
   const safetyOverride = classification === 'Safety'
@@ -112,9 +115,18 @@ function SchoolCard({ assessment }: { assessment: SchoolAssessment }) {
           <p className="font-semibold text-foreground">{school.regionalPortability}</p>
         </div>
       </div>
-      <div className="flex items-start gap-1.5 text-xs text-muted-foreground mb-2">
-        <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-        <span>{geoNote}</span>
+      <div className="flex items-start gap-1.5 text-xs mb-2">
+        <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
+        <div className="space-y-0.5">
+          <p className="text-muted-foreground">Where majority of graduates practice: <span className="font-medium text-foreground">{school.primaryPlacementRegion}</span></p>
+          {hasFirstChoice && (
+            overlaps ? (
+              <p style={{ color: '#15803d' }} className="font-medium">✓ Overlaps with your preferred practice location</p>
+            ) : (
+              <p className="text-muted-foreground">Your preferred state ({firstChoiceState}) is outside this school's primary placement region</p>
+            )
+          )}
+        </div>
       </div>
       <div className="space-y-1.5 text-xs">
         <div>
@@ -733,7 +745,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         <p className="text-sm text-muted-foreground">{results.listCompositionNote}</p>
         <div className="space-y-3">
           {results.schoolAssessments.map(assessment => (
-            <SchoolCard key={assessment.school.id} assessment={assessment} />
+            <SchoolCard key={assessment.school.id} assessment={assessment} firstChoiceState={studentData.firstChoiceState} />
           ))}
         </div>
       </motion.div>
