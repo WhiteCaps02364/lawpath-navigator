@@ -26,7 +26,10 @@ export function StepAcademics() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="cumulativeGPA">Cumulative GPA *</Label>
-          <Input id="cumulativeGPA" type="number" step="0.01" min="0" max="4.0" value={data.cumulativeGPA || ''} onChange={e => updateData({ cumulativeGPA: parseFloat(e.target.value) || 0 })} placeholder="e.g. 3.65" />
+          <Input id="cumulativeGPA" type="number" step="0.01" min="0" max="4.0" value={data.cumulativeGPA ? data.cumulativeGPA : ''} onChange={e => updateData({ cumulativeGPA: parseFloat(e.target.value) || 0 })} placeholder="e.g. 3.65" />
+          {(!data.cumulativeGPA || isNaN(data.cumulativeGPA) || data.cumulativeGPA === 0) && (
+            <p className="text-xs text-destructive">Please enter your cumulative GPA to continue.</p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="majorGPA">Major GPA</Label>

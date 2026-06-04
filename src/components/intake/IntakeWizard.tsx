@@ -34,6 +34,7 @@ function IntakeWizardInner() {
   const institutionParam = params.get('institution');
   const isDemo = params.get('demo') === '1';
   const [results, setResults] = useState<ScoringResult | null>(null);
+  const [scoringError, setScoringError] = useState<string | null>(null);
   const submissionId = useRef<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [appliedAdvisor, setAppliedAdvisor] = useState(false);
@@ -154,7 +155,14 @@ function IntakeWizardInner() {
 
   const handleNext = () => {
     if (currentStep === totalSteps - 1) {
-      const scored = calculateScores(data);
+      let scored: ScoringResult;
+      try {
+        scored = calculateScores(data);
+      } catch (err) {
+        setScoringError("We couldn't generate your report — please go back and make sure your GPA is entered correctly.");
+        return;
+      }
+      setScoringError(null);
       setResults(scored);
       // Persist completion
       if (isDemo) return;
@@ -201,6 +209,12 @@ function IntakeWizardInner() {
         <div className="min-h-[400px]">
           {steps[currentStep]}
         </div>
+
+        {scoringError && (
+          <div className="mt-4 p-4 border border-destructive/40 bg-destructive/10 text-destructive rounded text-sm">
+            {scoringError}
+          </div>
+        )}
 
         <div className="flex justify-between mt-8 pt-6 border-t">
           <Button
