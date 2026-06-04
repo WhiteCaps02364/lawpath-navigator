@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { ScoringResult, StudentData } from '@/types/intake';
 import { ResultsView } from '@/components/results/ResultsView';
 import { Textarea } from '@/components/ui/textarea';
-import { LawSchoolFitSnapshot } from '@/components/advisor/LawSchoolFitSnapshot';
 
 function buildAgenda(sd: StudentData, r: ScoringResult): string[] {
   const items: string[] = [];
@@ -76,7 +75,6 @@ export default function AdvisorStudentReport() {
           <p className="text-xs text-muted-foreground mb-2">Private — never visible to the student.</p>
           <Textarea value={notes} onChange={e => setNotes(e.target.value)} rows={6} placeholder="Add private notes for this advising relationship…" />
         </div>
-        <LawSchoolFitSnapshot studentData={sd} />
       </div>
     </div>
   );
