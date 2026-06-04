@@ -12,33 +12,37 @@ function hasGraduated(data: StudentData): boolean {
 
 const STATE_TO_REGION: Record<string, string> = {
   // Northeast
-  CT: 'Northeast', ME: 'Northeast', MA: 'Northeast', NH: 'Northeast',
-  NJ: 'Northeast', NY: 'Northeast', PA: 'Northeast', RI: 'Northeast',
-  VT: 'Northeast', DC: 'Northeast', MD: 'Northeast', DE: 'Northeast',
+  'Connecticut': 'Northeast', 'Maine': 'Northeast', 'Massachusetts': 'Northeast',
+  'New Hampshire': 'Northeast', 'New Jersey': 'Northeast', 'New York': 'Northeast',
+  'Pennsylvania': 'Northeast', 'Rhode Island': 'Northeast', 'Vermont': 'Northeast',
+  'Washington DC': 'Northeast', 'Maryland': 'Northeast', 'Delaware': 'Northeast',
   // Southeast
-  AL: 'Southeast', AR: 'Southeast', FL: 'Southeast', GA: 'Southeast',
-  KY: 'Southeast', LA: 'Southeast', MS: 'Southeast', NC: 'Southeast',
-  SC: 'Southeast', TN: 'Southeast', VA: 'Southeast', WV: 'Southeast',
+  'Alabama': 'Southeast', 'Arkansas': 'Southeast', 'Florida': 'Southeast',
+  'Georgia': 'Southeast', 'Kentucky': 'Southeast', 'Louisiana': 'Southeast',
+  'Mississippi': 'Southeast', 'North Carolina': 'Southeast', 'South Carolina': 'Southeast',
+  'Tennessee': 'Southeast', 'Virginia': 'Southeast', 'West Virginia': 'Southeast',
   // Midwest
-  IL: 'Midwest', IN: 'Midwest', IA: 'Midwest', KS: 'Midwest',
-  MI: 'Midwest', MN: 'Midwest', MO: 'Midwest', NE: 'Midwest',
-  ND: 'Midwest', OH: 'Midwest', SD: 'Midwest', WI: 'Midwest',
+  'Illinois': 'Midwest', 'Indiana': 'Midwest', 'Iowa': 'Midwest', 'Kansas': 'Midwest',
+  'Michigan': 'Midwest', 'Minnesota': 'Midwest', 'Missouri': 'Midwest', 'Nebraska': 'Midwest',
+  'North Dakota': 'Midwest', 'Ohio': 'Midwest', 'South Dakota': 'Midwest', 'Wisconsin': 'Midwest',
   // Texas
-  TX: 'Texas',
+  'Texas': 'Texas',
   // California
-  CA: 'California',
+  'California': 'California',
   // Southwest
-  AZ: 'Southwest', CO: 'Southwest', NM: 'Southwest', NV: 'Southwest', UT: 'Southwest',
+  'Arizona': 'Southwest', 'Colorado': 'Southwest', 'New Mexico': 'Southwest',
+  'Nevada': 'Southwest', 'Utah': 'Southwest',
   // Pacific Northwest
-  AK: 'Pacific Northwest', HI: 'Pacific Northwest', ID: 'Pacific Northwest',
-  MT: 'Pacific Northwest', OR: 'Pacific Northwest', WA: 'Pacific Northwest',
-  WY: 'Pacific Northwest',
+  'Alaska': 'Pacific Northwest', 'Hawaii': 'Pacific Northwest', 'Idaho': 'Pacific Northwest',
+  'Montana': 'Pacific Northwest', 'Oregon': 'Pacific Northwest', 'Washington': 'Pacific Northwest',
+  'Wyoming': 'Pacific Northwest',
+  // Oklahoma — not currently in the list, add as Southeast adjacent
+  'Oklahoma': 'Southeast',
 };
 
 function getRegionForState(state: string | undefined | null): string | null {
-  if (!state) return null;
-  const key = state.trim().toUpperCase();
-  return STATE_TO_REGION[key] ?? null;
+  if (!state || state === '' || state === 'No preference') return null;
+  return STATE_TO_REGION[state.trim()] ?? null;
 }
 
 function getRegionForPreference(pref: GeographicRegion): string[] {
@@ -63,14 +67,12 @@ function classifySchool(gpa: number, school: LawSchool): SchoolClassification {
 
 function getGeoAlignment(
   school: LawSchool,
-  preference: GeographicRegion,
-  strength: string,
   firstChoiceState?: string,
   secondChoiceState?: string,
   thirdChoiceState?: string
 ): { alignment: GeographicAlignment; note: string } {
-  if (preference === 'No preference' || strength === 'Open to anywhere') {
-    return { alignment: 'Aligned', note: `${school.name} places graduates primarily in ${school.primaryPlacementRegion}.` };
+  if (!firstChoiceState || firstChoiceState === '' || firstChoiceState === 'No preference') {
+    return { alignment: 'Aligned', note: `No location preference indicated. ${school.name} places graduates primarily in ${school.primaryPlacementRegion}.` };
   }
 
   const firstRegion = getRegionForState(firstChoiceState);
@@ -93,21 +95,9 @@ function getGeoAlignment(
     };
   }
 
-  const preferredRegions = getRegionForPreference(preference);
-  if (preferredRegions.includes(placement)) {
-    return { alignment: 'Aligned', note: `${school.name} aligns well with your ${preference} preference — most graduates practice in this region.` };
-  }
-
-  if (strength === 'Very strong') {
-    return {
-      alignment: 'Misaligned',
-      note: `${school.name} primarily places graduates in ${placement}, which does not align with your strong preference for ${preference}. Regional law schools often have concentrated local placement networks.`,
-    };
-  }
-
   return {
-    alignment: 'Partially Misaligned',
-    note: `${school.name} primarily places in ${placement}. Since your ${preference} preference is flexible, this may still work depending on your networking strategy.`,
+    alignment: 'Misaligned',
+    note: `${school.name} primarily places graduates in ${placement}, which does not match your preferred state (${firstChoiceState}). Regional law schools often have concentrated local placement networks.`,
   };
 }
 
@@ -124,8 +114,9 @@ function getReadiness(data: StudentData): { level: ReadinessLevel; explanation: 
   // Downgrade conditions
   const noTestApplyingSoon = data.testStatus === 'None' &&
     (data.plannedTestTiming === 'Within 3 months' || data.plannedTestTiming === '6 months');
-  const multipleRiskFlags = data.riskFlags.filter(f => f !== 'None').length >= 2;
-  const vagueMotivation = data.whyLawSchool.length < 30;
+  const meaningfulFlags = data.riskFlags.filter(f => f !== 'None' && f !== undefined && f !== null);
+  const multipleRiskFlags = meaningfulFlags.length >= 2;
+  const vagueMotivation = data.whyLawSchool.length < 50;
 
   if (noTestApplyingSoon || multipleRiskFlags || vagueMotivation) {
     idx = Math.max(0, idx - 1);
@@ -157,7 +148,7 @@ function getReadiness(data: StudentData): { level: ReadinessLevel; explanation: 
 
 function getStrategy(data: StudentData, readiness: ReadinessLevel): { recommendation: string; explanation: string } {
   const needsPrep = readiness === 'Needs Preparation';
-  const vagueMotivation = data.whyLawSchool.length < 30;
+  const vagueMotivation = data.whyLawSchool.length < 50;
   const unsurePractice = data.practiceAreaInterest.includes('Unsure');
   const longTimeline = data.plannedTestTiming === '12+ months' && data.testStatus === 'None';
 
@@ -208,7 +199,13 @@ function getStrategy(data: StudentData, readiness: ReadinessLevel): { recommenda
 }
 
 function getTimeline(data: StudentData): { recommendation: string; rationale: string } {
-  const yearsUntilStart = (data.intendedStartYear ?? currentYear + 2) - currentYear;
+  if (data.intendedStartYear === null) {
+    return {
+      recommendation: 'Define your timeline',
+      rationale: 'You indicated you are not yet sure when you want to start law school. Establishing a target start year is an important first step — it determines your application cycle, test preparation window, and how much time you have to strengthen your profile.',
+    };
+  }
+  const yearsUntilStart = data.intendedStartYear - currentYear;
   const graduated = hasGraduated(data);
 
   if (yearsUntilStart >= 2) {
@@ -260,6 +257,10 @@ function getRecommenderGuidance(data: StudentData): {
 }
 
 export function calculateScores(data: StudentData): ScoringResult {
+  if (!data.cumulativeGPA || data.cumulativeGPA <= 0 || data.cumulativeGPA > 4.0) {
+    // Return a safe default rather than calculating with invalid GPA
+    throw new Error('Invalid GPA: must be between 0.01 and 4.0');
+  }
   const { level: readinessLevel, explanation: readinessExplanation } = getReadiness(data);
   const { recommendation: strategyRecommendation, explanation: strategyExplanation } = getStrategy(data, readinessLevel);
   const { recommendation: timelineRecommendation, rationale: timelineRationale } = getTimeline(data);
@@ -274,8 +275,6 @@ export function calculateScores(data: StudentData): ScoringResult {
     const classification = classifySchool(data.cumulativeGPA, school);
     const { alignment, note } = getGeoAlignment(
       school,
-      data.geographicPreference,
-      data.geographicStrength,
       data.firstChoiceState,
       data.secondChoiceState,
       data.thirdChoiceState,
@@ -314,7 +313,7 @@ export function calculateScores(data: StudentData): ScoringResult {
 
   // Career path note (conditional)
   let careerPathNote: string | undefined;
-  if (readinessLevel === 'Needs Preparation' || data.whyLawSchool.length < 30 ||
+  if (readinessLevel === 'Needs Preparation' || data.whyLawSchool.length < 50 ||
     (data.plannedTestTiming === '12+ months' && data.testStatus === 'None')) {
     const area = data.practiceAreaInterest.find(a => a !== 'Unsure') || 'general';
     const pathMap: Record<string, string> = {
@@ -336,7 +335,8 @@ export function calculateScores(data: StudentData): ScoringResult {
   if (!hasAcademicRecommender) {
     actionPlan.push('Identify and approach a professor who can write a strong academic recommendation letter.');
   }
-  if (data.riskFlags.some(f => f !== 'None')) {
+  const meaningfulActionFlags = data.riskFlags.filter(f => f !== 'None' && f !== undefined && f !== null);
+  if (meaningfulActionFlags.length > 0) {
     actionPlan.push('Prepare an addendum addressing your academic history — frame it as growth, not excuse.');
   }
   actionPlan.push('Review your school list with your advisor and discuss reach/target/safety balance.');
