@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { ResultsView } from '@/components/results/ResultsView';
 import { ScoringResult, StudentData } from '@/types/intake';
+import { LawSchoolFitSnapshot } from '@/components/advisor/LawSchoolFitSnapshot';
 
 function ReportInner() {
   const { user } = useAuth();
@@ -41,7 +42,14 @@ function ReportInner() {
       </div>
     );
   }
-  return <ResultsView results={results} studentData={studentData} onStartOver={() => navigate('/intake')} />;
+  return (
+    <>
+      <ResultsView results={results} studentData={studentData} onStartOver={() => navigate('/intake')} />
+      <div className="max-w-3xl mx-auto px-4 pb-16">
+        <LawSchoolFitSnapshot studentData={studentData} />
+      </div>
+    </>
+  );
 }
 
 export default function ReportPage() {
