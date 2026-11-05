@@ -4,8 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
+import { ImageUploadBox } from '@/components/advisor/ImageUploadBox';
 import { buildAdvisorUrl } from '@/lib/advisorSlug';
 import { Copy, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -19,13 +18,15 @@ export default function AdvisorProfileSettings() {
   const [title, setTitle] = useState(advisor?.title || '');
   const [phone, setPhone] = useState(advisor?.phone || '');
   const [years, setYears] = useState(advisor?.yearsAdvising || '');
+  const [photo, setPhoto] = useState<string | undefined>(advisor?.photoUrl);
+  const [logo, setLogo] = useState<string | undefined>(advisor?.logoUrl);
   const [copied, setCopied] = useState(false);
 
   if (!advisor) return null;
   const url = buildAdvisorUrl(advisor.slug, advisor.institution);
 
   const save = () => {
-    updateAdvisor({ biography: bio, title, phone, yearsAdvising: years });
+    updateAdvisor({ biography: bio, title, phone, yearsAdvising: years, photoUrl: photo, logoUrl: logo });
     toast({ title: 'Profile updated' });
   };
 
@@ -40,18 +41,9 @@ export default function AdvisorProfileSettings() {
       <h1 className="text-3xl font-heading font-bold text-[#1A365D]">My Profile</h1>
 
       <div className="bg-white border rounded-xl p-6 space-y-5">
-        <div className="flex flex-col items-center gap-2">
-          <SilhouetteAvatar size={120} bordered />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button type="button" className="text-sm text-muted-foreground cursor-default" tabIndex={-1}>
-                  Edit Photo
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Photo upload coming soon</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        <div className="flex flex-wrap justify-center items-start gap-10">
+          <ImageUploadBox variant="photo" value={photo} onChange={setPhoto} />
+          <ImageUploadBox variant="logo" value={logo} onChange={setLogo} />
         </div>
 
         <div>
