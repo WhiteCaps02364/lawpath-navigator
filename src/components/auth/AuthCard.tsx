@@ -17,7 +17,7 @@ export function AuthCard({
       <div className="bg-[#1A365D] w-full px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
-          <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
+          <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
         </div>
       </div>
       <div className="px-4 py-12 flex flex-col items-center">

@@ -108,7 +108,7 @@ export default function AdvisorPublicProfile() {
       <header className="bg-[#1A365D] w-full">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
-          <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
+          <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
         </div>
       </header>
 
