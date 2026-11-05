@@ -13,6 +13,8 @@ export interface AdvisorProfile {
   biography?: string;
   institutionalBioUrl?: string;
   verificationNotes?: string;
+  photoUrl?: string;
+  logoUrl?: string;
   slug: string;
 }
 
