@@ -669,7 +669,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         pdf.line(margin, pg.pageH - footerH, pg.pageW - margin, pg.pageH - footerH);
         pdf.setTextColor(120, 120, 120);
         pdf.setFontSize(9);
-        pdf.text('Pre-Law Advisory Engine by JD-Next | jdnext.org', pg.pageW / 2, pg.pageH - footerH / 2, { align: 'center' });
+        pdf.text('Pre-Law Advisory Intake Form by JD-Next | jdnext.org', pg.pageW / 2, pg.pageH - footerH / 2, { align: 'center' });
         pdf.text(`Page ${idx + 1} of ${totalPages}`, pg.pageW - margin, pg.pageH - footerH / 2, { align: 'right' });
       });
 
@@ -685,7 +685,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       <header className="w-full" style={{ background: NAVY }}>
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56 }} />
-          <span style={{ color: '#D1D5DB', fontSize: 16 }}>Pre-Law Advisory Engine</span>
+          <span style={{ color: '#D1D5DB', fontSize: 16 }}>Pre-Law Advisory Intake Form</span>
         </div>
       </header>
 
@@ -887,7 +887,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       <footer className="w-full mt-12" style={{ background: NAVY }}>
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 40 }} />
-          <span style={{ color: '#D1D5DB', fontSize: 13 }}>Pre-Law Advisory Engine — Powered by JD-Next</span>
+          <span style={{ color: '#D1D5DB', fontSize: 13 }}>Pre-Law Advisory Intake Form — Powered by JD-Next</span>
           <span style={{ color: '#D1D5DB', fontSize: 13 }}>© JD-Next / Aspen Publishing</span>
         </div>
       </footer>

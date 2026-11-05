@@ -44,7 +44,7 @@ export default function Index() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <span className="text-base text-gray-300">Pre-Law Advisory Engine</span>
+            <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
           )}
         </div>
       </div>

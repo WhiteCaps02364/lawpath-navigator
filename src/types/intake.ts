@@ -1,4 +1,4 @@
-// Types for the Pre-Law Advisory Engine
+// Types for the Pre-Law Advisory Intake Form
 
 export interface StudentData {
   // Personal Info
