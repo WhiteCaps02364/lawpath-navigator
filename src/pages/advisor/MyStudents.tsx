@@ -51,20 +51,20 @@ export default function MyStudents() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-heading font-bold text-[#1A365D]">Your Pre-Law Advising Dashboard</h1>
+      <h1 className="text-3xl font-heading font-bold text-[#026062]">Your Pre-Law Advising Dashboard</h1>
 
       <div className="bg-muted rounded-lg p-4 space-y-2">
         <p className="text-xs text-muted-foreground">Your custom advisor link</p>
         <div className="flex items-center gap-2 flex-wrap">
           <code className="flex-1 min-w-[240px] text-sm font-mono bg-white border rounded px-3 py-2">{url}</code>
-          <button onClick={copy} className="inline-flex items-center gap-1.5 bg-[#1A365D] text-white px-3 py-2 rounded text-sm font-medium">
+          <button onClick={copy} className="inline-flex items-center gap-1.5 bg-[#026062] text-white px-3 py-2 rounded text-sm font-medium">
             {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
           </button>
         </div>
         <p className="text-xs text-muted-foreground">Share this link with your advisees. Their completed reports will appear here automatically.</p>
       </div>
 
-      <p className="text-sm text-[#1A365D]">
+      <p className="text-sm text-[#026062]">
         Have a student who already created a profile? Ask them to visit your advisor link and sign in — their report will be shared with you automatically.
       </p>
 
@@ -89,7 +89,7 @@ export default function MyStudents() {
           <p className="text-muted-foreground">No students have completed their assessment yet. Share your link to get started.</p>
           <div className="flex items-center justify-center gap-2 max-w-xl mx-auto">
             <code className="flex-1 text-sm font-mono bg-muted rounded px-3 py-2">{url}</code>
-            <button onClick={copy} className="inline-flex items-center gap-1.5 bg-[#1A365D] text-white px-3 py-2 rounded text-sm font-medium">
+            <button onClick={copy} className="inline-flex items-center gap-1.5 bg-[#026062] text-white px-3 py-2 rounded text-sm font-medium">
               {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copied ? 'Copied!' : 'Copy'}
             </button>
@@ -117,7 +117,7 @@ export default function MyStudents() {
                 return (
                   <tr key={s.id} className="border-t hover:bg-muted/30">
                     <td className="px-4 py-3">
-                      <button onClick={() => navigate(`/advisor-dashboard/student/${s.id}`)} className="text-[#1A365D] underline font-medium">
+                      <button onClick={() => navigate(`/advisor-dashboard/student/${s.id}`)} className="text-[#026062] underline font-medium">
                         {sd.firstName} {sd.lastName}
                       </button>
                     </td>
@@ -128,7 +128,7 @@ export default function MyStudents() {
                     <td className="px-4 py-3">{sd.testStatus}</td>
                     <td className="px-4 py-3 text-muted-foreground">Not uploaded</td>
                     <td className="px-4 py-3">
-                      <button onClick={() => navigate(`/advisor-dashboard/student/${s.id}`)} className="bg-[#1A365D] text-white px-3 py-1.5 rounded text-xs font-medium">View Report</button>
+                      <button onClick={() => navigate(`/advisor-dashboard/student/${s.id}`)} className="bg-[#026062] text-white px-3 py-1.5 rounded text-xs font-medium">View Report</button>
                     </td>
                   </tr>
                 );

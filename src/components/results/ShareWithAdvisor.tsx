@@ -85,7 +85,7 @@ export function ShareWithAdvisor({ studentInstitution, onDownloadPdf, onShared }
   return (
     <div className="space-y-5">
       <div className="border rounded-xl p-5 bg-white space-y-3">
-        <h3 className="font-heading text-lg font-bold text-[#1A365D]">Share with Your Pre-Law Advisor</h3>
+        <h3 className="font-heading text-lg font-bold text-[#026062]">Share with Your Pre-Law Advisor</h3>
         <p className="text-sm text-muted-foreground">
           If your undergraduate institution has a pre-law advisor registered with this system, you can send your report directly to their dashboard.
         </p>
@@ -113,7 +113,7 @@ export function ShareWithAdvisor({ studentInstitution, onDownloadPdf, onShared }
               <p className="font-medium text-sm">{advisors[0].first_name} {advisors[0].last_name}</p>
               <p className="text-xs text-muted-foreground">{advisors[0].title}</p>
             </div>
-            <Button onClick={() => sendTo(advisors[0])} className="bg-[#1A365D] text-white gap-1.5">
+            <Button onClick={() => sendTo(advisors[0])} className="bg-[#026062] text-white gap-1.5">
               <Send className="w-4 h-4" /> Send to {advisors[0].first_name}
             </Button>
           </div>
@@ -122,7 +122,7 @@ export function ShareWithAdvisor({ studentInstitution, onDownloadPdf, onShared }
         {advisors.length > 1 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {advisors.map(a => (
-              <button key={a.id} onClick={() => sendTo(a)} className="flex items-center gap-3 p-3 border rounded-lg text-left hover:border-[#1A365D] transition-colors">
+              <button key={a.id} onClick={() => sendTo(a)} className="flex items-center gap-3 p-3 border rounded-lg text-left hover:border-[#026062] transition-colors">
                 <SilhouetteAvatar size={48} />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm truncate">{a.first_name} {a.last_name}</p>
@@ -135,7 +135,7 @@ export function ShareWithAdvisor({ studentInstitution, onDownloadPdf, onShared }
       </div>
 
       <div className="border-t pt-5">
-        <button onClick={onDownloadPdf} className="inline-flex items-center gap-2 border border-[#1A365D] text-[#1A365D] bg-white px-4 py-2 rounded-md font-medium hover:bg-muted">
+        <button onClick={onDownloadPdf} className="inline-flex items-center gap-2 border border-[#026062] text-[#026062] bg-white px-4 py-2 rounded-md font-medium hover:bg-muted">
           <Download className="w-4 h-4" /> Download to Share with My Pre-Law Advisor
         </button>
       </div>

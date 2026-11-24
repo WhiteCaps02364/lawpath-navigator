@@ -57,13 +57,13 @@ export default function AdvisorStudentReport() {
 
   return (
     <div>
-      <button onClick={() => navigate('/advisor-dashboard')} className="inline-flex items-center gap-1 text-sm text-[#1A365D] mb-4">
+      <button onClick={() => navigate('/advisor-dashboard')} className="inline-flex items-center gap-1 text-sm text-[#026062] mb-4">
         <ArrowLeft className="w-4 h-4" /> Back to students
       </button>
       <ResultsView results={r} studentData={sd} onStartOver={() => navigate('/advisor-dashboard')} />
       <div className="max-w-3xl mx-auto px-4 pb-16 space-y-6">
         <div className="border rounded-xl bg-white p-6">
-          <h3 className="text-xl font-heading font-bold text-[#1A365D] mb-3">Suggested Meeting Agenda</h3>
+          <h3 className="text-xl font-heading font-bold text-[#026062] mb-3">Suggested Meeting Agenda</h3>
           <ol className="list-decimal pl-5 space-y-2 text-sm">
             {agenda.length === 0 ? (
               <li className="list-none text-muted-foreground">No specific agenda flags from this student's profile — use the meeting to explore goals and timing.</li>
@@ -71,7 +71,7 @@ export default function AdvisorStudentReport() {
           </ol>
         </div>
         <div className="border rounded-xl bg-white p-6">
-          <h3 className="text-xl font-heading font-bold text-[#1A365D] mb-3">Advisor Notes</h3>
+          <h3 className="text-xl font-heading font-bold text-[#026062] mb-3">Advisor Notes</h3>
           <p className="text-xs text-muted-foreground mb-2">Private — never visible to the student.</p>
           <Textarea value={notes} onChange={e => setNotes(e.target.value)} rows={6} placeholder="Add private notes for this advising relationship…" />
         </div>

@@ -41,7 +41,7 @@ export default function SignUp() {
 
   return (
     <AuthCard>
-      <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your JD-Next Account</h1>
+      <h1 className="text-[24px] font-bold text-center text-[#026062]">Create Your JD-Next Account</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
         Save your report, return anytime, and share with your advisor.
       </p>
@@ -73,7 +73,7 @@ export default function SignUp() {
         <button
           type="submit"
           disabled={!canSubmit}
-          className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full h-11 rounded-2xl bg-[#026062] text-white font-medium hover:bg-[#026062]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {submitting ? 'Creating…' : 'Create Account & Start →'}
         </button>
@@ -87,7 +87,7 @@ export default function SignUp() {
       <div style={{ height: 20 }} />
       <p className="text-[14px] text-center">
         Already have an account?{' '}
-        <Link to={`/signin${advisorId ? `?advisor=${advisorId}` : ''}`} className="text-[#1A365D] underline font-medium">Sign In</Link>
+        <Link to={`/signin${advisorId ? `?advisor=${advisorId}` : ''}`} className="text-[#026062] underline font-medium">Sign In</Link>
       </p>
     </AuthCard>
   );

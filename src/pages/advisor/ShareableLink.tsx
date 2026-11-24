@@ -40,7 +40,7 @@ ${advisor.firstName} ${advisor.lastName}`;
   return (
     <div className="space-y-8 max-w-3xl">
       <div className="space-y-2">
-        <h1 className="text-3xl font-heading font-bold text-[#1A365D]">Your Custom Advisor Link</h1>
+        <h1 className="text-3xl font-heading font-bold text-[#026062]">Your Custom Advisor Link</h1>
         <p className="text-base text-muted-foreground">
           Share this link with your advisees. When they click it, they'll see your personal advisor profile page and their completed report will be sent directly to your dashboard.
         </p>
@@ -49,14 +49,14 @@ ${advisor.firstName} ${advisor.lastName}`;
       <div className="bg-white border rounded-xl p-5 space-y-4">
         <code className="block text-base font-mono bg-muted rounded px-4 py-3 break-all">{url}</code>
         <div className="flex gap-3 flex-wrap">
-          <button onClick={() => copy(fullUrl, setCopiedLink)} className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-4 py-2 rounded font-medium text-sm">
+          <button onClick={() => copy(fullUrl, setCopiedLink)} className="inline-flex items-center gap-2 bg-[#026062] text-white px-4 py-2 rounded font-medium text-sm">
             {copiedLink ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
           </button>
           <a
             href={buildAdvisorPath(advisor.slug, advisor.institution)}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 border border-[#1A365D] text-[#1A365D] px-4 py-2 rounded font-medium text-sm hover:bg-muted"
+            className="inline-flex items-center gap-2 border border-[#026062] text-[#026062] px-4 py-2 rounded font-medium text-sm hover:bg-muted"
           >
             Open My Profile Page
           </a>
@@ -64,17 +64,17 @@ ${advisor.firstName} ${advisor.lastName}`;
       </div>
 
       <div className="space-y-3">
-        <h2 className="text-xl font-heading font-bold text-[#1A365D]">Ready-to-Send Email for Your Advisees</h2>
+        <h2 className="text-xl font-heading font-bold text-[#026062]">Ready-to-Send Email for Your Advisees</h2>
         <pre className="bg-muted text-sm rounded-lg p-4 whitespace-pre-wrap font-sans">{emailBody}</pre>
-        <button onClick={() => copy(emailBody, setCopiedEmail)} className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-4 py-2 rounded font-medium text-sm">
+        <button onClick={() => copy(emailBody, setCopiedEmail)} className="inline-flex items-center gap-2 bg-[#026062] text-white px-4 py-2 rounded font-medium text-sm">
           {copiedEmail ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Email</>}
         </button>
       </div>
 
       <div className="space-y-3">
-        <h2 className="text-xl font-heading font-bold text-[#1A365D]">Suggested Text Message</h2>
+        <h2 className="text-xl font-heading font-bold text-[#026062]">Suggested Text Message</h2>
         <pre className="bg-muted text-sm rounded-lg p-4 whitespace-pre-wrap font-sans">{textMessage}</pre>
-        <button onClick={() => copy(textMessage, setCopiedText)} className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-4 py-2 rounded font-medium text-sm">
+        <button onClick={() => copy(textMessage, setCopiedText)} className="inline-flex items-center gap-2 bg-[#026062] text-white px-4 py-2 rounded font-medium text-sm">
           {copiedText ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Text</>}
         </button>
       </div>

@@ -38,7 +38,7 @@ export default function AdvisorProfileSettings() {
 
   return (
     <div className="space-y-8 max-w-2xl">
-      <h1 className="text-3xl font-heading font-bold text-[#1A365D]">My Profile</h1>
+      <h1 className="text-3xl font-heading font-bold text-[#026062]">My Profile</h1>
 
       <div className="bg-white border rounded-xl p-6 space-y-5">
         <div className="flex flex-wrap justify-center items-start gap-10">
@@ -77,14 +77,14 @@ export default function AdvisorProfileSettings() {
             <Label>Verified Email</Label>
             <div className="flex items-center gap-2 mt-1.5">
               <Input value={advisor.email} readOnly className="bg-muted flex-1" />
-              <button className="text-sm text-[#1A365D] underline whitespace-nowrap" onClick={() => toast({ title: 'Email change link sent' })}>Change Email</button>
+              <button className="text-sm text-[#026062] underline whitespace-nowrap" onClick={() => toast({ title: 'Email change link sent' })}>Change Email</button>
             </div>
           </div>
           <div>
             <Label>Custom Link</Label>
             <div className="flex items-center gap-2 mt-1.5">
               <Input value={url} readOnly className="bg-muted flex-1 font-mono text-sm" />
-              <button onClick={copy} className="inline-flex items-center gap-1 bg-[#1A365D] text-white px-3 py-2 rounded text-sm">
+              <button onClick={copy} className="inline-flex items-center gap-1 bg-[#026062] text-white px-3 py-2 rounded text-sm">
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
@@ -92,7 +92,7 @@ export default function AdvisorProfileSettings() {
           </div>
         </div>
 
-        <button onClick={save} className="w-full bg-[#1A365D] text-white h-11 rounded-md font-medium hover:bg-[#1A365D]/90">
+        <button onClick={save} className="w-full bg-[#026062] text-white h-11 rounded-md font-medium hover:bg-[#026062]/90">
           Save Changes
         </button>
       </div>

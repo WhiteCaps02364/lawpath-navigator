@@ -37,7 +37,7 @@ export default function UnderstandingReport() {
   const navigate = useNavigate();
   return (
     <div className="space-y-6 max-w-3xl">
-      <h1 className="text-3xl font-heading font-bold text-[#1A365D]">How to Read and Use Your Students' Advisory Reports</h1>
+      <h1 className="text-3xl font-heading font-bold text-[#026062]">How to Read and Use Your Students' Advisory Reports</h1>
       <p className="text-base text-muted-foreground">
         A quick guide to every section of the Pre-Law Advisory Report and how to use it in your advising meetings.
       </p>
@@ -46,7 +46,7 @@ export default function UnderstandingReport() {
         {cards.map((c, i) => (
           <div key={i} className="bg-white border rounded-xl p-6 space-y-3">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Card {i + 1}</p>
-            <h3 className="text-lg font-heading font-bold text-[#1A365D]">{c.title}</h3>
+            <h3 className="text-lg font-heading font-bold text-[#026062]">{c.title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">{c.body}</p>
             <div className="mt-3 p-4 rounded bg-muted/40" style={{ borderLeft: '4px solid #C9A84C' }}>
               <p className="text-xs font-bold mb-1" style={{ color: '#8A6D1A' }}>ADVISOR TIP</p>
@@ -56,10 +56,10 @@ export default function UnderstandingReport() {
         ))}
       </div>
 
-      <div className="bg-[#1A365D] text-white rounded-xl p-6 space-y-4">
+      <div className="bg-[#026062] text-white rounded-xl p-6 space-y-4">
         <h3 className="text-lg font-heading font-bold">Ready to see a real report in action?</h3>
         <div className="flex flex-wrap gap-3">
-          <button onClick={() => navigate('/advisor-dashboard/preview')} className="bg-white text-[#1A365D] px-4 py-2 rounded font-medium text-sm">Preview Student Experience →</button>
+          <button onClick={() => navigate('/advisor-dashboard/preview')} className="bg-white text-[#026062] px-4 py-2 rounded font-medium text-sm">Preview Student Experience →</button>
           <button onClick={() => navigate('/advisor-dashboard/demo')} className="border border-white/40 text-white px-4 py-2 rounded font-medium text-sm">View Demo Dashboard →</button>
         </div>
       </div>

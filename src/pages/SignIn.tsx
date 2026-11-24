@@ -61,15 +61,15 @@ export default function SignIn() {
 
   return (
     <AuthCard>
-      <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Welcome Back</h1>
+      <h1 className="text-[24px] font-bold text-center text-[#026062]">Welcome Back</h1>
       <p className="text-[14px] text-muted-foreground text-center mt-2">
         Sign in to view your report and advising profile.
       </p>
       <div style={{ height: 24 }} />
       {advisorId && (
         <div
-          className="text-[13px] text-[#1A365D] px-3 py-2 mb-4 rounded"
-          style={{ background: '#EBF4FF', borderLeft: '3px solid #1A365D' }}
+          className="text-[13px] text-[#026062] px-3 py-2 mb-4 rounded"
+          style={{ background: '#CCD9D9', borderLeft: '3px solid #026062' }}
         >
           You're signing in via {advisorFirstName || 'your advisor'}{advisorFirstName ? "'s" : ''} advising link
           {advisorInstitution ? ` at ${advisorInstitution}` : ''}. Your completed report will be shared with them automatically once you sign in.
@@ -93,13 +93,13 @@ export default function SignIn() {
             </button>
           </div>
           <div className="text-right mt-1.5">
-            <button type="button" onClick={() => setForgotOpen(true)} className="text-[13px] text-[#1A365D] underline">Forgot password?</button>
+            <button type="button" onClick={() => setForgotOpen(true)} className="text-[13px] text-[#026062] underline">Forgot password?</button>
           </div>
         </div>
         <button
           type="submit"
           disabled={submitting}
-          className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 disabled:opacity-50 transition-colors"
+          className="w-full h-11 rounded-2xl bg-[#026062] text-white font-medium hover:bg-[#026062]/90 disabled:opacity-50 transition-colors"
         >
           {submitting ? 'Signing in…' : 'Sign In →'}
         </button>
@@ -107,7 +107,7 @@ export default function SignIn() {
       <div style={{ height: 20 }} />
       <p className="text-[14px] text-center">
         Don't have an account?{' '}
-        <Link to={`/auth${advisorId ? `?advisor=${encodeURIComponent(advisorId)}${advisorInstitution ? `&institution=${encodeURIComponent(advisorInstitution)}` : ''}` : ''}`} className="text-[#1A365D] underline font-medium">Create Account</Link>
+        <Link to={`/auth${advisorId ? `?advisor=${encodeURIComponent(advisorId)}${advisorInstitution ? `&institution=${encodeURIComponent(advisorInstitution)}` : ''}` : ''}`} className="text-[#026062] underline font-medium">Create Account</Link>
       </p>
 
       <Dialog open={forgotOpen} onOpenChange={setForgotOpen}>
@@ -118,14 +118,14 @@ export default function SignIn() {
           </DialogHeader>
           <Input type="email" placeholder="you@email.com" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)} />
           <DialogFooter>
-            <button onClick={sendReset} disabled={forgotSending || !forgotEmail} className="w-full h-10 rounded-md bg-[#1A365D] text-white font-medium disabled:opacity-50">
+            <button onClick={sendReset} disabled={forgotSending || !forgotEmail} className="w-full h-10 rounded-md bg-[#026062] text-white font-medium disabled:opacity-50">
               {forgotSending ? 'Sending…' : 'Send Reset Link'}
             </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
       <div className="text-center mt-6 pt-4 border-t">
-        <Link to="/advisor-register" className="text-sm text-[#1A365D] underline">Are You a Pre-Law Advisor?</Link>
+        <Link to="/advisor-register" className="text-sm text-[#026062] underline">Are You a Pre-Law Advisor?</Link>
       </div>
     </AuthCard>
   );

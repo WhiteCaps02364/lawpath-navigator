@@ -97,7 +97,7 @@ export default function AdvisorRegister() {
           ].map((card) => (
             <div key={card.title} className="min-h-[280px] border rounded-xl p-8 bg-card hover:shadow-md transition-shadow text-left">
               <card.icon className="w-10 h-10 text-secondary mb-4" />
-              <h2 className="text-lg font-bold text-[#1A365D]">{card.title}</h2>
+              <h2 className="text-lg font-bold text-[#026062]">{card.title}</h2>
               <p className="mt-3 text-[14px] leading-[1.7] text-muted-foreground">{card.description}</p>
             </div>
           ))}
@@ -111,10 +111,10 @@ export default function AdvisorRegister() {
       <>
         <AuthCard>
           <div className="text-center space-y-4">
-            <div className="mx-auto w-12 h-12 rounded-full bg-[#1A365D]/10 flex items-center justify-center">
-              <Mail className="w-6 h-6 text-[#1A365D]" />
+            <div className="mx-auto w-12 h-12 rounded-full bg-[#026062]/10 flex items-center justify-center">
+              <Mail className="w-6 h-6 text-[#026062]" />
             </div>
-            <h1 className="text-[24px] font-bold text-[#1A365D]">Check your inbox</h1>
+            <h1 className="text-[24px] font-bold text-[#026062]">Check your inbox</h1>
             <p className="text-[14px] text-muted-foreground">
               We've sent a verification link to <span className="font-medium text-foreground">{email}</span>. Click the link to continue setting up your account.
             </p>
@@ -146,7 +146,7 @@ export default function AdvisorRegister() {
     <>
     <AuthCard beforeCard={advisorIntro} cardClassName="mt-12 shadow-md" cardStyle={{ maxWidth: 520, padding: '48px 40px' }}>
       <div ref={registrationCardRef} />
-      <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Create Your Advisor Account</h1>
+      <h1 className="text-[24px] font-bold text-center text-[#026062]">Create Your Advisor Account</h1>
       <p className="text-[14px] text-muted-foreground text-left mt-4">
         We verify all advisor accounts using your school's .edu email address, so students know they're connecting with an advisor at their school. During the registration process, we also ask you for a link to your institutional biography page to further confirm your affiliation. These steps ensure your dashboard and student data remain institution-specific and private.
       </p>
@@ -173,7 +173,7 @@ export default function AdvisorRegister() {
         </div>
         <button
           type="submit"
-          className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 transition-colors flex items-center justify-center gap-2"
+          className="w-full h-11 rounded-2xl bg-[#026062] text-white font-medium hover:bg-[#026062]/90 transition-colors flex items-center justify-center gap-2"
         >
           Get Started — Create My Free Account <ArrowRight className="w-4 h-4" />
         </button>
@@ -208,18 +208,18 @@ export default function AdvisorRegister() {
                 </div>
               </div>
               <DialogFooter>
-                <button onClick={submitManual} className="w-full h-10 rounded-md bg-[#1A365D] text-white font-medium">
+                <button onClick={submitManual} className="w-full h-10 rounded-md bg-[#026062] text-white font-medium">
                   Submit Request
                 </button>
               </DialogFooter>
             </>
           ) : (
             <div className="py-6 text-center space-y-2">
-              <h3 className="text-lg font-bold text-[#1A365D]">Request submitted</h3>
+              <h3 className="text-lg font-bold text-[#026062]">Request submitted</h3>
               <p className="text-sm text-muted-foreground">
                 Your verification request has been submitted. A member of the JD-Next team will be in touch within 2 business days.
               </p>
-              <button onClick={() => setManualOpen(false)} className="mt-3 px-4 py-2 rounded-md bg-[#1A365D] text-white text-sm">Close</button>
+              <button onClick={() => setManualOpen(false)} className="mt-3 px-4 py-2 rounded-md bg-[#026062] text-white text-sm">Close</button>
             </div>
           )}
         </DialogContent>

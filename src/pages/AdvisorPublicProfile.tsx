@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { institutionShortcode } from '@/lib/advisorSlug';
 import { ArrowRight, Building2, BarChart3, Shield, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 import { AdvisorFooter } from '@/components/advisor/AdvisorFooter';
 import { SilhouetteAvatar } from '@/components/advisor/SilhouetteAvatar';
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
@@ -105,7 +106,7 @@ export default function AdvisorPublicProfile() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-[#1A365D] w-full">
+      <header className="bg-[#026062] w-full">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
           <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
@@ -119,9 +120,9 @@ export default function AdvisorPublicProfile() {
             <SilhouetteAvatar size={160} bordered />
           </div>
           <div className="md:col-span-3 space-y-3">
-            <h1 className="text-[24px] font-bold text-[#1A365D] font-heading">{displayName}</h1>
+            <h1 className="text-[24px] font-bold text-[#026062] font-heading">{displayName}</h1>
             <p className="text-[16px] text-muted-foreground">{title}</p>
-            <p className="text-[16px] text-[#1A365D] flex items-center gap-2">
+            <p className="text-[16px] text-[#026062] flex items-center gap-2">
               <Building2 className="w-4 h-4" /> {institution}
             </p>
             {years && (
@@ -144,7 +145,7 @@ export default function AdvisorPublicProfile() {
         <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
           {showReturning ? (
             <>
-              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#1A365D]">
+              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#026062]">
                 Welcome back, {userFirstName}.
               </motion.h2>
               <p className="text-base md:text-lg text-muted-foreground">
@@ -154,19 +155,19 @@ export default function AdvisorPublicProfile() {
                 <button
                   onClick={shareReport}
                   disabled={sharing || shared || alreadyLinked}
-                  className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-6 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/90 disabled:opacity-60"
+                  className="inline-flex items-center gap-2 bg-[#026062] text-white px-6 py-3 rounded-md text-base font-medium hover:bg-[#026062]/90 disabled:opacity-60"
                 >
                   {shared || alreadyLinked ? 'Report Shared ✓' : <>Share My Report with {firstName} <ArrowRight className="w-5 h-5" /></>}
                 </button>
                 <button
                   onClick={() => navigate('/report')}
-                  className="inline-flex items-center gap-2 bg-white text-[#1A365D] border border-[#1A365D] px-6 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/5"
+                  className="inline-flex items-center gap-2 bg-white text-[#026062] border border-[#026062] px-6 py-3 rounded-md text-base font-medium hover:bg-[#026062]/5"
                 >
                   View My Report
                 </button>
               </div>
               {(shared || alreadyLinked) && (
-                <p className="text-sm text-[#1A365D] mt-2">
+                <p className="text-sm text-[#026062] mt-2">
                   Your report has been shared with {firstName}. They will be able to review it before your meeting.
                 </p>
               )}
@@ -176,7 +177,7 @@ export default function AdvisorPublicProfile() {
             </>
           ) : (
             <>
-              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#1A365D]">
+              <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-heading font-bold text-[#026062]">
                 Your Law School Plan, Built Around You.
               </motion.h2>
               <p className="text-base md:text-lg text-muted-foreground">
@@ -185,14 +186,14 @@ export default function AdvisorPublicProfile() {
               <div className="pt-2">
                 <button
                   onClick={start}
-                  className="inline-flex items-center gap-2 bg-[#1A365D] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-[#1A365D]/90"
+                  className="inline-flex items-center gap-2 bg-[#026062] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-[#026062]/90"
                 >
                   Start My Assessment <ArrowRight className="w-5 h-5" />
                 </button>
                 <p className="text-sm text-muted-foreground mt-3">Takes about 10 minutes. Free for all law school applicants.</p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Already have an account?{' '}
-                  <button onClick={goSignIn} className="text-[#1A365D] underline font-medium">Sign In</button>
+                  <button onClick={goSignIn} className="text-[#026062] underline font-medium">Sign In</button>
                 </p>
               </div>
             </>
@@ -218,7 +219,7 @@ export default function AdvisorPublicProfile() {
       </section>
 
       {/* Navy band */}
-      <section className="bg-[#1A365D] text-white py-16">
+      <section className="bg-[#026062] text-white py-16">
         <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
           <h2 className="text-2xl md:text-3xl font-heading">Designed for You. Built for Your Advisor.</h2>
           <p className="text-base md:text-lg opacity-90">

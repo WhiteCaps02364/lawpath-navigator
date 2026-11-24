@@ -1,5 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 
 export function AuthCard({
   children,
@@ -14,7 +15,7 @@ export function AuthCard({
 }) {
   return (
     <div className="min-h-screen bg-muted/30">
-      <div className="bg-[#1A365D] w-full px-4 py-3">
+      <div className="bg-[#026062] w-full px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
           <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>

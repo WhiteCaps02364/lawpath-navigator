@@ -37,7 +37,7 @@ function ReportInner() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-3">
         <p className="text-muted-foreground">No completed report yet.</p>
-        <button onClick={() => navigate('/intake')} className="px-4 py-2 rounded-md bg-[#1A365D] text-white">Start intake</button>
+        <button onClick={() => navigate('/intake')} className="px-4 py-2 rounded-md bg-[#026062] text-white">Start intake</button>
       </div>
     );
   }

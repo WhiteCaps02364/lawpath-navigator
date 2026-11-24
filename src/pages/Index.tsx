@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 import { ArrowRight, Users, BarChart3, Shield, ChevronDown } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -30,7 +31,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-[#1A365D] w-full px-4 py-3">
+      <div className="bg-[#026062] w-full px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" className="h-[56px] w-auto" />
           {user ? (
@@ -73,7 +74,7 @@ export default function Index() {
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
-              <Button size="lg" onClick={handleStart} className="gap-2 text-base px-8 bg-[#1A365D] text-white hover:bg-[#1A365D]/90">
+              <Button size="lg" onClick={handleStart} className="gap-2 text-base px-8 bg-[#026062] text-white hover:bg-[#026062]/90">
                 Create My Custom Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
@@ -156,7 +157,7 @@ export default function Index() {
           </div>
           <button
             onClick={() => navigate('/advisor-register')}
-            className="text-sm text-[#1A365D] underline font-medium"
+            className="text-sm text-[#026062] underline font-medium"
           >
             Are You a Pre-Law Advisor?
           </button>

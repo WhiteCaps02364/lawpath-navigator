@@ -49,7 +49,7 @@ export function ImageUploadBox({ variant, value, onChange }: {
       <button
         type="button"
         onClick={() => ref.current?.click()}
-        className={`overflow-hidden border-2 border-[#1A365D]/30 bg-muted flex items-center justify-center hover:opacity-90 ${isPhoto ? 'rounded-full w-[120px] h-[120px]' : 'rounded-xl w-[213px] h-[120px]'}`}
+        className={`overflow-hidden border-2 border-[#026062]/30 bg-muted flex items-center justify-center hover:opacity-90 ${isPhoto ? 'rounded-full w-[120px] h-[120px]' : 'rounded-xl w-[213px] h-[120px]'}`}
         aria-label={isPhoto ? 'Upload profile photo' : 'Upload institution logo'}
       >
         {value ? (
@@ -62,7 +62,7 @@ export function ImageUploadBox({ variant, value, onChange }: {
       </button>
       <input ref={ref} type="file" accept=".jpg,.jpeg,.png,.webp" className="hidden"
         onChange={e => { pick(e.target.files?.[0]); e.target.value = ''; }} />
-      <span className="text-sm font-medium text-[#1A365D]">{isPhoto ? 'Profile Photo' : 'Institution Logo'}</span>
+      <span className="text-sm font-medium text-[#026062]">{isPhoto ? 'Profile Photo' : 'Institution Logo'}</span>
       {value && (
         <button type="button" onClick={() => onChange(undefined)} className="text-xs text-muted-foreground underline">Remove</button>
       )}

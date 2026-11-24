@@ -1,7 +1,7 @@
 import { StudentData, LawSchool } from '@/types/intake';
 import { lawSchools } from '@/data/lawSchools';
 
-const NAVY = '#1A365D';
+const NAVY = '#026062';
 const GOLD = '#C9A84C';
 
 const STATE_TO_REGION: Record<string, string> = {

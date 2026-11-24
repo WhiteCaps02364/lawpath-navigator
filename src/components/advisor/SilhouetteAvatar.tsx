@@ -3,7 +3,7 @@ import { User } from 'lucide-react';
 export function SilhouetteAvatar({ size = 64, bordered = false }: { size?: number; bordered?: boolean }) {
   return (
     <div
-      className={`rounded-full bg-muted flex items-center justify-center overflow-hidden ${bordered ? 'border-2 border-[#1A365D]/30' : ''}`}
+      className={`rounded-full bg-muted flex items-center justify-center overflow-hidden ${bordered ? 'border-2 border-[#026062]/30' : ''}`}
       style={{ width: size, height: size }}
       aria-label="Advisor avatar"
     >

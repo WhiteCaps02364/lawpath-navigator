@@ -1,4 +1,5 @@
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 
 export function AdvisorFooter() {
   return (

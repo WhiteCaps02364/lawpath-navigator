@@ -4,12 +4,13 @@ import { CheckCircle, AlertTriangle, MapPin, ExternalLink, BookOpen, Target, Shi
 import { useEffect, useMemo, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 import { ShareWithAdvisor } from '@/components/results/ShareWithAdvisor';
 import { supabase } from '@/integrations/supabase/client';
 import { LawSchoolFitSnapshot, stateOverlapsSchool } from '@/components/advisor/LawSchoolFitSnapshot';
 
-const NAVY = '#1A365D';
+const NAVY = '#026062';
 const GOLD = '#C9A84C';
 
 interface ResultsViewProps {
@@ -134,7 +135,7 @@ function SchoolCard({ assessment, firstChoiceState }: { assessment: SchoolAssess
             href={ABA_DISCLOSURES_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[#1A365D] underline hover:opacity-80 font-medium"
+            className="inline-flex items-center gap-1 text-[#026062] underline hover:opacity-80 font-medium"
           >
             <ExternalLink className="w-3 h-3" /> ABA Disclosures
           </a>
@@ -145,7 +146,7 @@ function SchoolCard({ assessment, firstChoiceState }: { assessment: SchoolAssess
             href={ABA_EMPLOYMENT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[#1A365D] underline hover:opacity-80 font-medium"
+            className="inline-flex items-center gap-1 text-[#026062] underline hover:opacity-80 font-medium"
           >
             <ExternalLink className="w-3 h-3" /> Employment Data
           </a>

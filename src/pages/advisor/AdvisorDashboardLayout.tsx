@@ -49,7 +49,7 @@ export default function AdvisorDashboardLayout() {
                 end={item.end}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                    isActive ? 'bg-[#1A365D] text-white' : 'text-foreground hover:bg-muted'
+                    isActive ? 'bg-[#026062] text-white' : 'text-foreground hover:bg-muted'
                   }`
                 }
               >

@@ -1,7 +1,8 @@
 import { ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 import { useAdvisorDemo } from '@/contexts/AdvisorDemoContext';
 
 export function AdvisorHeader() {
@@ -10,7 +11,7 @@ export function AdvisorHeader() {
   const firstName = advisor?.firstName || 'Advisor';
 
   return (
-    <header className="bg-[#1A365D] w-full">
+    <header className="bg-[#026062] w-full">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
         <DropdownMenu>

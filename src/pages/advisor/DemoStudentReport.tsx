@@ -10,7 +10,7 @@ export default function DemoStudentReport() {
   if (!s) {
     return (
       <div>
-        <button onClick={() => navigate('/advisor-dashboard/demo')} className="text-sm text-[#1A365D] underline">Back</button>
+        <button onClick={() => navigate('/advisor-dashboard/demo')} className="text-sm text-[#026062] underline">Back</button>
         <p className="mt-4 text-muted-foreground">Demo student not found.</p>
       </div>
     );
@@ -19,7 +19,7 @@ export default function DemoStudentReport() {
   // A pre-generated, plausible report
   return (
     <div className="max-w-3xl space-y-6">
-      <button onClick={() => navigate('/advisor-dashboard/demo')} className="inline-flex items-center gap-1 text-sm text-[#1A365D]">
+      <button onClick={() => navigate('/advisor-dashboard/demo')} className="inline-flex items-center gap-1 text-sm text-[#026062]">
         <ArrowLeft className="w-4 h-4" /> Back to demo dashboard
       </button>
 
@@ -30,7 +30,7 @@ export default function DemoStudentReport() {
       <div className="bg-white border rounded-xl p-6 space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h2 className="text-2xl font-heading font-bold text-[#1A365D]">{s.name}</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#026062]">{s.name}</h2>
             <p className="text-sm text-muted-foreground">{s.institution} · GPA {s.gpa} · {s.testStatus}</p>
           </div>
           <ReadinessBadge level={s.readiness} />

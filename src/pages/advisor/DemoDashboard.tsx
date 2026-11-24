@@ -6,14 +6,14 @@ export default function DemoDashboard() {
   const navigate = useNavigate();
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-heading font-bold text-[#1A365D]">See How Student Reports Appear in Your Dashboard</h1>
+      <h1 className="text-3xl font-heading font-bold text-[#026062]">See How Student Reports Appear in Your Dashboard</h1>
       <p className="text-base text-muted-foreground">
         This is a preview of what your dashboard looks like once students begin submitting reports.
       </p>
 
       <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-md text-sm" style={{ background: '#F8E9C2', color: '#5C4A1A' }}>
         <span>This is a demo dashboard. Your real student reports will appear in My Students once advisees complete the intake.</span>
-        <button onClick={() => navigate('/advisor-dashboard')} className="bg-[#1A365D] text-white px-3 py-1.5 rounded text-xs font-medium whitespace-nowrap">
+        <button onClick={() => navigate('/advisor-dashboard')} className="bg-[#026062] text-white px-3 py-1.5 rounded text-xs font-medium whitespace-nowrap">
           Go to My Students
         </button>
       </div>
@@ -36,7 +36,7 @@ export default function DemoDashboard() {
             {demoStudents.map(s => (
               <tr key={s.id} className="border-t hover:bg-muted/30">
                 <td className="px-4 py-3">
-                  <button onClick={() => navigate(`/advisor-dashboard/demo-student/${s.id}`)} className="text-[#1A365D] underline font-medium">
+                  <button onClick={() => navigate(`/advisor-dashboard/demo-student/${s.id}`)} className="text-[#026062] underline font-medium">
                     {s.name}
                   </button>
                 </td>
@@ -47,7 +47,7 @@ export default function DemoDashboard() {
                 <td className="px-4 py-3">{s.testStatus}</td>
                 <td className="px-4 py-3 text-muted-foreground">{s.resumeUploaded ? 'Résumé uploaded' : 'Not uploaded'}</td>
                 <td className="px-4 py-3">
-                  <button onClick={() => navigate(`/advisor-dashboard/demo-student/${s.id}`)} className="bg-[#1A365D] text-white px-3 py-1.5 rounded text-xs font-medium">View Report</button>
+                  <button onClick={() => navigate(`/advisor-dashboard/demo-student/${s.id}`)} className="bg-[#026062] text-white px-3 py-1.5 rounded text-xs font-medium">View Report</button>
                 </td>
               </tr>
             ))}

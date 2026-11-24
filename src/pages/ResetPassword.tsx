@@ -31,7 +31,7 @@ export default function ResetPassword() {
 
   return (
     <AuthCard>
-      <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Set a new password</h1>
+      <h1 className="text-[24px] font-bold text-center text-[#026062]">Set a new password</h1>
       <div style={{ height: 24 }} />
       <form onSubmit={handle} className="space-y-4">
         <div>
@@ -42,7 +42,7 @@ export default function ResetPassword() {
           <Label htmlFor="confirm">Confirm password</Label>
           <Input id="confirm" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} className="mt-1.5" />
         </div>
-        <button type="submit" disabled={!valid || submitting} className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium disabled:opacity-50">
+        <button type="submit" disabled={!valid || submitting} className="w-full h-11 rounded-2xl bg-[#026062] text-white font-medium disabled:opacity-50">
           {submitting ? 'Updating…' : 'Update password'}
         </button>
       </form>

@@ -58,7 +58,7 @@ export default function AdvisorRegisterDetails() {
   return (
     <>
       <AuthCard>
-        <h1 className="text-[24px] font-bold text-center text-[#1A365D]">Complete Your Advisor Profile</h1>
+        <h1 className="text-[24px] font-bold text-center text-[#026062]">Complete Your Advisor Profile</h1>
         <p className="text-[14px] text-muted-foreground text-center mt-2">
           These details power your public profile page and shareable link.
         </p>
@@ -171,7 +171,7 @@ export default function AdvisorRegisterDetails() {
         <button
           type="submit"
           disabled={!canSubmit}
-          className="w-full h-11 rounded-2xl bg-[#1A365D] text-white font-medium hover:bg-[#1A365D]/90 disabled:opacity-50 transition-colors"
+          className="w-full h-11 rounded-2xl bg-[#026062] text-white font-medium hover:bg-[#026062]/90 disabled:opacity-50 transition-colors"
         >
           Complete Account Setup →
         </button>

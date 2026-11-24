@@ -15,7 +15,8 @@ import { calculateScores } from '@/lib/scoringEngine';
 import { ScoringResult } from '@/types/intake';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import jdnLogo from '@/assets/jdn-logo.png';
+import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
+const jdnLogo = jdnLogoAsset.url;
 
 const stepLabels = [
   'Personal Information',
@@ -190,11 +191,11 @@ function IntakeWizardInner() {
       {isDemo && (
         <div className="px-4 py-3 text-sm flex items-center justify-between" style={{ background: '#F8E9C2', color: '#5C4A1A' }}>
           <span>You are previewing the student experience. This is what your advisees will see.</span>
-          <button onClick={() => window.close()} className="bg-[#1A365D] text-white px-3 py-1.5 rounded text-xs font-medium">Exit Preview</button>
+          <button onClick={() => window.close()} className="bg-[#026062] text-white px-3 py-1.5 rounded text-xs font-medium">Exit Preview</button>
         </div>
       )}
       {/* Header */}
-      <header className="bg-[#1A365D] sticky top-0 z-10">
+      <header className="bg-[#026062] sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <img src={jdnLogo} alt="JD-Next" className="h-14" />
@@ -228,7 +229,7 @@ function IntakeWizardInner() {
           <Button
             onClick={handleNext}
             disabled={!canProceed()}
-            className="gap-2 bg-[#1A365D] text-white hover:bg-[#1A365D]/90"
+            className="gap-2 bg-[#026062] text-white hover:bg-[#026062]/90"
           >
             {currentStep === totalSteps - 1 ? 'Get My Results' : 'Continue'}
             <ArrowRight className="w-4 h-4" />
