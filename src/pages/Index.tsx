@@ -61,7 +61,7 @@ export default function Index() {
             className="space-y-6"
           >
             <p className="text-sm text-muted-foreground">
-              Provided free by JD-Next — for advisors and applicants alike.
+              Provided free by JD-Next — for pre-law advisors and applicants.
             </p>
 
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
