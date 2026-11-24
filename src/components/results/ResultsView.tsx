@@ -650,7 +650,16 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         pdf.setFillColor(2, 96, 98);
         pdf.rect(0, 0, pg.pageW, headerH, 'F');
         try {
-          pdf.addImage(logoImg, 'PNG', margin, 0.1, 0.5, 0.5);
+          // Fixed logo box (120x48px == 1.25in x 0.5in), scaled "contain" so the
+          // wordmark keeps its aspect ratio and is centered in the header bar.
+          const boxW = 1.25;
+          const boxH = 0.5;
+          const natW = logoImg.naturalWidth || 1;
+          const natH = logoImg.naturalHeight || 1;
+          const ratio = natW / natH;
+          const drawW = Math.min(boxW, boxH * ratio);
+          const drawH = drawW / ratio;
+          pdf.addImage(logoImg, 'PNG', margin, (headerH - drawH) / 2, drawW, drawH);
         } catch {}
         pdf.setTextColor(255, 255, 255);
         pdf.setFont('helvetica', 'bold');
@@ -686,7 +695,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* Branded Header Bar */}
       <header className="w-full" style={{ background: NAVY }}>
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <img src={jdnLogo} alt="JD-Next" style={{ height: 56 }} />
+          <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto', flexShrink: 0 }} />
           <span style={{ color: '#D1D5DB', fontSize: 16 }}>Pre-Law Advising Intake Form</span>
         </div>
       </header>
