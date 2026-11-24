@@ -288,14 +288,14 @@ export function calculateScores(data: StudentData): ScoringResult {
   const total = schoolAssessments.length || 1;
 
   let listComposition: ListComposition = 'Healthy';
-  let listCompositionNote = 'Your school list has a balanced mix of reach, target, and safety schools. This is a healthy strategy.';
+  let listCompositionNote = 'Your selected schools span a range of GPA medians relative to your profile. This section is a statistical comparison of your GPA against published ABA 509 percentiles — it is not a prediction of admission outcomes.';
 
   if (reachCount / total >= 0.7) {
     listComposition = 'Overreaching';
-    listCompositionNote = 'Your current list is weighted toward reach schools based on your academic profile. This does not eliminate admission, but suggests a more balanced strategy may improve your overall odds.';
+    listCompositionNote = 'For most of your selected schools, the published GPA median sits above your GPA. This section is a statistical comparison of your GPA against published ABA 509 percentiles — it is not a prediction of admission outcomes.';
   } else if (safetyCount / total >= 0.5) {
     listComposition = 'Underreaching';
-    listCompositionNote = 'Your school list is weighted toward safety schools. You may want to consider adding some more competitive options where your profile could still be competitive.';
+    listCompositionNote = 'For most of your selected schools, the published GPA median sits below your GPA. This section is a statistical comparison of your GPA against published ABA 509 percentiles — it is not a prediction of admission outcomes.';
   }
 
   // JD-Next vs LSAT
@@ -339,7 +339,7 @@ export function calculateScores(data: StudentData): ScoringResult {
   if (meaningfulActionFlags.length > 0) {
     actionPlan.push('Prepare an addendum addressing your academic history — frame it as growth, not excuse.');
   }
-  actionPlan.push('Review your school list with your advisor and discuss reach/target/safety balance.');
+  actionPlan.push('Review your School Profile Comparison with your advisor and discuss how your GPA sits against each school\'s published percentiles.');
   if (data.personalStatementThemes.length < 20) {
     actionPlan.push('Begin drafting your personal statement — start with the specific experience that drives your interest in law.');
   }

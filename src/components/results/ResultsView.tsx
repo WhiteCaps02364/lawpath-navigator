@@ -9,6 +9,7 @@ const jdnLogo = jdnLogoAsset.url;
 import { ShareWithAdvisor } from '@/components/results/ShareWithAdvisor';
 import { supabase } from '@/integrations/supabase/client';
 import { LawSchoolFitSnapshot, stateOverlapsSchool } from '@/components/advisor/LawSchoolFitSnapshot';
+import { classificationLabel, listCompositionLabel } from '@/lib/reportLabels';
 
 const NAVY = '#026062';
 const GOLD = '#C9A84C';
@@ -89,7 +90,7 @@ function SchoolCard({ assessment, firstChoiceState }: { assessment: SchoolAssess
       <div className="flex items-start justify-between gap-2 mb-3">
         <h4 className="font-heading text-lg text-foreground">{school.name}</h4>
         <div className="flex gap-1.5 flex-shrink-0">
-          <span className={safetyOverride}>{classification}</span>
+          <span className={safetyOverride}>{classificationLabel(classification)}</span>
           {school.acceptsJDNext ? (
             <span
               className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white"
@@ -698,7 +699,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
           Your Pre-Law Advisory Report
         </h1>
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-          {studentData.firstName}, here's your personalized law school advising report — built around your academic profile, your target schools, and your goals.
+          {studentData.firstName}, here's your personalized law school advising report — built around your academic profile, your selected schools, and your goals.
         </p>
       </motion.div>
 
@@ -767,14 +768,14 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
       {/* School List */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>School Assessment</h3>
+          <h3 className="text-xl font-heading font-bold" style={{ color: NAVY }}>School Profile Comparison</h3>
           <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
             results.listComposition === 'Healthy' ? 'bg-success/10 text-success' :
             results.listComposition === 'Overreaching' ? 'bg-destructive/10 text-destructive' :
             'bg-gold/10 text-gold'
           }`}>
             <Shield className="w-3.5 h-3.5" />
-            {results.listComposition}
+            {listCompositionLabel(results.listComposition)}
           </div>
         </div>
         <p className="text-sm text-muted-foreground">{results.listCompositionNote}</p>

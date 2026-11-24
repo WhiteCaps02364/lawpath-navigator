@@ -56,12 +56,12 @@ export default function DemoStudentReport() {
         </div>
 
         <div className="border rounded-lg p-4">
-          <p className="text-xs text-muted-foreground uppercase mb-2">School Assessment (sample)</p>
+          <p className="text-xs text-muted-foreground uppercase mb-2">School Profile Comparison (sample)</p>
           <ul className="text-sm space-y-1">
-            <li>· Duke Law — <span className="text-amber-700">Reach</span></li>
-            <li>· UNC Law — <span className="text-emerald-700">Target</span></li>
-            <li>· Wake Forest Law — <span className="text-emerald-700">Target</span></li>
-            <li>· Georgetown Law — <span className="text-amber-700">Reach</span></li>
+            <li>· Duke Law — <span className="text-amber-700">Below Median</span></li>
+            <li>· UNC Law — <span className="text-emerald-700">Within Range</span></li>
+            <li>· Wake Forest Law — <span className="text-emerald-700">Within Range</span></li>
+            <li>· Georgetown Law — <span className="text-amber-700">Below Median</span></li>
           </ul>
         </div>
 

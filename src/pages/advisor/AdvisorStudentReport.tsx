@@ -19,7 +19,7 @@ function buildAgenda(sd: StudentData, r: ScoringResult): string[] {
     items.push('Determine testing path — JD-Next vs. LSAT based on school list variance check');
   }
   if (r.listComposition === 'Overreaching') {
-    items.push('Rebalance school list — current list is weighted toward reach schools');
+    items.push('Review the School Profile Comparison section — most selected schools sit above the student\'s GPA median');
   }
   if (sd.addendumNeeded === 'Yes') {
     items.push('Discuss addendum strategy');

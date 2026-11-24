@@ -92,11 +92,11 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
 
   let nextStep = 'Your profile is well-positioned relative to your selected schools. Focus on application quality, recommender strength, and a compelling personal statement.';
   if (belowGPA25 > selected.length / 2) {
-    nextStep = 'Your school list may benefit from rebalancing. Consider discussing reach, target, and safety options with your advisor or reviewing the school cards above.';
+    nextStep = 'Your GPA sits below the 25th percentile at most of your selected schools. This is a statistical comparison only — review the school cards above with your advisor.';
   } else if (studentLSAT != null && belowLSAT25 > selected.length / 2) {
     nextStep = 'A stronger test score would improve your competitiveness at most of your selected schools. Consider an LSAT retake or explore JD-Next as a supplemental credential.';
   } else if (limitedGeo && firstChoice) {
-    nextStep = 'Most of your selected schools place graduates outside your preferred practice location. Consider researching regional schools closer to where you want to work, or plan for proactive networking in your target market.';
+    nextStep = 'Most of your selected schools place graduates outside your preferred practice location. This is a comparison of published placement regions only — review it with your advisor.';
   }
 
   const headerBar = (text: string, bg: string) => (
@@ -158,7 +158,7 @@ export function LawSchoolFitSnapshot({ studentData }: { studentData: StudentData
               ['LSAT Score', studentLSAT != null ? String(studentLSAT) : 'Not yet taken'],
               ['JD-Next Score', studentJDNext != null ? String(studentJDNext) : 'Not yet taken'],
               ['Desired Practice Location(s)', states.length ? states.join(', ') : 'No preference'],
-              ['Target Schools', selected.map(s => s.name).join(', ')],
+              ['Selected Schools', selected.map(s => s.name).join(', ')],
             ].map(([label, value], i) => (
               <tr key={i}>
                 <td className="py-1 pr-4 text-gray-600 align-top w-1/3">{label}:</td>
