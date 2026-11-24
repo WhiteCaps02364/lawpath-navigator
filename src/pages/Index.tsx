@@ -60,10 +60,6 @@ export default function Index() {
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
-            <p className="text-sm text-muted-foreground">
-              Provided free by JD-Next — for pre-law advisors and applicants.
-            </p>
-
             <h1 className="text-4xl md:text-6xl font-heading text-foreground leading-tight">
               Your Law School Plan,<br />
               <span className="text-secondary">Built Around You.</span>
@@ -78,7 +74,7 @@ export default function Index() {
                 Create My Custom Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                Takes about 10 minutes. Free for all law school applicants.
+                Takes about 10 minutes. Provided free by JD-Next for pre-law advisors and law school applicants.
               </p>
             </div>
           </motion.div>
