@@ -74,7 +74,8 @@ export default function Index() {
                 Create My Custom Advising Report <ArrowRight className="w-5 h-5" />
               </Button>
               <p className="text-sm text-muted-foreground">
-                Takes about 10 minutes. Provided free by JD-Next for pre-law advisors and law school applicants.
+                Takes about 10 minutes.<br />
+                Provided free by JD-Next for pre-law advisors and law school applicants.
               </p>
             </div>
           </motion.div>
