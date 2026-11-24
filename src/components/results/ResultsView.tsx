@@ -646,7 +646,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         const sliceHeightIn = (pg.sh * pg.imgWidthIn) / pg.canvas.width;
 
         // Header bar (navy)
-        pdf.setFillColor(26, 54, 93);
+        pdf.setFillColor(2, 96, 98);
         pdf.rect(0, 0, pg.pageW, headerH, 'F');
         try {
           pdf.addImage(logoImg, 'PNG', margin, 0.1, 0.5, 0.5);
@@ -665,7 +665,7 @@ export function ResultsView({ results, studentData, onStartOver }: ResultsViewPr
         pdf.addImage(sliceData, 'PNG', margin, pg.contentTop, pg.imgWidthIn, sliceHeightIn);
 
         // Footer
-        pdf.setDrawColor(26, 54, 93);
+        pdf.setDrawColor(2, 96, 98);
         pdf.setLineWidth(0.01);
         pdf.line(margin, pg.pageH - footerH, pg.pageW - margin, pg.pageH - footerH);
         pdf.setTextColor(120, 120, 120);
