@@ -12,7 +12,7 @@ const cards = [
     tip: "If the strategy says 'Consider Legal Employment Before Applying,' this is a good meeting topic. The report has already suggested specific practice-area-matched opportunities — you can build on those.",
   },
   {
-    title: 'School Assessment — Are Their Targets Realistic?',
+    title: 'School Assessment — ABA Data Comparison',
     body: 'Every school the student selected is classified as Reach, Target, or Safety based on their GPA vs. the school\'s ABA 509 admissions percentiles. The JD-Next Accepted tag shows which schools accept JD-Next as a standalone alternative to the LSAT. The geographic alignment note flags mismatches between the student\'s preferred work location and where each school actually places graduates.',
     tip: "The geographic misalignment flag is one of the most valuable insights in the report. Most students don't know that regional schools have concentrated local placement. This is often news to them and worth discussing directly.",
   },

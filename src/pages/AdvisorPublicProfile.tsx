@@ -109,7 +109,7 @@ export default function AdvisorPublicProfile() {
       <header className="bg-[#026062] w-full">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <img src={jdnLogo} alt="JD-Next" style={{ height: 56, width: 'auto' }} />
-          <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
+          <span className="text-base text-gray-300">Pre-Law Advising Intake Form</span>
         </div>
       </header>
 
@@ -205,8 +205,8 @@ export default function AdvisorPublicProfile() {
       <section className="max-w-5xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { icon: BarChart3, title: 'Know Where You Stand', body: 'See where you stand academically and get a clear picture of whether now is the right time to apply — or what you need to do first.' },
-            { icon: Shield, title: 'Are Your Target Schools Realistic?', body: "Find out whether the schools you're considering are realistic targets based on your GPA, and whether they place graduates where you want to work." },
+            { icon: BarChart3, title: 'Review Your Academic Profile', body: 'Relying on ABA-reported data, the intake form organizes your academic profile to help guide your decisions about application timing and next steps.' },
+            { icon: Shield, title: 'Compare Your Schools to ABA Data', body: "See how your GPA compares to ABA-reported data for the schools you're considering, along with where each school's graduates practice." },
             { icon: Users, title: 'Your Advisor, Fully Briefed', body: 'Your advisor receives a summary of your profile before you meet, so your conversation starts with strategy — not background questions.' },
           ].map(f => (
             <div key={f.title} className="border rounded-xl p-6 bg-card">

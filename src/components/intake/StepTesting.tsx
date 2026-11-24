@@ -60,7 +60,7 @@ export function StepTesting() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Testing</h2>
-        <p className="text-muted-foreground">Tell us where you stand with standardized testing. If you haven't tested yet, that's fine — select your status below.</p>
+        <p className="text-muted-foreground">Tell us about your standardized testing status. If you haven't tested yet, that's fine — select your status below.</p>
       </div>
 
       <div className="space-y-2">

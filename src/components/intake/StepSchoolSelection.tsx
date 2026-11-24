@@ -25,7 +25,7 @@ export function StepSchoolSelection() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Which Law Schools Are You Considering?</h2>
-        <p className="text-muted-foreground">Select up to five schools. We'll compare each one against your GPA, assess whether your list is realistic, and flag which schools accept JD-Next as a primary admissions test.</p>
+        <p className="text-muted-foreground">Select up to five schools. We'll show how your GPA compares to each school's ABA-reported data and note which schools accept JD-Next as a primary admissions test.</p>
       </div>
 
       <p className="text-sm text-muted-foreground">

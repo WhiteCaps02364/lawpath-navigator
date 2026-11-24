@@ -45,7 +45,7 @@ export default function Index() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
+            <span className="text-base text-gray-300">Pre-Law Advising Intake Form</span>
           )}
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function Index() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Answer a few questions and get a personalized readiness score, application strategy, and school analysis — tailored to your story and powered by the latest ABA data.
+              Answer a few questions and receive a personalized summary of your profile and selected schools. Relying on ABA-reported data, the intake form will help guide your decisions and planning for your application process.
             </p>
 
             <div className="flex flex-col items-center gap-2 pt-4">
@@ -100,13 +100,13 @@ export default function Index() {
           {[
             {
               icon: BarChart3,
-              title: 'Know Where You Stand',
-              description: 'See where you stand academically and get a clear picture of whether now is the right time to apply — or what you need to do first.',
+              title: 'Review Your Academic Profile',
+              description: 'Relying on ABA-reported data, the intake form organizes your academic profile to help guide your decisions about application timing and next steps.',
             },
             {
               icon: Shield,
-              title: 'Are Your Target Schools Realistic?',
-              description: 'Find out whether the schools you\'re considering are realistic targets based on your GPA, and whether they place graduates where you want to work.',
+              title: 'Compare Your Schools to ABA Data',
+              description: 'See how your GPA compares to ABA-reported data for the schools you\'re considering, along with where each school\'s graduates practice.',
             },
             {
               icon: Users,

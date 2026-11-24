@@ -20,7 +20,7 @@ export function StepAcademics() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-2xl font-heading text-foreground mb-1">Academic Profile</h2>
-        <p className="text-muted-foreground">This helps us understand your academic background and recommend a realistic application strategy.</p>
+        <p className="text-muted-foreground">This helps us understand your academic background and organize information to help guide your application planning.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

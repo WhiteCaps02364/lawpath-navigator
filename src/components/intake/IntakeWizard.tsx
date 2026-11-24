@@ -199,7 +199,7 @@ function IntakeWizardInner() {
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <img src={jdnLogo} alt="JD-Next" className="h-14" />
-            <span className="text-base text-gray-300">Pre-Law Advisory Intake Form</span>
+            <span className="text-base text-gray-300">Pre-Law Advising Intake Form</span>
           </div>
         </div>
       </header>
