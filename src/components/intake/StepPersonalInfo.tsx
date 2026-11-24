@@ -109,7 +109,7 @@ export function StepPersonalInfo() {
           />
           <div className="space-y-1">
             <Label htmlFor="lawSchoolOptIn" className="text-sm font-normal cursor-pointer">
-              I'd like to hear from law schools that may be a good match for my profile
+              I'd like to hear from law schools that may be a strong fit for my profile
             </Label>
             <p className="text-muted-foreground" style={{ fontSize: '13px' }}>
               If you opt in, we may share your contact information with law schools that may want to connect with prospective applicants. JD-Next will never sell or share your information with any law school without your explicit consent.
