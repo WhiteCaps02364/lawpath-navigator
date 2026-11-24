@@ -10,11 +10,12 @@ import { StepTesting, isFutureDateValue } from '@/components/intake/StepTesting'
 import { StepPreferences } from '@/components/intake/StepPreferences';
 import { StepApplicationStrength } from '@/components/intake/StepApplicationStrength';
 import { StepSchoolSelection } from '@/components/intake/StepSchoolSelection';
+import { StepReview } from '@/components/intake/StepReview';
 import { ResultsView } from '@/components/results/ResultsView';
 import { calculateScores } from '@/lib/scoringEngine';
 import { ScoringResult } from '@/types/intake';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import jdnLogoAsset from '@/assets/jdnext-logo.png.asset.json';
 const jdnLogo = jdnLogoAsset.url;
 
@@ -25,7 +26,9 @@ const stepLabels = [
   'Goals & Preferences',
   'Application Strength',
   'School Selection',
+  'Review',
 ];
+const REVIEW_STEP = 6;
 
 function IntakeWizardInner() {
   const { data, setData, currentStep, setCurrentStep, totalSteps } = useIntake();
@@ -39,6 +42,15 @@ function IntakeWizardInner() {
   const submissionId = useRef<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [appliedAdvisor, setAppliedAdvisor] = useState(false);
+  const [maxReached, setMaxReached] = useState(0);
+  const [showErrors, setShowErrors] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    setMaxReached(m => Math.max(m, currentStep));
+    setShowErrors(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
 
   // Apply institution / demo prefill once on mount
   useEffect(() => {
@@ -106,6 +118,27 @@ function IntakeWizardInner() {
     return () => clearTimeout(t);
   }, [data, user, hydrated, isDemo, advisorIdParam]);
 
+  if (results && !submitted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="max-w-lg w-full border rounded-xl bg-card p-8 text-center shadow-sm">
+          <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-4" />
+          <h1 className="text-2xl font-serif text-foreground mb-2">Your intake form has been submitted</h1>
+          <p className="text-sm text-muted-foreground mb-6">Thank you, {data.firstName || 'there'}. Here’s what happens next:</p>
+          <ol className="text-left text-sm space-y-3 mb-8 list-decimal pl-5 text-foreground">
+            {advisorIdParam && <li>Your advisor will receive your profile on their dashboard.</li>}
+            <li>Review your personalized advising report, based on ABA-reported data.</li>
+            <li>Download it as a PDF to keep for your records.</li>
+            <li>Schedule a meeting with your pre-law advisor to review your results together.</li>
+          </ol>
+          <Button onClick={() => setSubmitted(true)} className="gap-2">
+            View My Report <ArrowRight className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (results) {
     return (
       <ResultsView
@@ -113,6 +146,7 @@ function IntakeWizardInner() {
         studentData={data}
         onStartOver={() => {
           setResults(null);
+          setSubmitted(false);
           setCurrentStep(0);
         }}
       />
@@ -126,36 +160,54 @@ function IntakeWizardInner() {
     <StepPreferences key={3} />,
     <StepApplicationStrength key={4} />,
     <StepSchoolSelection key={5} />,
+    <StepReview key={6} onEdit={(step) => setCurrentStep(step)} />,
   ];
 
-  const canProceed = () => {
-    switch (currentStep) {
+  const missingFor = (step: number): string[] => {
+    const m: string[] = [];
+    switch (step) {
       case 0: {
-        const currentYear = new Date().getFullYear();
-        const isCurrentOrFuture = data.graduationYear >= currentYear;
-        const schoolEmailOk = isCurrentOrFuture ? !!data.schoolEmail : true;
-        return data.firstName && data.lastName && schoolEmailOk && data.personalEmail && data.undergraduateInstitution && data.applicationTimingIntent;
+        const isCurrentOrFuture = data.graduationYear >= new Date().getFullYear();
+        if (!data.firstName) m.push('First name');
+        if (!data.lastName) m.push('Last name');
+        if (isCurrentOrFuture && !data.schoolEmail) m.push('School email');
+        if (!data.personalEmail) m.push('Personal email');
+        if (!data.undergraduateInstitution) m.push('Undergraduate institution');
+        if (!data.applicationTimingIntent) m.push('Application timing');
+        break;
       }
-      case 1: return data.cumulativeGPA > 0 && data.majors;
-      case 2: {
-        const hasFutureDate = data.testStatus === 'Taken' && (
-          isFutureDateValue(data.lsatDate) || isFutureDateValue(data.greDate) || isFutureDateValue(data.jdNextDate)
-        );
-        return !hasFutureDate;
-      }
+      case 1:
+        if (!(data.cumulativeGPA > 0)) m.push('Cumulative GPA');
+        if (!data.majors) m.push('Major(s)');
+        break;
+      case 2:
+        if (data.testStatus === 'Taken' && (isFutureDateValue(data.lsatDate) || isFutureDateValue(data.greDate) || isFutureDateValue(data.jdNextDate)))
+          m.push('Test dates cannot be in the future');
+        break;
       case 3: {
         const sel = [data.firstChoiceState, data.secondChoiceState, data.thirdChoiceState].filter(s => s && s !== '' && s !== 'No preference');
-        const noDup = new Set(sel).size === sel.length;
-        return !!data.whyLawSchool && data.whyLawSchool.length >= 50 && data.practiceAreaInterest.length > 0 && !!data.firstChoiceState && noDup;
+        if (!data.whyLawSchool || data.whyLawSchool.length < 50) m.push('Why law school (at least 50 characters)');
+        if (data.practiceAreaInterest.length === 0) m.push('Practice area interest');
+        if (!data.firstChoiceState) m.push('First-choice state');
+        if (new Set(sel).size !== sel.length) m.push('State choices must be different');
+        break;
       }
-      case 4: return true;
-      case 5: return data.selectedSchools.length > 0;
-      default: return true;
+      case 5:
+        if (data.selectedSchools.length === 0) m.push('Select at least one school');
+        break;
     }
+    return m;
   };
+  const missing = missingFor(currentStep);
 
   const handleNext = () => {
-    if (currentStep === totalSteps - 1) {
+    if (currentStep < REVIEW_STEP && missing.length) {
+      setShowErrors(true);
+      return;
+    }
+    if (currentStep === REVIEW_STEP) {
+      const firstBad = [0, 1, 2, 3, 4, 5].find(i => missingFor(i).length > 0);
+      if (firstBad !== undefined) { setCurrentStep(firstBad); return; }
       let scored: ScoringResult;
       try {
         scored = calculateScores(data);
@@ -205,11 +257,18 @@ function IntakeWizardInner() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <IntakeProgressBar current={currentStep} total={totalSteps} labels={stepLabels} />
+        <IntakeProgressBar current={currentStep} total={stepLabels.length} labels={stepLabels} maxReached={maxReached} onStepClick={(i) => setCurrentStep(i)} />
         
         <div className="min-h-[400px]">
           {steps[currentStep]}
         </div>
+
+        {showErrors && missing.length > 0 && (
+          <div role="alert" className="mt-4 p-4 border border-destructive/40 bg-destructive/10 text-destructive rounded text-sm">
+            <p className="font-medium mb-1">Please complete the following before continuing:</p>
+            <ul className="list-disc pl-5">{missing.map(x => <li key={x}>{x}</li>)}</ul>
+          </div>
+        )}
 
         {scoringError && (
           <div className="mt-4 p-4 border border-destructive/40 bg-destructive/10 text-destructive rounded text-sm">
@@ -228,10 +287,9 @@ function IntakeWizardInner() {
           </Button>
           <Button
             onClick={handleNext}
-            disabled={!canProceed()}
             className="gap-2 bg-[#026062] text-white hover:bg-[#026062]/90"
           >
-            {currentStep === totalSteps - 1 ? 'Get My Results' : 'Continue'}
+            {currentStep === REVIEW_STEP ? 'Submit' : 'Continue'}
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
